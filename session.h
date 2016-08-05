@@ -15,7 +15,7 @@ public:
 
     ~Session();
 
-    void packet_received(const Packet &);
+    void packet_received(std::unique_ptr<Packet>);
 
     void handle_connect(const ConnectPacket &);
 

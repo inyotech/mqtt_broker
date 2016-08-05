@@ -10,7 +10,7 @@ void PacketDataWriter::write_remaining_length(size_t length)
 {
     do {
         uint8_t encoded_byte = length % 0x80;
-        length /= 0x80;
+        length >>= 7;
         if (length > 0) {
             encoded_byte |= 0x80;
         }

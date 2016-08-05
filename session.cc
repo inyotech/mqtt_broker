@@ -6,23 +6,23 @@ Session::~Session() {
     std::cout << "deleting session\n";
 }
 
-void Session::packet_received(const Packet &packet) {
+void Session::packet_received(std::unique_ptr<Packet> packet) {
 
-    switch (packet.type) {
+    switch (packet->type) {
         case PacketType::Connect:
-            handle_connect(dynamic_cast<const ConnectPacket &>(packet));
+            handle_connect(dynamic_cast<const ConnectPacket &>(*packet));
             break;
         case PacketType::Publish:
-            handle_publish(dynamic_cast<const PublishPacket &>(packet));
+            handle_publish(dynamic_cast<const PublishPacket &>(*packet));
             break;
         case PacketType::Pubrel:
-            handle_pubrel(dynamic_cast<const PubrelPacket &>(packet));
+            handle_pubrel(dynamic_cast<const PubrelPacket &>(*packet));
             break;
         case PacketType::Subscribe:
-            handle_subscribe(dynamic_cast<const SubscribePacket &>(packet));
+            handle_subscribe(dynamic_cast<const SubscribePacket &>(*packet));
             break;
         case PacketType::Disconnect:
-            handle_disconnect(dynamic_cast<const DisconnectPacket &>(packet));
+            handle_disconnect(dynamic_cast<const DisconnectPacket &>(*packet));
             break;
         default:
             break;

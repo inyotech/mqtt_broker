@@ -37,7 +37,7 @@ void PacketManager::receive_packet_data(struct bufferevent * bev) {
                 break;
             }
 
-            multiplier *= 128;
+            multiplier <<= 7;
 
             if (peek_offset > (available - 1)) {
                 return;
@@ -70,10 +70,8 @@ void PacketManager::receive_packet_data(struct bufferevent * bev) {
     packet_data_in.clear();
 
     if (packet_received_handler) {
-        packet_received_handler(*packet);
+        packet_received_handler(std::move(packet));
     }
-
-
 
 }
 

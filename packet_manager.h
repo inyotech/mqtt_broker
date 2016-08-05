@@ -37,7 +37,7 @@ public:
 
     void handle_other_events(short events);
 
-    void set_packet_received_handler(std::function<void(const Packet &)> handler) {
+    void set_packet_received_handler(std::function<void(std::unique_ptr<Packet>)> handler) {
         packet_received_handler = handler;
     }
 
@@ -51,6 +51,6 @@ public:
     struct bufferevent * bev;
     struct event_base * evbase;
 
-    std::function<void(const Packet &)> packet_received_handler;
+    std::function<void(std::unique_ptr<Packet>)> packet_received_handler;
 
 };
