@@ -22,6 +22,11 @@ enum class PacketType {
     Pubrel = 6,
     Pubcomp = 7,
     Subscribe = 8,
+    Suback = 9,
+    Unsubscribe = 10,
+    Unsuback = 11,
+    Pingreq = 12,
+    Pingresp = 13,
     Disconnect = 14
 };
 
@@ -82,6 +87,7 @@ public:
         }
     }
 
+    // TODO create a qos enum type
     uint8_t qos() const {
         return (connect_flags >> 3) & 0x03;
     }
@@ -297,11 +303,101 @@ public:
 
     struct Subscription {
         std::string topic;
+        // TODO create a qos enum type
         uint8_t qos;
     };
 
     std::vector<Subscription> subscriptions;
 
+};
+
+class SubackPacket : public Packet {
+
+public:
+
+    SubackPacket() {
+        type = PacketType::Suback;
+        header_flags = 0;
+    }
+
+    SubackPacket(uint8_t command, const std::vector<uint8_t> &packet_data);
+
+    std::vector<uint8_t> serialize() const;
+
+    enum class ReturnCode : uint8_t {
+        SuccessQoS0 = 0x00,
+        SuccessQoS1 = 0x01,
+        SuccessQoS2 = 0x02,
+        Failure = 0x80
+    };
+
+    uint16_t packet_id;
+    std::vector<ReturnCode> return_codes;
+
+};
+
+class UnsubscribePacket : public Packet {
+
+public:
+
+    UnsubscribePacket() {
+        type = PacketType::Suback;
+        header_flags = 0x02;
+    }
+
+    UnsubscribePacket(uint8_t command, const std::vector<uint8_t> &packet_data);
+
+    std::vector<uint8_t> serialize() const;
+
+    uint16_t packet_id;
+
+    std::vector<std::string> topics;
+
+};
+
+class UnsubackPacket : public Packet {
+
+public:
+
+    UnsubackPacket() {
+        type = PacketType::Unsuback;
+        header_flags = 0;
+    }
+
+    UnsubackPacket(uint8_t command, const std::vector<uint8_t> &packet_data);
+
+    std::vector<uint8_t> serialize() const;
+
+    uint16_t packet_id;
+
+};
+
+class PingreqPacket : public Packet {
+
+public:
+
+    PingreqPacket() {
+        type = PacketType::Pingreq;
+        header_flags = 0;
+    }
+
+    PingreqPacket(uint8_t command, const std::vector<uint8_t> &packet_data);
+
+    std::vector<uint8_t> serialize() const;
+};
+
+class PingrespPacket : public Packet {
+
+public:
+
+    PingrespPacket() {
+        type = PacketType::Pingresp;
+        header_flags = 0;
+    }
+
+    PingrespPacket(uint8_t command, const std::vector<uint8_t> &packet_data);
+
+    std::vector<uint8_t> serialize() const;
 };
 
 class DisconnectPacket : public Packet {

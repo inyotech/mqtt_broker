@@ -21,6 +21,12 @@ void Session::packet_received(std::unique_ptr<Packet> packet) {
         case PacketType::Subscribe:
             handle_subscribe(dynamic_cast<const SubscribePacket &>(*packet));
             break;
+        case PacketType::Unsubscribe:
+            handle_unsubscribe(dynamic_cast<const UnsubscribePacket &>(*packet));
+            break;
+        case PacketType::Pingreq:
+            handle_pingreq(dynamic_cast<const PingreqPacket &>(*packet));
+            break;
         case PacketType::Disconnect:
             handle_disconnect(dynamic_cast<const DisconnectPacket &>(*packet));
             break;
@@ -70,13 +76,58 @@ void Session::handle_subscribe(const SubscribePacket & packet) {
 
     std::cout << "handle subscribe\n";
 
+    SubackPacket suback;
+
+    suback.packet_id = packet.packet_id;
+
     for(auto subscription : packet.subscriptions) {
         std::cout << "topic " << subscription.topic << " " << static_cast<int>(subscription.qos) << "\n";
+        SubackPacket::ReturnCode return_code = SubackPacket::ReturnCode::Failure;
+        switch (subscription.qos) {
+            case 0:
+                return_code = SubackPacket::ReturnCode::SuccessQoS0;
+                break;
+            case 1:
+                return_code = SubackPacket::ReturnCode::SuccessQoS1;
+                break;
+            case 2:
+                return_code = SubackPacket::ReturnCode::SuccessQoS2;
+                break;
+        }
+        suback.return_codes.push_back(return_code);
     }
+
+    packet_manager.send_packet(suback);
 
 }
 
-void Session::handle_disconnect(const DisconnectPacket &) {
+void Session::handle_unsubscribe(const UnsubscribePacket & packet) {
+
+    std::cout << "handle unsubscribe\n";
+
+    UnsubackPacket unsuback;
+
+    for (auto topic : packet.topics) {
+        std::cout << "unsubscribe " << topic << "\n";
+    }
+
+    unsuback.packet_id = packet.packet_id;
+
+    packet_manager.send_packet(unsuback);
+
+}
+
+void Session::handle_pingreq(const PingreqPacket & packet) {
+
+    std::cout << "handle pingreq\n";
+
+    PingrespPacket pingresp;
+
+    packet_manager.send_packet(pingresp);
+
+}
+
+void Session::handle_disconnect(const DisconnectPacket & packet) {
 
     std::cout << "handle disconnect\n";
 

@@ -202,7 +202,8 @@ SubscribePacket::SubscribePacket(uint8_t command, const std::vector<uint8_t> &pa
         std::string topic = reader.read_string();
         uint8_t qos = reader.read_byte();
         assert(qos < 3);
-        subscriptions.emplace_back(Subscription{topic, qos});
+        // TODO use emplace_back
+        subscriptions.push_back(Subscription{topic, qos});
     } while(!reader.empty());
 }
 
@@ -211,6 +212,130 @@ std::vector<uint8_t> SubscribePacket::serialize() const {
     std::vector<uint8_t> packet_data;
     PacketDataWriter writer(packet_data);
 
+    return packet_data;
+}
+
+SubackPacket::SubackPacket(uint8_t command, const std::vector<uint8_t> &packet_data) {
+    assert(static_cast<PacketType>(command >> 4) == PacketType::Suback);
+    assert((command & 0x0F) == 0);
+
+    type = PacketType::Suback;
+
+    header_flags = command & 0x0F;
+
+    PacketDataReader reader(packet_data);
+
+    packet_id = reader.read_uint16();
+
+    do {
+        ReturnCode return_code = static_cast<ReturnCode>(reader.read_byte());
+        return_codes.push_back(return_code);
+    } while(!reader.empty());
+}
+
+std::vector<uint8_t> SubackPacket::serialize() const {
+
+    std::vector<uint8_t> packet_data;
+    PacketDataWriter writer(packet_data);
+    writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
+    writer.write_remaining_length(2 + return_codes.size());
+    for (auto return_code : return_codes) {
+        writer.write_byte(static_cast<uint8_t>(return_code));
+    }
+    return packet_data;
+}
+
+UnsubscribePacket::UnsubscribePacket(uint8_t command, const std::vector<uint8_t> &packet_data) {
+    assert(static_cast<PacketType>(command >> 4) == PacketType::Unsubscribe);
+    assert((command & 0x0F) == 0x02);
+
+    type = PacketType::Unsubscribe;
+
+    header_flags = command & 0x0F;
+
+    PacketDataReader reader(packet_data);
+
+    packet_id = reader.read_uint16();
+
+    do {
+        topics.push_back(reader.read_string());
+    } while(!reader.empty());
+}
+
+std::vector<uint8_t> UnsubscribePacket::serialize() const {
+
+    std::vector<uint8_t> packet_data;
+    PacketDataWriter writer(packet_data);
+    writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
+    size_t topics_size = 0;
+    for (auto topic : topics) {
+        // string data + 2 byte length
+        topics_size += topic.size() + 2;
+    }
+    writer.write_remaining_length(2 + topics_size);
+    writer.write_uint16(packet_id);
+    for (auto topic : topics) {
+        writer.write_string(topic);
+    }
+    return packet_data;
+}
+
+UnsubackPacket::UnsubackPacket(uint8_t command, const std::vector<uint8_t> &packet_data) {
+    assert(static_cast<PacketType>(command >> 4) == PacketType::Unsuback);
+    assert((command & 0x0F) == 0x02);
+
+    type = PacketType::Unsuback;
+
+    header_flags = command & 0x0F;
+
+    PacketDataReader reader(packet_data);
+
+    packet_id = reader.read_uint16();
+}
+
+std::vector<uint8_t> UnsubackPacket::serialize() const {
+
+    std::vector<uint8_t> packet_data;
+    PacketDataWriter writer(packet_data);
+    writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
+    writer.write_remaining_length(2);
+    writer.write_uint16(packet_id);
+    return packet_data;
+}
+
+PingreqPacket::PingreqPacket(uint8_t command, const std::vector<uint8_t> &packet_data) {
+
+    assert(static_cast<PacketType>(command >> 4) == PacketType::Pingreq);
+    assert(packet_data.size() == 0);
+
+    type = PacketType::Pingreq;
+    header_flags = command & 0x0F;
+
+}
+
+std::vector<uint8_t> PingreqPacket::serialize() const {
+    std::vector<uint8_t> packet_data;
+    PacketDataWriter writer(packet_data);
+    writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
+    writer.write_remaining_length(0);
+    return packet_data;
+}
+
+PingrespPacket::PingrespPacket(uint8_t command, const std::vector<uint8_t> &packet_data) {
+
+    assert(static_cast<PacketType>(command >> 4) == PacketType::Pingresp);
+    assert(packet_data.size() == 0);
+
+    type = PacketType::Pingreq;
+    header_flags = command & 0x0F;
+
+}
+
+std::vector<uint8_t> PingrespPacket::serialize() const {
+    std::vector<uint8_t> packet_data;
+    PacketDataWriter writer(packet_data);
+    writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
+    writer.write_remaining_length(0);
     return packet_data;
 }
 
@@ -227,5 +352,7 @@ DisconnectPacket::DisconnectPacket(uint8_t command, const std::vector<uint8_t> &
 std::vector<uint8_t> DisconnectPacket::serialize() const {
     std::vector<uint8_t> packet_data;
     PacketDataWriter writer(packet_data);
+    writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
+    writer.write_remaining_length(0);
     return packet_data;
 }

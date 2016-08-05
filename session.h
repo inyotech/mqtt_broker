@@ -25,6 +25,10 @@ public:
 
     void handle_subscribe(const SubscribePacket &);
 
+    void handle_unsubscribe(const UnsubscribePacket &);
+
+    void handle_pingreq(const PingreqPacket &);
+
     void handle_disconnect(const DisconnectPacket &);
 
     PacketManager packet_manager;

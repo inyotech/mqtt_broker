@@ -29,6 +29,12 @@ void PacketDataWriter::write_uint16(uint16_t word)
     packet_data.push_back(word & 0xFF);
 }
 
+void PacketDataWriter::write_string(const std::string & s)
+{
+    write_uint16(s.size());
+    std::copy(s.begin(), s.end(), std::back_inserter(packet_data));
+}
+
 uint8_t PacketDataReader::read_byte()
 {
     if (offset > packet_data.size()) {
