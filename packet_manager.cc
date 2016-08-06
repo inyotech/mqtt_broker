@@ -3,7 +3,6 @@
 //
 
 #include "packet_manager.h"
-#include "make_unique.h"
 
 #include <event2/buffer.h>
 
@@ -81,19 +80,19 @@ std::unique_ptr<Packet> PacketManager::parse_packet_data(uint8_t command) {
 
     switch(static_cast<PacketType>(command >> 4)) {
         case PacketType::Connect:
-            packet = make_unique<ConnectPacket>(command, packet_data_in);
+            packet = std::unique_ptr<ConnectPacket>(new ConnectPacket(command, packet_data_in));
             break;
         case PacketType::Publish:
-            packet = make_unique<PublishPacket>(command, packet_data_in);
+            packet = std::unique_ptr<PublishPacket>(new PublishPacket(command, packet_data_in));
             break;
         case PacketType::Pubrel:
-            packet = make_unique<PubrelPacket>(command, packet_data_in);
+            packet = std::unique_ptr<PubrelPacket>(new PubrelPacket(command, packet_data_in));
             break;
         case PacketType::Subscribe:
-            packet = make_unique<SubscribePacket>(command, packet_data_in);
+            packet = std::unique_ptr<SubscribePacket>(new SubscribePacket(command, packet_data_in));
             break;
         case PacketType::Disconnect:
-            packet = make_unique<DisconnectPacket>(command, packet_data_in);
+            packet = std::unique_ptr<DisconnectPacket>(new DisconnectPacket(command, packet_data_in));
             break;
         default:
             break;

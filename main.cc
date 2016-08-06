@@ -1,5 +1,4 @@
 #include "session.h"
-#include "make_unique.h"
 
 #include <cstring>
 #include <memory>
@@ -61,6 +60,6 @@ static void listener_cb(struct evconnlistener *listener, evutil_socket_t fd,
     return;
   }
 
-  sessions.push_back(make_unique<Session>(bev, base));
+  sessions.push_back(std::unique_ptr<Session>(new Session(bev, base)));
   
 }

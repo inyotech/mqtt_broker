@@ -1,6 +1,5 @@
 #include "packet.h"
 #include "client_id.h"
-#include "make_unique.h"
 
 #include <cstring>
 #include <iostream>
