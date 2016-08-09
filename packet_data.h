@@ -19,7 +19,6 @@ public:
     void write_byte(uint8_t byte);
     void write_uint16(uint16_t word);
     void write_string(const std::string & s);
-    void write_bytes(const std::vector<uint8_t> & bytes, size_t len);
 
     std::vector<uint8_t> & packet_data;
 };

@@ -3,6 +3,7 @@
 //
 
 #include "packet_manager.h"
+#include "packet.h"
 
 #include <event2/buffer.h>
 
@@ -28,7 +29,6 @@ void PacketManager::receive_packet_data(struct bufferevent * bev) {
         size_t value = 0;
 
         do {
-
             uint8_t encoded_byte = peek_buffer[peek_offset++];
             value += (encoded_byte & 0x7F) * multiplier;
 
@@ -85,11 +85,23 @@ std::unique_ptr<Packet> PacketManager::parse_packet_data(uint8_t command) {
         case PacketType::Publish:
             packet = std::unique_ptr<PublishPacket>(new PublishPacket(command, packet_data_in));
             break;
+        case PacketType::Puback:
+            packet = std::unique_ptr<PubackPacket>(new PubackPacket(command, packet_data_in));
+            break;
+        case PacketType::Pubrec:
+            packet = std::unique_ptr<PubrecPacket>(new PubrecPacket(command, packet_data_in));
+            break;
         case PacketType::Pubrel:
             packet = std::unique_ptr<PubrelPacket>(new PubrelPacket(command, packet_data_in));
             break;
+        case PacketType::Pubcomp:
+            packet = std::unique_ptr<PubcompPacket>(new PubcompPacket(command, packet_data_in));
+            break;
         case PacketType::Subscribe:
             packet = std::unique_ptr<SubscribePacket>(new SubscribePacket(command, packet_data_in));
+            break;
+        case PacketType::Pingreq:
+            packet = std::unique_ptr<PingreqPacket>(new PingreqPacket(command, packet_data_in));
             break;
         case PacketType::Disconnect:
             packet = std::unique_ptr<DisconnectPacket>(new DisconnectPacket(command, packet_data_in));
@@ -103,14 +115,22 @@ std::unique_ptr<Packet> PacketManager::parse_packet_data(uint8_t command) {
 
 void PacketManager::send_packet(const Packet & packet) {
     std::vector<uint8_t> packet_data = packet.serialize();
-    bufferevent_write(bev, &packet_data[0], packet_data.size());
+    if (bev) {
+        bufferevent_write(bev, &packet_data[0], packet_data.size());
+    } else {
+        std::cout << "not writing to closed bev\n";
+    }
 }
 
 void PacketManager::handle_other_events(short events)
 {
     if (events & BEV_EVENT_EOF) {
         std::cout << "Connection closed\n";
+        bufferevent_free(bev);
+        bev = nullptr;
     } else if (events & BEV_EVENT_ERROR) {
         std::cout << "Got an error on the connection: " << std::strerror(errno) << "\n";
+        bufferevent_free(bev);
+        bev = nullptr;
     }
 }

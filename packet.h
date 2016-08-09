@@ -1,6 +1,7 @@
 #pragma once
 
 #include "packet_data.h"
+#include "subscription.h"
 
 #include <iostream>
 #include <string>
@@ -178,6 +179,7 @@ public:
 
     PublishPacket() {
         type = PacketType::Publish;
+        header_flags = 0;
     }
 
     PublishPacket(uint8_t command, const std::vector<uint8_t> &packet_data);
@@ -185,8 +187,8 @@ public:
     std::vector<uint8_t> serialize() const;
 
     std::string topic_name;
+    std::vector<uint8_t> message_data;
     uint16_t packet_id;
-    std::vector<uint8_t> message;
 
     bool dup() const {
         return header_flags & 0x08;
@@ -300,12 +302,6 @@ public:
     std::vector<uint8_t> serialize() const;
 
     uint16_t packet_id;
-
-    struct Subscription {
-        std::string topic;
-        // TODO create a qos enum type
-        uint8_t qos;
-    };
 
     std::vector<Subscription> subscriptions;
 

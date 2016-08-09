@@ -83,20 +83,34 @@ PublishPacket::PublishPacket(uint8_t command, const std::vector<uint8_t> &packet
 
     size_t payload_len = packet_data.size() - header_len;
 
-    message = reader.read_bytes(payload_len);
+    message_data = reader.read_bytes(payload_len);
 
 }
 
 std::vector<uint8_t> PublishPacket::serialize() const {
     std::vector<uint8_t> packet_data;
     PacketDataWriter writer(packet_data);
+    writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
+    uint16_t remaining_length = 2 + topic_name.size() + message_data.size();
+    if (qos() != 0) {
+        remaining_length += 2;
+    }
+    writer.write_remaining_length(remaining_length);
+    writer.write_string(topic_name);
+    if (qos() != 0) {
+        writer.write_uint16(packet_id);
+    }
+    for (int i = 0; i < message_data.size(); i++) {
+        writer.write_byte(message_data[i]);
+    }
+
     return packet_data;
 }
 
 PubackPacket::PubackPacket(uint8_t command, const std::vector<uint8_t> &packet_data) {
-    assert(static_cast<PacketType>(command >> 4) == PacketType::Publish);
+    assert(static_cast<PacketType>(command >> 4) == PacketType::Puback);
 
-    type = PacketType::Publish;
+    type = PacketType::Puback;
     header_flags = command & 0x0F;
 
     PacketDataReader reader(packet_data);
@@ -164,7 +178,7 @@ std::vector<uint8_t> PubrelPacket::serialize() const {
 
 PubcompPacket::PubcompPacket(uint8_t command, const std::vector<uint8_t> &packet_data) {
     assert(static_cast<PacketType>(command >> 4) == PacketType::Pubcomp);
-    assert((command & 0x0F) == 0x02);
+    assert((command & 0x0F) == 0);
 
     type = PacketType::Pubcomp;
 
@@ -203,7 +217,7 @@ SubscribePacket::SubscribePacket(uint8_t command, const std::vector<uint8_t> &pa
         assert(qos < 3);
         // TODO use emplace_back
         subscriptions.push_back(Subscription{topic, qos});
-    } while(!reader.empty());
+    } while (!reader.empty());
 }
 
 std::vector<uint8_t> SubscribePacket::serialize() const {
@@ -229,7 +243,7 @@ SubackPacket::SubackPacket(uint8_t command, const std::vector<uint8_t> &packet_d
     do {
         ReturnCode return_code = static_cast<ReturnCode>(reader.read_byte());
         return_codes.push_back(return_code);
-    } while(!reader.empty());
+    } while (!reader.empty());
 }
 
 std::vector<uint8_t> SubackPacket::serialize() const {
@@ -238,6 +252,7 @@ std::vector<uint8_t> SubackPacket::serialize() const {
     PacketDataWriter writer(packet_data);
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
     writer.write_remaining_length(2 + return_codes.size());
+    writer.write_uint16(packet_id);
     for (auto return_code : return_codes) {
         writer.write_byte(static_cast<uint8_t>(return_code));
     }
@@ -258,7 +273,7 @@ UnsubscribePacket::UnsubscribePacket(uint8_t command, const std::vector<uint8_t>
 
     do {
         topics.push_back(reader.read_string());
-    } while(!reader.empty());
+    } while (!reader.empty());
 }
 
 std::vector<uint8_t> UnsubscribePacket::serialize() const {
@@ -325,7 +340,7 @@ PingrespPacket::PingrespPacket(uint8_t command, const std::vector<uint8_t> &pack
     assert(static_cast<PacketType>(command >> 4) == PacketType::Pingresp);
     assert(packet_data.size() == 0);
 
-    type = PacketType::Pingreq;
+    type = PacketType::Pingresp;
     header_flags = command & 0x0F;
 
 }

@@ -4,21 +4,29 @@
 
 #pragma once
 
-#include "packet.h"
-
+#include <iostream>
+#include <vector>
 #include <cstddef>
+#include <memory>
+
+#include <event2/event.h>
+#include <event2/bufferevent.h>
+
+class Packet;
 
 class PacketManager {
 public:
 
-    PacketManager(struct bufferevent * bev, struct event_base * evbase) : bev(bev), evbase(evbase) {
+    PacketManager(struct bufferevent * bev) : bev(bev) {
         bufferevent_setcb(bev, input_ready, NULL, other_event, this);
         bufferevent_enable(bev, EV_READ|EV_WRITE);
     }
 
     ~PacketManager() {
-        std::cout << "deleting packet_manager\n";
-        bufferevent_free(bev);
+        if (bev) {
+            bufferevent_free(bev);
+            bev = nullptr;
+        }
     }
 
     static void input_ready(struct bufferevent * bev, void * _this) {
@@ -49,7 +57,6 @@ public:
     std::vector<uint8_t> packet_data_in;
 
     struct bufferevent * bev;
-    struct event_base * evbase;
 
     std::function<void(std::unique_ptr<Packet>)> packet_received_handler;
 

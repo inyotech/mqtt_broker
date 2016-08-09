@@ -10,10 +10,11 @@ class TopicFilter;
 
 class TopicName {
 public:
-    const size_t MaxNameSize = 65535;
+    const static size_t MaxNameSize = 65535;
 
     TopicName(const std::string &);
     bool is_valid(const std::string &) const;
+    operator std::string() const {return name;}
 
     friend bool topic_match(const TopicFilter &, const TopicName &);
 
@@ -23,10 +24,11 @@ private:
 
 class TopicFilter {
 public:
-    const size_t MaxFilterSize = 65535;
+    const static size_t MaxFilterSize = 65535;
 
     TopicFilter(const std::string &);
     bool is_valid(const std::string &) const;
+    operator std::string() const {return filter;}
 
     friend bool topic_match(const TopicFilter &, const TopicName &);
     friend bool topic_match(const TopicFilter &, const TopicFilter &);
