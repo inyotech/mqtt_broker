@@ -16,16 +16,25 @@ void SessionManager::accept_connection(struct bufferevent *bev) {
     sessions.push_back(std::move(session));
 }
 
-std::unique_ptr<Session> SessionManager::find_session(const std::string &client_id) {
+Session * SessionManager::find_session(const std::string &client_id) {
 
     for (auto s = sessions.begin(); s != sessions.end(); ++s) {
          if (!(*s)->client_id.empty() and ((*s)->client_id == client_id)) {
-            auto old_sess = std::move(*s);
-            sessions.erase(s);
-            return old_sess;
-        }
+             return s->get();
+         }
     }
     return nullptr;
+}
+
+void SessionManager::remove_session(const Session * session)
+{
+    std::cout << "removing session ";
+    for (auto s = sessions.begin(); s != sessions.end(); ++s) {
+        if (s->get() == session) {
+            sessions.erase(s);
+        }
+    }
+    std::cout << sessions.size() << " remaining\n";
 }
 
 void SessionManager::handle_publish(const PublishPacket & packet) {

@@ -18,21 +18,18 @@ class Session {
 
 public:
 
-    Session(struct bufferevent *bev, SessionManager &session_manager) :
-            packet_manager(bev), session_manager(session_manager), qos1_sent(new std::vector<PublishPacket>),
-            qos2_sent(new std::vector<PublishPacket>), qos2_received(new std::vector<uint16_t>),
-            qos2_pubrec(new std::vector<uint16_t>),
-            qos2_pubrel(new std::vector<uint16_t>) {
-        packet_manager.set_packet_received_handler(std::bind(&Session::packet_received, this, std::placeholders::_1));
+    Session(struct bufferevent *bev, SessionManager &session_manager) : packet_manager(new PacketManager(bev)),
+                                                                        session_manager(session_manager) {
+        packet_manager->set_packet_received_handler(std::bind(&Session::packet_received, this, std::placeholders::_1));
     }
 
     ~Session();
 
+    void restore_session(Session *session, std::unique_ptr<PacketManager> packet_manager);
+
     void forward_packet(const PublishPacket &packet);
 
     void packet_received(std::unique_ptr<Packet>);
-
-    void take_over_session(std::unique_ptr<Session> &);
 
     void handle_connect(const ConnectPacket &);
 
@@ -65,30 +62,26 @@ public:
 
     std::string client_id;
 
-    std::vector<Subscription> subscriptions;
-
-    PacketManager packet_manager;
+    std::unique_ptr<PacketManager> packet_manager;
 
     SessionManager &session_manager;
 
+    std::vector<Subscription> subscriptions;
+
     // qos1 messages waiting for puback, will be moved between
     // sessions as part of session state
-    std::unique_ptr<std::vector<PublishPacket>> qos1_sent;
+    std::vector<PublishPacket> qos1_sent;
 
     // qos2 messages waiting for pubrec, will be moved between
     // sessions as part of session state
-    std::unique_ptr<std::vector<PublishPacket>> qos2_sent;
+    std::vector<PublishPacket> qos2_sent;
 
     // qos2 messages waiting for pubrel, will be moved between
     // sessions as part of session state
-    std::unique_ptr<std::vector<uint16_t>> qos2_received;
-
-    // qos2 message packet ids waiting for pubrec, will be moved between
-    // sessions as part of session state
-    std::unique_ptr<std::vector<uint16_t>> qos2_pubrec;
+    std::vector<uint16_t> qos2_received;
 
     // qos2 pubrel packet ids waiting for pubcomp, will be moved
     // between sessions as part of session state
-    std::unique_ptr<std::vector<uint16_t>> qos2_pubrel;
+    std::vector<uint16_t> qos2_pubrel;
 };
 

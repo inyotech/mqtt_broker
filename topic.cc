@@ -127,5 +127,6 @@ bool topic_match(const TopicFilter &filter, const TopicName &name) {
 
 bool topic_match(const TopicFilter &filter1, const TopicFilter &filter2) {
 
-    return false;
+   return filter1.filter == filter2.filter;
+
 }

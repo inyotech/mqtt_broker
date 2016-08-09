@@ -23,6 +23,7 @@ public:
     }
 
     ~PacketManager() {
+        std::cout << "~PacketManager\n";
         if (bev) {
             bufferevent_free(bev);
             bev = nullptr;
