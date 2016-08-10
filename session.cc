@@ -22,13 +22,20 @@ void Session::forward_packet(const PublishPacket &packet) {
         qos1_sent.push_back(packet_to_send);
         packet_manager->send_packet(packet);
     } else if (packet.qos() == 2) {
-        // only forward the packet 1 time, check if we have already forwarded this packet id
+
         PublishPacket packet_to_send(packet);
         packet_to_send.dup(false);
         packet_to_send.retain(false);
         packet_to_send.packet_id = next_packet_id();
-        qos2_sent.push_back(packet_to_send);
+
+        auto previous_packet = find_if(qos2_sent.begin(), qos2_sent.end(),
+                                       [&packet](const PublishPacket &p) { return p.packet_id == packet.packet_id; });
+        if (previous_packet == qos2_sent.end()) {
+            qos2_sent.push_back(packet_to_send);
+        }
+
         packet_manager->send_packet(packet);
+
     }
 }
 

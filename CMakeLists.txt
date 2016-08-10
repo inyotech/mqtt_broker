@@ -3,14 +3,16 @@ PROJECT(mqtt)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Werror -std=c++11")
 
-SET(SOURCES main.cc session.cc packet.cc packet_manager.cc packet_data.cc client_id.cc topic.cc subscription.cc
+SET(LIB_SOURCES session.cc packet.cc packet_manager.cc packet_data.cc client_id.cc topic.cc
         session_manager.cc)
+
+ADD_LIBRARY(mqtt STATIC ${LIB_SOURCES})
 
 INCLUDE_DIRECTORIES(/opt/local/include)
 LINK_DIRECTORIES(/opt/local/lib)
 
-ADD_EXECUTABLE(mqtt ${SOURCES})
-TARGET_LINK_LIBRARIES(mqtt event)
+ADD_EXECUTABLE(mqtt_broker main.cc)
+TARGET_LINK_LIBRARIES(mqtt_broker mqtt event)
 
 ADD_SUBDIRECTORY(test)
 

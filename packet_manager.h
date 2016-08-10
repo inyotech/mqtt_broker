@@ -43,6 +43,7 @@ public:
     void receive_packet_data(struct bufferevent * bev);
 
     std::unique_ptr<Packet> parse_packet_data(uint8_t packet_type);
+    std::unique_ptr<Packet> parse_packet_data(const std::vector<uint8_t> & packet_data);
 
     void handle_other_events(short events);
 
@@ -54,8 +55,6 @@ public:
 
     size_t fixed_header_length = 0;
     size_t remaining_length = 0;
-
-    std::vector<uint8_t> packet_data_in;
 
     struct bufferevent * bev;
 
