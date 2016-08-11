@@ -3,7 +3,7 @@
 #include "packet_manager.h"
 #include "packet.h"
 
-#include <vector>
+#include <list>
 #include <memory>
 
 #include <event2/bufferevent.h>
@@ -25,7 +25,12 @@ public:
 
     ~Session();
 
-    void restore_session(Session *session, std::unique_ptr<PacketManager> packet_manager);
+    bool authorize_connection(const ConnectPacket &);
+
+    void resume_session(std::unique_ptr<Session> &session,
+                        std::unique_ptr<PacketManager> packet_manager);
+
+    void send_pending_message(void);
 
     void forward_packet(const PublishPacket &packet);
 
@@ -61,6 +66,7 @@ public:
     uint16_t packet_id = 1;
 
     std::string client_id;
+    bool clean_session;
 
     std::unique_ptr<PacketManager> packet_manager;
 
@@ -70,18 +76,18 @@ public:
 
     // qos1 messages waiting for puback, will be moved between
     // sessions as part of session state
-    std::vector<PublishPacket> qos1_sent;
+    std::vector<PublishPacket> qos1_pending_puback;
 
     // qos2 messages waiting for pubrec, will be moved between
     // sessions as part of session state
-    std::vector<PublishPacket> qos2_sent;
+    std::vector<PublishPacket> qos2_pending_pubrec;
 
     // qos2 messages waiting for pubrel, will be moved between
     // sessions as part of session state
-    std::vector<uint16_t> qos2_received;
+    std::vector<uint16_t> qos2_pending_pubrel;
 
     // qos2 pubrel packet ids waiting for pubcomp, will be moved
     // between sessions as part of session state
-    std::vector<uint16_t> qos2_pubrel;
+    std::vector<uint16_t> qos2_pending_pubcomp;
 };
 

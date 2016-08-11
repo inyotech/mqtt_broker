@@ -19,7 +19,7 @@ void Session::forward_packet(const PublishPacket &packet) {
         packet_to_send.dup(false);
         packet_to_send.retain(false);
         packet_to_send.packet_id = next_packet_id();
-        qos1_sent.push_back(packet_to_send);
+        qos1_pending_puback.push_back(packet_to_send);
         packet_manager->send_packet(packet);
     } else if (packet.qos() == 2) {
 
@@ -28,10 +28,10 @@ void Session::forward_packet(const PublishPacket &packet) {
         packet_to_send.retain(false);
         packet_to_send.packet_id = next_packet_id();
 
-        auto previous_packet = find_if(qos2_sent.begin(), qos2_sent.end(),
+        auto previous_packet = find_if(qos2_pending_pubrec.begin(), qos2_pending_pubrec.end(),
                                        [&packet](const PublishPacket &p) { return p.packet_id == packet.packet_id; });
-        if (previous_packet == qos2_sent.end()) {
-            qos2_sent.push_back(packet_to_send);
+        if (previous_packet == qos2_pending_pubrec.end()) {
+            qos2_pending_pubrec.push_back(packet_to_send);
         }
 
         packet_manager->send_packet(packet);
@@ -75,17 +75,18 @@ void Session::packet_received(std::unique_ptr<Packet> packet) {
         default:
             break;
     }
+
+    send_pending_message();
 }
 
-void Session::restore_session(Session *session, std::unique_ptr<PacketManager> packet_manager_ptr) {
+void Session::resume_session(std::unique_ptr<Session> &session,
+                             std::unique_ptr<PacketManager> packet_manager_ptr) {
 
     std::cout << "restoring session for " << session->client_id << "\n";
 
     packet_manager_ptr->set_packet_received_handler(
-            std::bind(&Session::packet_received, session, std::placeholders::_1));
+            std::bind(&Session::packet_received, session.get(), std::placeholders::_1));
     session->packet_manager = std::move(packet_manager_ptr);
-
-    session->session_manager.remove_session(this);
 
     ConnackPacket connack;
 
@@ -95,23 +96,60 @@ void Session::restore_session(Session *session, std::unique_ptr<PacketManager> p
     session->packet_manager->send_packet(connack);
 }
 
+bool Session::authorize_connection(const ConnectPacket &packet) {
+    return true;
+}
+
+void Session::send_pending_message()
+{
+
+    if (!qos1_pending_puback.empty()) {
+        packet_manager->send_packet(qos1_pending_puback[0]);
+    } else if (!qos2_pending_pubrec.empty()) {
+        packet_manager->send_packet(qos2_pending_pubrec[0]);
+    } else if (!qos2_pending_pubrel.empty()) {
+        PubrecPacket pubrec_packet;
+        pubrec_packet.packet_id = qos2_pending_pubrel[0];
+        packet_manager->send_packet(pubrec_packet);
+    } else if (!qos2_pending_pubcomp.empty()) {
+        PubrelPacket pubrel_packet;
+        pubrel_packet.packet_id = qos2_pending_pubcomp[0];
+        packet_manager->send_packet(pubrel_packet);
+    }
+
+    return;
+}
+
 void Session::handle_connect(const ConnectPacket &packet) {
 
     std::cout << "handle " << packet.protocol_name << " connect from " << packet.client_id << "\n";
 
-    Session *previous_session = session_manager.find_session(packet.client_id);
-    if (previous_session) {
-        restore_session(previous_session, std::move(packet_manager));
+    if (!authorize_connection(packet)) {
+        session_manager.remove_session(this);
         return;
-    } else {
-        client_id = packet.client_id;
-        ConnackPacket connack;
-
-        connack.session_present(false);
-        connack.return_code = ConnackPacket::ReturnCode::Accepted;
-
-        packet_manager->send_packet(connack);
     }
+
+    if (packet.clean_session()) {
+        session_manager.remove_session(packet.client_id);
+    } else {
+        auto previous_session_it = session_manager.find_session(packet.client_id);
+        if (previous_session_it != session_manager.sessions.end()) {
+            std::unique_ptr<Session> &previous_session_ptr = *previous_session_it;
+            resume_session(previous_session_ptr, std::move(packet_manager));
+            session_manager.remove_session(this);
+            return;
+        }
+    }
+
+    client_id = packet.client_id;
+    clean_session = packet.clean_session();
+
+    ConnackPacket connack;
+
+    connack.session_present(false);
+    connack.return_code = ConnackPacket::ReturnCode::Accepted;
+
+    packet_manager->send_packet(connack);
 
 }
 
@@ -126,21 +164,19 @@ void Session::handle_publish(const PublishPacket &packet) {
         session_manager.handle_publish(packet);
         PubackPacket puback;
         puback.packet_id = packet.packet_id;
-        std::cout << "puback " << puback.packet_id << "\n";
         packet_manager->send_packet(puback);
 
     } else if (packet.qos() == 2) {
 
-        auto previous_packet = find_if(qos2_received.begin(), qos2_received.end(),
+        auto previous_packet = find_if(qos2_pending_pubrel.begin(), qos2_pending_pubrel.end(),
                                        [& packet](uint16_t packet_id) { return packet_id == packet.packet_id; });
-        if (previous_packet == qos2_received.end()) {
-            qos2_received.push_back(packet.packet_id);
+        if (previous_packet == qos2_pending_pubrel.end()) {
+            qos2_pending_pubrel.push_back(packet.packet_id);
             session_manager.handle_publish(packet);
         }
 
         PubrecPacket pubrec;
         pubrec.packet_id = packet.packet_id;
-        std::cout << "puback " << pubrec.packet_id << "\n";
         packet_manager->send_packet(pubrec);
     }
 
@@ -149,27 +185,27 @@ void Session::handle_publish(const PublishPacket &packet) {
 
 void Session::handle_puback(const PubackPacket &packet) {
 
-    auto message = find_if(qos1_sent.begin(), qos1_sent.end(),
+    auto message = find_if(qos1_pending_puback.begin(), qos1_pending_puback.end(),
                            [&packet](const PublishPacket &p) { return p.packet_id == packet.packet_id; });
-    if (message != qos1_sent.end()) {
+    if (message != qos1_pending_puback.end()) {
         std::cout << "removing puback' message\n";
-        qos1_sent.erase(message);
+        qos1_pending_puback.erase(message);
     }
 
 }
 
 void Session::handle_pubrec(const PubrecPacket &packet) {
 
-    auto sent_packet = find_if(qos2_sent.begin(), qos2_sent.end(),
+    auto sent_packet = find_if(qos2_pending_pubrec.begin(), qos2_pending_pubrec.end(),
                                [&packet](const PublishPacket &p) { return p.packet_id == packet.packet_id; });
-    if (sent_packet != qos2_sent.end()) {
-        qos2_sent.erase(sent_packet);
+    if (sent_packet != qos2_pending_pubrec.end()) {
+        qos2_pending_pubrec.erase(sent_packet);
     }
-    auto pubrec_packet = find_if(qos2_pubrel.begin(), qos2_pubrel.end(),
+    auto pubrec_packet = find_if(qos2_pending_pubcomp.begin(), qos2_pending_pubcomp.end(),
                                  [&packet](uint16_t packet_id) { return packet_id == packet.packet_id; });
 
-    if (pubrec_packet == qos2_pubrel.end()) {
-        qos2_pubrel.push_back(packet.packet_id);
+    if (pubrec_packet == qos2_pending_pubcomp.end()) {
+        qos2_pending_pubcomp.push_back(packet.packet_id);
     }
 
     PubrelPacket pubrel;
@@ -179,10 +215,10 @@ void Session::handle_pubrec(const PubrecPacket &packet) {
 
 void Session::handle_pubrel(const PubrelPacket &packet) {
 
-    auto previous_packet = find_if(qos2_received.begin(), qos2_received.end(),
+    auto previous_packet = find_if(qos2_pending_pubrel.begin(), qos2_pending_pubrel.end(),
                                    [&packet](uint16_t packet_id) { return packet_id == packet.packet_id; });
-    if (previous_packet != qos2_received.end()) {
-        qos2_received.erase(previous_packet);
+    if (previous_packet != qos2_pending_pubrel.end()) {
+        qos2_pending_pubrel.erase(previous_packet);
     }
 
     PubcompPacket pubcomp;
@@ -192,10 +228,10 @@ void Session::handle_pubrel(const PubrelPacket &packet) {
 
 void Session::handle_pubcomp(const PubcompPacket &packet) {
 
-    auto previous_packet = find_if(qos2_pubrel.begin(), qos2_pubrel.end(),
+    auto previous_packet = find_if(qos2_pending_pubcomp.begin(), qos2_pending_pubcomp.end(),
                                    [&packet](uint16_t packet_id) { return packet_id == packet.packet_id; });
-    if (previous_packet != qos2_pubrel.end()) {
-        qos2_pubrel.erase(previous_packet);
+    if (previous_packet != qos2_pending_pubcomp.end()) {
+        qos2_pending_pubcomp.erase(previous_packet);
     }
 }
 

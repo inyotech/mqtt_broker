@@ -18,9 +18,10 @@ public:
 
     void accept_connection(struct bufferevent * bev);
 
-    Session * find_session(const std::string & client_id);
+    std::list<std::unique_ptr<Session>>::iterator find_session(const std::string & client_id);
 
     void remove_session(const Session *);
+    void remove_session(const std::string & client_id);
 
     void handle_publish(const PublishPacket &);
 

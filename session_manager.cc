@@ -16,25 +16,26 @@ void SessionManager::accept_connection(struct bufferevent *bev) {
     sessions.push_back(std::move(session));
 }
 
-Session * SessionManager::find_session(const std::string &client_id) {
+std::list<std::unique_ptr<Session>>::iterator SessionManager::find_session(const std::string &client_id) {
 
-    for (auto s = sessions.begin(); s != sessions.end(); ++s) {
-         if (!(*s)->client_id.empty() and ((*s)->client_id == client_id)) {
-             return s->get();
-         }
-    }
-    return nullptr;
+    return find_if(sessions.begin(), sessions.end(), [&client_id](const std::unique_ptr<Session> & s) {
+        return (!s->client_id.empty() and (s->client_id == client_id));
+    });
+}
+
+void SessionManager::remove_session(const std::string & client_id) {
+    sessions.erase(std::remove_if(sessions.begin(), sessions.end(), [&client_id](std::unique_ptr<Session> &s) {
+        return (!s->client_id.empty() and (s->client_id == client_id));
+    }), sessions.end());
 }
 
 void SessionManager::remove_session(const Session * session)
 {
     std::cout << "removing session ";
-    for (auto s = sessions.begin(); s != sessions.end(); ++s) {
-        if (s->get() == session) {
-            sessions.erase(s);
-        }
-    }
-    std::cout << sessions.size() << " remaining\n";
+    sessions.erase(std::remove_if(sessions.begin(), sessions.end(), [session](std::unique_ptr<Session> & s) {
+        return s.get() == session;
+    }), sessions.end());
+
 }
 
 void SessionManager::handle_publish(const PublishPacket & packet) {
