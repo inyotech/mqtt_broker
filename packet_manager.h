@@ -19,7 +19,7 @@ public:
 
     PacketManager(struct bufferevent * bev) : bev(bev) {
         bufferevent_setcb(bev, input_ready, NULL, other_event, this);
-        bufferevent_enable(bev, EV_READ|EV_WRITE);
+        bufferevent_enable(bev, EV_READ);
     }
 
     ~PacketManager() {

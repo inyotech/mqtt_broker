@@ -51,6 +51,8 @@ public:
     ConnectPacket() {
         type = PacketType::Connect;
         header_flags = 0;
+        protocol_name = "MQIsdp";
+        protocol_level = 4;
     }
 
     ConnectPacket(const std::vector<uint8_t> & packet_data);
