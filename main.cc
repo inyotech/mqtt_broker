@@ -1,13 +1,6 @@
 #include "session_manager.h"
 #include "session.h"
 
-#include <iostream>
-#include <cstring>
-#include <memory>
-#include <list>
-
-#include <event2/event.h>
-#include <event2/bufferevent.h>
 #include <event2/listener.h>
 
 SessionManager session_manager;

@@ -1,13 +1,9 @@
 #include "packet.h"
 #include "client_id.h"
 
-#include <cstring>
-#include <iostream>
 #include <cassert>
 
-#include <event2/buffer.h>
-
-void Packet::read_fixed_header(PacketDataReader & reader) {
+void Packet::read_fixed_header(PacketDataReader &reader) {
 
     uint8_t command_header = reader.read_byte();
     type = static_cast<PacketType>(command_header >> 4);
@@ -105,7 +101,7 @@ std::vector<uint8_t> ConnectPacket::serialize() const {
     return packet_data;
 }
 
-ConnackPacket::ConnackPacket(const std::vector<uint8_t> & packet_data) {
+ConnackPacket::ConnackPacket(const std::vector<uint8_t> &packet_data) {
 
     PacketDataReader reader(packet_data);
 
@@ -149,11 +145,6 @@ PublishPacket::PublishPacket(const std::vector<uint8_t> &packet_data) {
 
     if (qos() != 0) {
         packet_id = reader.read_uint16();
-    }
-
-    size_t header_len = topic_name.size() + 2;
-    if (qos() != 0) {
-        header_len += 2;
     }
 
     size_t payload_len = packet_data.size() - reader.get_offset();

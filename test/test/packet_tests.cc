@@ -5,7 +5,6 @@
 #include "gtest/gtest.h"
 
 #include "packet.h"
-#include "packet_data.h"
 
 TEST(packets, read_remaining_length) {
 
@@ -74,7 +73,7 @@ TEST(packets, write_remaining_length) {
 
     PacketDataWriter writer4(packet_data);
     remaining_length = 10 + 128 * 10 + 128 * 128 * 10 + 128 * 128 * 128 * 127;
-    writer3.write_remaining_length(remaining_length);
+    writer4.write_remaining_length(remaining_length);
     ASSERT_EQ(packet_data[0], 128 + 10);
     ASSERT_EQ(packet_data[1], 128 + 10);
     ASSERT_EQ(packet_data[2], 128 + 10);

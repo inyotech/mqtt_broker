@@ -6,8 +6,6 @@
 
 #include "topic.h"
 
-#include <string>
-
 TEST(topic_filters, valid_topic_filters) {
 
     std::vector<std::string> valid_filters = {

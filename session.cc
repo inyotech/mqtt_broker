@@ -1,16 +1,12 @@
 #include "session.h"
 #include "session_manager.h"
 
-#include <iostream>
-#include <memory>
-#include <vector>
-#include <algorithm>
-
 Session::~Session() {
     std::cout << "~Session\n";
 }
 
-void Session::forward_packet(const PublishPacket &packet) {
+void Session::forward_packet(const PublishPacket &packet)
+{
 
     if (packet.qos() == 0) {
         packet_manager->send_packet(packet);
@@ -20,7 +16,7 @@ void Session::forward_packet(const PublishPacket &packet) {
         packet_to_send.retain(false);
         packet_to_send.packet_id = next_packet_id();
         qos1_pending_puback.push_back(packet_to_send);
-        packet_manager->send_packet(packet);
+        packet_manager->send_packet(packet_to_send);
     } else if (packet.qos() == 2) {
 
         PublishPacket packet_to_send(packet);
@@ -34,12 +30,13 @@ void Session::forward_packet(const PublishPacket &packet) {
             qos2_pending_pubrec.push_back(packet_to_send);
         }
 
-        packet_manager->send_packet(packet);
+        packet_manager->send_packet(packet_to_send);
 
     }
 }
 
-void Session::packet_received(std::unique_ptr<Packet> packet) {
+void Session::packet_received(std::unique_ptr<Packet> packet)
+{
 
     switch (packet->type) {
         case PacketType::Connect:
@@ -80,7 +77,8 @@ void Session::packet_received(std::unique_ptr<Packet> packet) {
 }
 
 void Session::resume_session(std::unique_ptr<Session> &session,
-                             std::unique_ptr<PacketManager> packet_manager_ptr) {
+                             std::unique_ptr<PacketManager> packet_manager_ptr)
+{
 
     std::cout << "restoring session for " << session->client_id << "\n";
 
@@ -96,7 +94,8 @@ void Session::resume_session(std::unique_ptr<Session> &session,
     session->packet_manager->send_packet(connack);
 }
 
-bool Session::authorize_connection(const ConnectPacket &packet) {
+bool Session::authorize_connection(const ConnectPacket &packet)
+{
     return true;
 }
 
@@ -120,7 +119,8 @@ void Session::send_pending_message()
     return;
 }
 
-void Session::handle_connect(const ConnectPacket &packet) {
+void Session::handle_connect(const ConnectPacket &packet)
+{
 
     std::cout << "handle " << packet.protocol_name << " connect from " << packet.client_id << "\n";
 
@@ -153,7 +153,8 @@ void Session::handle_connect(const ConnectPacket &packet) {
 
 }
 
-void Session::handle_publish(const PublishPacket &packet) {
+void Session::handle_publish(const PublishPacket &packet)
+{
 
     if (packet.qos() == 0) {
 
@@ -175,15 +176,13 @@ void Session::handle_publish(const PublishPacket &packet) {
             session_manager.handle_publish(packet);
         }
 
-        PubrecPacket pubrec;
-        pubrec.packet_id = packet.packet_id;
-        packet_manager->send_packet(pubrec);
     }
 
 }
 
 
-void Session::handle_puback(const PubackPacket &packet) {
+void Session::handle_puback(const PubackPacket &packet)
+{
 
     auto message = find_if(qos1_pending_puback.begin(), qos1_pending_puback.end(),
                            [&packet](const PublishPacket &p) { return p.packet_id == packet.packet_id; });
@@ -194,48 +193,51 @@ void Session::handle_puback(const PubackPacket &packet) {
 
 }
 
-void Session::handle_pubrec(const PubrecPacket &packet) {
+void Session::handle_pubrec(const PubrecPacket &packet)
+{
 
-    auto sent_packet = find_if(qos2_pending_pubrec.begin(), qos2_pending_pubrec.end(),
-                               [&packet](const PublishPacket &p) { return p.packet_id == packet.packet_id; });
-    if (sent_packet != qos2_pending_pubrec.end()) {
-        qos2_pending_pubrec.erase(sent_packet);
-    }
-    auto pubrec_packet = find_if(qos2_pending_pubcomp.begin(), qos2_pending_pubcomp.end(),
+    qos2_pending_pubrec.erase(
+            std::remove_if(qos2_pending_pubrec.begin(), qos2_pending_pubrec.end(),
+                           [&packet](const PublishPacket &p) { return p.packet_id == packet.packet_id; }),
+            qos2_pending_pubrec.end()
+    );
+
+    auto pubrel_packet = find_if(qos2_pending_pubcomp.begin(), qos2_pending_pubcomp.end(),
                                  [&packet](uint16_t packet_id) { return packet_id == packet.packet_id; });
 
-    if (pubrec_packet == qos2_pending_pubcomp.end()) {
+    if (pubrel_packet == qos2_pending_pubcomp.end()) {
         qos2_pending_pubcomp.push_back(packet.packet_id);
     }
 
-    PubrelPacket pubrel;
-    pubrel.packet_id = packet.packet_id;
-    packet_manager->send_packet(pubrel);
 }
 
-void Session::handle_pubrel(const PubrelPacket &packet) {
+void Session::handle_pubrel(const PubrelPacket &packet)
+{
 
-    auto previous_packet = find_if(qos2_pending_pubrel.begin(), qos2_pending_pubrel.end(),
-                                   [&packet](uint16_t packet_id) { return packet_id == packet.packet_id; });
-    if (previous_packet != qos2_pending_pubrel.end()) {
-        qos2_pending_pubrel.erase(previous_packet);
-    }
+    qos2_pending_pubrel.erase(
+            std::remove_if(qos2_pending_pubrel.begin(), qos2_pending_pubrel.end(),
+                           [&packet](uint16_t packet_id) { return packet_id == packet.packet_id; }),
+            qos2_pending_pubrel.end()
+    );
 
     PubcompPacket pubcomp;
     pubcomp.packet_id = packet.packet_id;
     packet_manager->send_packet(pubcomp);
 }
 
-void Session::handle_pubcomp(const PubcompPacket &packet) {
+void Session::handle_pubcomp(const PubcompPacket &packet)
+{
 
-    auto previous_packet = find_if(qos2_pending_pubcomp.begin(), qos2_pending_pubcomp.end(),
-                                   [&packet](uint16_t packet_id) { return packet_id == packet.packet_id; });
-    if (previous_packet != qos2_pending_pubcomp.end()) {
-        qos2_pending_pubcomp.erase(previous_packet);
-    }
+    qos2_pending_pubcomp.erase(
+            std::remove_if(qos2_pending_pubcomp.begin(), qos2_pending_pubcomp.end(),
+                           [&packet](uint16_t packet_id) { return packet_id == packet.packet_id; }),
+            qos2_pending_pubcomp.end()
+    );
+
 }
 
-void Session::handle_subscribe(const SubscribePacket &packet) {
+void Session::handle_subscribe(const SubscribePacket &packet)
+{
 
     SubackPacket suback;
 
@@ -275,7 +277,8 @@ void Session::handle_subscribe(const SubscribePacket &packet) {
 
 }
 
-void Session::handle_unsubscribe(const UnsubscribePacket &packet) {
+void Session::handle_unsubscribe(const UnsubscribePacket &packet)
+{
 
     UnsubackPacket unsuback;
 
@@ -289,7 +292,8 @@ void Session::handle_unsubscribe(const UnsubscribePacket &packet) {
 
 }
 
-void Session::handle_pingreq(const PingreqPacket &packet) {
+void Session::handle_pingreq(const PingreqPacket &packet)
+{
 
     PingrespPacket pingresp;
 
@@ -297,7 +301,8 @@ void Session::handle_pingreq(const PingreqPacket &packet) {
 
 }
 
-void Session::handle_disconnect(const DisconnectPacket &packet) {
+void Session::handle_disconnect(const DisconnectPacket &packet)
+{
 
     std::cout << "handle disconnect\n";
 

@@ -41,7 +41,6 @@ public:
     bool empty();
     size_t get_offset() { return offset; }
     std::vector<uint8_t> get_packet_data() { return packet_data; }
-    void rewind() { offset = 0; }
 
 private:
     size_t offset;

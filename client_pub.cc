@@ -3,8 +3,6 @@
 //
 
 #include <iostream>
-#include <string>
-#include <cstdlib>
 #include <vector>
 
 #include <getopt.h>
@@ -78,7 +76,7 @@ static void connect_event_cb(struct bufferevent *bev, short events, void *arg) {
         packet_manager->set_packet_received_handler(packet_received_callback);
 
         ConnectPacket connect_packet;
-        connect_packet.client_id = "client1";
+        connect_packet.client_id = client_id;
         packet_manager->send_packet(connect_packet);
 
     } else if (events & (BEV_EVENT_ERROR | BEV_EVENT_EOF)) {
@@ -132,7 +130,6 @@ void packet_received_callback(owned_packet_ptr_t packet_ptr) {
         default:
             std::cerr << "unexpected packet type " << static_cast<int>(packet_ptr->type) << "\n";
             throw std::exception();
-            break;
 
     }
 
@@ -181,7 +178,7 @@ void parse_arguments(int argc, char *argv[]) {
             case 'h':
                 usage();
                 std::exit(0);
-                break;
+
             default:
                 usage();
                 std::exit(1);

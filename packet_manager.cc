@@ -5,7 +5,6 @@
 #include "packet_manager.h"
 #include "packet.h"
 
-#include <event2/event.h>
 #include <event2/buffer.h>
 #include <evdns.h>
 

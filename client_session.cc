@@ -1,10 +1,5 @@
 #include "client_session.h"
 
-#include <iostream>
-#include <memory>
-#include <vector>
-#include <algorithm>
-
 ClientSession::~ClientSession() {
     std::cout << "~ClientSession\n";
 }

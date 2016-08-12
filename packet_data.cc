@@ -5,7 +5,6 @@
 #include "packet_data.h"
 
 #include <iostream>
-#include <string>
 
 void PacketDataWriter::write_remaining_length(size_t length) {
 

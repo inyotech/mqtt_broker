@@ -5,7 +5,6 @@
 #include "session_manager.h"
 
 #include "session.h"
-#include "packet_manager.h"
 #include "topic.h"
 
 #include <memory>
