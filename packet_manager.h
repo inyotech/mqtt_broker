@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "mqtt.h"
+
 #include <iostream>
 #include <vector>
 #include <cstddef>
@@ -11,8 +13,6 @@
 
 #include <event2/event.h>
 #include <event2/bufferevent.h>
-
-class Packet;
 
 class PacketManager {
 public:
@@ -42,12 +42,11 @@ public:
 
     void receive_packet_data(struct bufferevent * bev);
 
-    std::unique_ptr<Packet> parse_packet_data(uint8_t packet_type);
-    std::unique_ptr<Packet> parse_packet_data(const std::vector<uint8_t> & packet_data);
+    owned_packet_ptr_t parse_packet_data(const packet_data_t & packet_data);
 
     void handle_other_events(short events);
 
-    void set_packet_received_handler(std::function<void(std::unique_ptr<Packet>)> handler) {
+    void set_packet_received_handler(std::function<void(owned_packet_ptr_t)> handler) {
         packet_received_handler = handler;
     }
 
@@ -58,6 +57,6 @@ public:
 
     struct bufferevent * bev;
 
-    std::function<void(std::unique_ptr<Packet>)> packet_received_handler;
+    std::function<void(owned_packet_ptr_t)> packet_received_handler;
 
 };
