@@ -1,7 +1,7 @@
 #pragma once
 
 #include "packet_data.h"
-#include "subscription.h"
+#include "topic.h"
 
 #include <iostream>
 #include <string>
@@ -28,7 +28,19 @@ enum class PacketType {
     Unsuback = 11,
     Pingreq = 12,
     Pingresp = 13,
-    Disconnect = 14
+    Disconnect = 14,
+};
+
+enum class QoSType : uint8_t {
+    QoS0 = 0,
+    QoS1 = 1,
+    QoS2 = 2,
+};
+
+class Subscription {
+public:
+    TopicFilter topic_filter;
+    QoSType qos;
 };
 
 class Packet {
@@ -93,14 +105,12 @@ public:
         }
     }
 
-    // TODO create a qos enum type
-    uint8_t qos() const {
-        return (connect_flags >> 3) & 0x03;
+    QoSType qos() const {
+        return static_cast<QoSType >((connect_flags >> 3) & 0x03);
     }
 
-    void qos(uint8_t qos) {
-        assert(qos < 3);
-        connect_flags |= (qos << 3);
+    void qos(QoSType qos) {
+        connect_flags |= (static_cast<uint8_t>(qos) << 3);
     }
 
     bool will_retain() const {
@@ -207,13 +217,12 @@ public:
         }
     }
 
-    uint8_t qos() const {
-        return (header_flags >> 1) & 0x03;
+    QoSType qos() const {
+        return static_cast<QoSType >((header_flags >> 1) & 0x03);
     }
 
-    void qos(uint8_t qos) {
-        assert(qos < 3);
-        header_flags |= (qos << 1);
+    void qos(QoSType qos) {
+        header_flags |= static_cast<uint8_t>(qos) << 1;
     }
 
     bool retain() const {

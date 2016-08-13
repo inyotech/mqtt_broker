@@ -8,16 +8,16 @@ Session::~Session() {
 void Session::forward_packet(const PublishPacket &packet)
 {
 
-    if (packet.qos() == 0) {
+    if (packet.qos() == QoSType::QoS0) {
         packet_manager->send_packet(packet);
-    } else if (packet.qos() == 1) {
+    } else if (packet.qos() == QoSType::QoS1) {
         PublishPacket packet_to_send(packet);
         packet_to_send.dup(false);
         packet_to_send.retain(false);
         packet_to_send.packet_id = next_packet_id();
         qos1_pending_puback.push_back(packet_to_send);
         packet_manager->send_packet(packet_to_send);
-    } else if (packet.qos() == 2) {
+    } else if (packet.qos() == QoSType::QoS2) {
 
         PublishPacket packet_to_send(packet);
         packet_to_send.dup(false);
@@ -156,18 +156,18 @@ void Session::handle_connect(const ConnectPacket &packet)
 void Session::handle_publish(const PublishPacket &packet)
 {
 
-    if (packet.qos() == 0) {
+    if (packet.qos() == QoSType::QoS0) {
 
         session_manager.handle_publish(packet);
 
-    } else if (packet.qos() == 1) {
+    } else if (packet.qos() == QoSType::QoS1) {
 
         session_manager.handle_publish(packet);
         PubackPacket puback;
         puback.packet_id = packet.packet_id;
         packet_manager->send_packet(puback);
 
-    } else if (packet.qos() == 2) {
+    } else if (packet.qos() == QoSType::QoS2) {
 
         auto previous_packet = find_if(qos2_pending_pubrel.begin(), qos2_pending_pubrel.end(),
                                        [& packet](uint16_t packet_id) { return packet_id == packet.packet_id; });
@@ -202,10 +202,10 @@ void Session::handle_pubrec(const PubrecPacket &packet)
             qos2_pending_pubrec.end()
     );
 
-    auto pubrel_packet = find_if(qos2_pending_pubcomp.begin(), qos2_pending_pubcomp.end(),
+    auto pubcomp_packet = find_if(qos2_pending_pubcomp.begin(), qos2_pending_pubcomp.end(),
                                  [&packet](uint16_t packet_id) { return packet_id == packet.packet_id; });
 
-    if (pubrel_packet == qos2_pending_pubcomp.end()) {
+    if (pubcomp_packet == qos2_pending_pubcomp.end()) {
         qos2_pending_pubcomp.push_back(packet.packet_id);
     }
 
@@ -260,13 +260,13 @@ void Session::handle_subscribe(const SubscribePacket &packet)
 
         SubackPacket::ReturnCode return_code = SubackPacket::ReturnCode::Failure;
         switch (subscription.qos) {
-            case 0:
+            case QoSType::QoS0:
                 return_code = SubackPacket::ReturnCode::SuccessQoS0;
                 break;
-            case 1:
+            case QoSType::QoS1:
                 return_code = SubackPacket::ReturnCode::SuccessQoS1;
                 break;
-            case 2:
+            case QoSType::QoS2:
                 return_code = SubackPacket::ReturnCode::SuccessQoS2;
                 break;
         }

@@ -102,7 +102,7 @@ TEST(packets, connect_packet) {
     connect_packet1.client_id = "client1";
     connect_packet1.clean_session(true);
     connect_packet1.will_flag(true);
-    connect_packet1.qos(2);
+    connect_packet1.qos(QoSType::QoS2);
     connect_packet1.keep_alive = 60;
     connect_packet1.will_retain(true);
     connect_packet1.password_flag(true);
@@ -155,7 +155,7 @@ TEST(packets, publish_packet) {
     PublishPacket publish_packet1;
 
     publish_packet1.dup(true);
-    publish_packet1.qos(2);
+    publish_packet1.qos(QoSType::QoS2);
     publish_packet1.retain(true);
 
     publish_packet1.topic_name = "test_topic";
@@ -237,9 +237,9 @@ TEST(packets, subscribe_packet) {
 
     subscribe_packet1.packet_id = 100;
     subscribe_packet1.subscriptions = {
-            {TopicFilter("subscription1"), 0},
-            {TopicFilter("subscription2"), 1},
-            {TopicFilter("subscription3"), 2}
+            {TopicFilter("subscription1"), QoSType::QoS0},
+            {TopicFilter("subscription2"), QoSType::QoS1},
+            {TopicFilter("subscription3"), QoSType::QoS2}
     };
 
     std::vector<uint8_t> packet_data = subscribe_packet1.serialize();

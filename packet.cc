@@ -143,7 +143,7 @@ PublishPacket::PublishPacket(const std::vector<uint8_t> &packet_data) {
 
     topic_name = reader.read_string();
 
-    if (qos() != 0) {
+    if (qos() != QoSType::QoS0) {
         packet_id = reader.read_uint16();
     }
 
@@ -158,12 +158,12 @@ std::vector<uint8_t> PublishPacket::serialize() const {
     PacketDataWriter writer(packet_data);
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
     uint16_t remaining_length = 2 + topic_name.size() + message_data.size();
-    if (qos() != 0) {
+    if (qos() != QoSType::QoS0) {
         remaining_length += 2;
     }
     writer.write_remaining_length(remaining_length);
     writer.write_string(topic_name);
-    if (qos() != 0) {
+    if (qos() != QoSType::QoS0) {
         writer.write_uint16(packet_id);
     }
     for (int i = 0; i < message_data.size(); i++) {
@@ -303,8 +303,7 @@ SubscribePacket::SubscribePacket(const std::vector<uint8_t> &packet_data) {
 
     do {
         std::string topic = reader.read_string();
-        uint8_t qos = reader.read_byte();
-        assert(qos < 3);
+        QoSType qos = static_cast<QoSType>(reader.read_byte());
         // TODO use emplace_back
         subscriptions.push_back(Subscription{topic, qos});
     } while (!reader.empty());
@@ -327,7 +326,7 @@ std::vector<uint8_t> SubscribePacket::serialize() const {
 
     for (auto subscription : subscriptions) {
         writer.write_string(std::string(subscription.topic_filter));
-        writer.write_byte(subscription.qos);
+        writer.write_byte(static_cast<uint8_t>(subscription.qos));
     }
 
     return packet_data;

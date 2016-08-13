@@ -33,7 +33,7 @@ uint16_t broker_port = 1883;
 std::string client_id;
 std::string topic;
 std::vector<uint8_t> message;
-uint8_t qos = 0;
+QoSType qos = QoSType::QoS0;
 bool clean_session = false;
 
 PacketManager *packet_manager;
@@ -170,7 +170,7 @@ void parse_arguments(int argc, char *argv[]) {
             case 'm':
                 message = std::vector<uint8_t>(optarg, optarg + strlen(optarg));
             case 'q':
-                qos = static_cast<uint8_t>(atoi(optarg));
+                qos = static_cast<QoSType>(atoi(optarg));
                 break;
             case 'c':
                 clean_session = true;
