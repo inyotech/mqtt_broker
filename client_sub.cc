@@ -23,7 +23,9 @@ static void parse_arguments(int argc, char *argv[]);
 
 static void connect_event_cb(struct bufferevent *, short event, void *);
 
-static void close_cb(struct bufferevent *bev, void *arg);
+//static void close_cb(struct bufferevent *bev, void *arg);
+
+static void signal_cb(evutil_socket_t, short event, void *);
 
 static void packet_received_callback(owned_packet_ptr_t Packet);
 
@@ -32,8 +34,7 @@ static uint16_t next_packet_id(void);
 std::string broker_host = "localhost";
 uint16_t broker_port = 1883;
 std::string client_id;
-std::string topic;
-std::vector<uint8_t> message;
+std::vector<std::string> topics;
 QoSType qos = QoSType::QoS0;
 bool clean_session = false;
 
@@ -42,6 +43,7 @@ PacketManager *packet_manager;
 int main(int argc, char *argv[]) {
 
     struct event_base *evloop;
+    struct event * signal_event;
     struct evdns_base *dns_base;
     struct bufferevent *bev;
 
@@ -52,6 +54,11 @@ int main(int argc, char *argv[]) {
         std::cerr << "Could not initialize libevent\n";
         std::exit(1);
     }
+
+    signal_event = evsignal_new(evloop, SIGINT, signal_cb, evloop);
+    evsignal_add(signal_event, NULL);
+    signal_event = evsignal_new(evloop, SIGTERM, signal_cb, evloop);
+    evsignal_add(signal_event, NULL);
 
     dns_base = evdns_base_new(evloop, 1);
 
@@ -100,31 +107,51 @@ void packet_received_callback(owned_packet_ptr_t packet_ptr) {
     switch (packet_ptr->type) {
         case PacketType::Connack: {
 
-            PublishPacket publish_packet;
-            publish_packet.qos(qos);
-            publish_packet.topic_name = topic;
-            publish_packet.packet_id = next_packet_id();
-            publish_packet.message_data = std::vector<uint8_t>(message.begin(), message.end());
-            packet_manager->send_packet(publish_packet);
+            SubscribePacket subscribe_packet;
+            subscribe_packet.packet_id = next_packet_id();
+            for (auto topic : topics) {
+                subscribe_packet.subscriptions.push_back(Subscription{topic, qos});
+            }
+            packet_manager->send_packet(subscribe_packet);
             break;
         }
 
-        case PacketType::Pubrec: {
+        case PacketType::Suback: {
 
-            PubrelPacket pubrel_packet;
-            pubrel_packet.packet_id = dynamic_cast<PubrecPacket &>(*packet_ptr).packet_id;
-            packet_manager->send_packet(pubrel_packet);
+            SubackPacket &suback_packet = dynamic_cast<SubackPacket &>(*packet_ptr);
+
+            for (int i = 0; i < suback_packet.return_codes.size(); i++) {
+                SubackPacket::ReturnCode code = suback_packet.return_codes[i];
+                if (code == SubackPacket::ReturnCode::Failure) {
+                    std::cout << "Subscription to topic " << topics[i] << "failed\n";
+                } else if (static_cast<QoSType>(code) != qos) {
+                    std::cout << "Topic " << topics[i] << " requested qos " << static_cast<int>(qos) << " subscribed "
+                              << static_cast<int>(code) << "\n";
+                }
+            }
             break;
         }
 
-        case PacketType::Puback:
-        case PacketType::Pubcomp: {
+        case PacketType::Publish: {
+            PublishPacket &publish_packet = dynamic_cast<PublishPacket &>(*packet_ptr);
+            std::cout << std::string(publish_packet.message_data.begin(), publish_packet.message_data.end()) << "\n";
+            if (publish_packet.qos() == QoSType::QoS1) {
+                PubackPacket puback_packet;
+                puback_packet.packet_id = publish_packet.packet_id;
+                packet_manager->send_packet(puback_packet);
+            } else if (publish_packet.qos() == QoSType::QoS2) {
+                PubrecPacket pubrec_packet;
+                pubrec_packet.packet_id = publish_packet.packet_id;
+                packet_manager->send_packet(publish_packet);
+            }
+            break;
+        }
 
-            DisconnectPacket disconnect_packet;
-            packet_manager->send_packet(disconnect_packet);
-            bufferevent_enable(packet_manager->bev, EV_WRITE);
-            bufferevent_setcb(packet_manager->bev, packet_manager->bev->readcb, close_cb, NULL, NULL);
+        case PacketType::Pubrel: {
 
+            PubcompPacket pubcomp_packet;
+            pubcomp_packet.packet_id = dynamic_cast<PublishPacket &>(*packet_ptr).packet_id;
+            packet_manager->send_packet(pubcomp_packet);
             break;
         }
 
@@ -166,10 +193,8 @@ void parse_arguments(int argc, char *argv[]) {
                 client_id = optarg;
                 break;
             case 't':
-                topic = optarg;
+                topics.push_back(optarg);
                 break;
-            case 'm':
-                message = std::vector<uint8_t>(optarg, optarg + strlen(optarg));
             case 'q':
                 qos = static_cast<QoSType>(atoi(optarg));
                 break;
@@ -188,6 +213,7 @@ void parse_arguments(int argc, char *argv[]) {
 
 }
 
+#if 0
 static void close_cb(struct bufferevent *bev, void *arg) {
     std::cout << "close cb\n";
     if (evbuffer_get_length(bufferevent_get_output(bev)) == 0) {
@@ -195,6 +221,19 @@ static void close_cb(struct bufferevent *bev, void *arg) {
         bufferevent_free(bev);
         std::exit(0);
     }
+}
+#endif
+
+static void signal_cb(evutil_socket_t fd, short event, void * arg) {
+
+    std::cout << "signal_event\n";
+
+    event_base * base = static_cast<event_base *>(arg);
+
+    if (event_base_loopexit(base, NULL)) {
+        std::cerr << "failed to exit event loop\n";
+    }
+
 }
 
 uint16_t next_packet_id() {

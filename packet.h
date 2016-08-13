@@ -67,7 +67,7 @@ public:
         protocol_level = 4;
     }
 
-    ConnectPacket(const std::vector<uint8_t> & packet_data);
+    ConnectPacket(const std::vector<uint8_t> &packet_data);
 
     std::vector<uint8_t> serialize() const;
 

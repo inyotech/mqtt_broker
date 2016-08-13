@@ -14,8 +14,11 @@ LINK_DIRECTORIES(/opt/local/lib)
 ADD_EXECUTABLE(mqtt_broker main.cc)
 TARGET_LINK_LIBRARIES(mqtt_broker mqtt event)
 
-ADD_EXECUTABLE(mqtt_client client_pub.cc client_session.cc)
-TARGET_LINK_LIBRARIES(mqtt_client mqtt event)
+ADD_EXECUTABLE(mqtt_client_pub client_pub.cc)
+TARGET_LINK_LIBRARIES(mqtt_client_pub mqtt event)
+
+ADD_EXECUTABLE(mqtt_client_sub client_sub.cc)
+TARGET_LINK_LIBRARIES(mqtt_client_sub mqtt event)
 
 ADD_SUBDIRECTORY(test)
 
