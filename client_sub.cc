@@ -23,7 +23,7 @@ static void parse_arguments(int argc, char *argv[]);
 
 static void connect_event_cb(struct bufferevent *, short event, void *);
 
-//static void close_cb(struct bufferevent *bev, void *arg);
+static void close_cb(struct bufferevent *bev, void *arg);
 
 static void signal_cb(evutil_socket_t, short event, void *);
 
@@ -43,7 +43,7 @@ PacketManager *packet_manager;
 int main(int argc, char *argv[]) {
 
     struct event_base *evloop;
-    struct event * signal_event;
+    struct event *signal_event;
     struct evdns_base *dns_base;
     struct bufferevent *bev;
 
@@ -67,8 +67,10 @@ int main(int argc, char *argv[]) {
     bufferevent_setcb(bev, NULL, NULL, connect_event_cb, evloop);
 
     bufferevent_socket_connect_hostname(bev, dns_base, AF_UNSPEC, broker_host.c_str(), broker_port);
+    evdns_base_free(dns_base, 0);
 
     event_base_dispatch(evloop);
+    event_free(signal_event);
     event_base_free(evloop);
 
 }
@@ -142,7 +144,7 @@ void packet_received_callback(owned_packet_ptr_t packet_ptr) {
             } else if (publish_packet.qos() == QoSType::QoS2) {
                 PubrecPacket pubrec_packet;
                 pubrec_packet.packet_id = publish_packet.packet_id;
-                packet_manager->send_packet(publish_packet);
+                packet_manager->send_packet(pubrec_packet);
             }
             break;
         }
@@ -150,7 +152,7 @@ void packet_received_callback(owned_packet_ptr_t packet_ptr) {
         case PacketType::Pubrel: {
 
             PubcompPacket pubcomp_packet;
-            pubcomp_packet.packet_id = dynamic_cast<PublishPacket &>(*packet_ptr).packet_id;
+            pubcomp_packet.packet_id = dynamic_cast<PubrelPacket &>(*packet_ptr).packet_id;
             packet_manager->send_packet(pubcomp_packet);
             break;
         }
@@ -213,30 +215,26 @@ void parse_arguments(int argc, char *argv[]) {
 
 }
 
-#if 0
 static void close_cb(struct bufferevent *bev, void *arg) {
     std::cout << "close cb\n";
-    if (evbuffer_get_length(bufferevent_get_output(bev)) == 0) {
-        std::cout << "write buffer empty\n";
-        bufferevent_free(bev);
-        std::exit(0);
-    }
-}
-#endif
 
-static void signal_cb(evutil_socket_t fd, short event, void * arg) {
+    bufferevent_free(bev);
+    event_base *base = static_cast<event_base *>(arg);
+    event_base_loopexit(base, NULL);
+}
+
+static void signal_cb(evutil_socket_t fd, short event, void *arg) {
 
     std::cout << "signal_event\n";
+    DisconnectPacket disconnect_packet;
+    packet_manager->send_packet(disconnect_packet);
 
-    event_base * base = static_cast<event_base *>(arg);
-
-    if (event_base_loopexit(base, NULL)) {
-        std::cerr << "failed to exit event loop\n";
-    }
-
+    bufferevent_disable(packet_manager->bev, EV_READ);
+    bufferevent_setcb(packet_manager->bev, NULL, close_cb, NULL, arg);
 }
 
 uint16_t next_packet_id() {
+
     static uint16_t packet_id = 0;
     if (++packet_id == 0) {
         ++packet_id;

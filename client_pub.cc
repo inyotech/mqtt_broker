@@ -61,6 +61,8 @@ int main(int argc, char *argv[]) {
 
     bufferevent_socket_connect_hostname(bev, dns_base, AF_UNSPEC, broker_host.c_str(), broker_port);
 
+    evdns_base_free(dns_base, 0);
+
     event_base_dispatch(evloop);
     event_base_free(evloop);
 
@@ -106,6 +108,16 @@ void packet_received_callback(owned_packet_ptr_t packet_ptr) {
             publish_packet.packet_id = next_packet_id();
             publish_packet.message_data = std::vector<uint8_t>(message.begin(), message.end());
             packet_manager->send_packet(publish_packet);
+
+            if (qos == QoSType::QoS0) {
+
+                DisconnectPacket disconnect_packet;
+                packet_manager->send_packet(disconnect_packet);
+                bufferevent_enable(packet_manager->bev, EV_WRITE);
+                bufferevent_setcb(packet_manager->bev, packet_manager->bev->readcb, close_cb, NULL, NULL);
+
+            }
+
             break;
         }
 
