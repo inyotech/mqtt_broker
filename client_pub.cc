@@ -27,8 +27,6 @@ static void close_cb(struct bufferevent *bev, void *arg);
 
 static void packet_received_callback(owned_packet_ptr_t Packet);
 
-static uint16_t next_packet_id(void);
-
 std::string broker_host = "localhost";
 uint16_t broker_port = 1883;
 std::string client_id;
@@ -105,7 +103,7 @@ void packet_received_callback(owned_packet_ptr_t packet_ptr) {
             PublishPacket publish_packet;
             publish_packet.qos(qos);
             publish_packet.topic_name = topic;
-            publish_packet.packet_id = next_packet_id();
+            publish_packet.packet_id = packet_manager->next_packet_id();
             publish_packet.message_data = std::vector<uint8_t>(message.begin(), message.end());
             packet_manager->send_packet(publish_packet);
 
@@ -207,13 +205,4 @@ static void close_cb(struct bufferevent *bev, void *arg) {
         bufferevent_free(bev);
         std::exit(0);
     }
-}
-
-uint16_t next_packet_id() {
-    static uint16_t packet_id = 0;
-    if (++packet_id == 0) {
-        ++packet_id;
-    }
-    return packet_id;
-
 }

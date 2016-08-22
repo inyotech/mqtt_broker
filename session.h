@@ -56,16 +56,6 @@ public:
 
     void handle_disconnect(const DisconnectPacket &);
 
-    uint16_t next_packet_id() {
-
-        if (++packet_id == 0) {
-            ++packet_id;
-        }
-        return packet_id;
-    }
-
-    uint16_t packet_id = 0;
-
     std::string client_id;
     bool clean_session;
 

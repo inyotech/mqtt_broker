@@ -29,8 +29,6 @@ static void signal_cb(evutil_socket_t, short event, void *);
 
 static void packet_received_callback(owned_packet_ptr_t Packet);
 
-static uint16_t next_packet_id(void);
-
 std::string broker_host = "localhost";
 uint16_t broker_port = 1883;
 std::string client_id;
@@ -110,7 +108,7 @@ void packet_received_callback(owned_packet_ptr_t packet_ptr) {
         case PacketType::Connack: {
 
             SubscribePacket subscribe_packet;
-            subscribe_packet.packet_id = next_packet_id();
+            subscribe_packet.packet_id = packet_manager->next_packet_id();
             for (auto topic : topics) {
                 subscribe_packet.subscriptions.push_back(Subscription{topic, qos});
             }
@@ -231,14 +229,4 @@ static void signal_cb(evutil_socket_t fd, short event, void *arg) {
 
     bufferevent_disable(packet_manager->bev, EV_READ);
     bufferevent_setcb(packet_manager->bev, NULL, close_cb, NULL, arg);
-}
-
-uint16_t next_packet_id() {
-
-    static uint16_t packet_id = 0;
-    if (++packet_id == 0) {
-        ++packet_id;
-    }
-    return packet_id;
-
 }

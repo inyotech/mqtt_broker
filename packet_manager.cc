@@ -135,5 +135,9 @@ void PacketManager::handle_other_events(short events) {
         std::cout << "Got an error on the connection: " << std::strerror(errno) << "\n";
         bufferevent_free(bev);
         bev = nullptr;
+    } else if (events & BEV_EVENT_TIMEOUT) {
+        std::cout << "Timeout: " << std::strerror(errno) << "\n";
+        bufferevent_free(bev);
+        bev = nullptr;
     }
 }

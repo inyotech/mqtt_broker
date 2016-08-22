@@ -22,7 +22,7 @@ public:
         bufferevent_enable(bev, EV_READ);
     }
 
-    ~PacketManager() {
+    virtual ~PacketManager() {
         std::cout << "~PacketManager\n";
         if (bev) {
             bufferevent_free(bev);
@@ -49,6 +49,16 @@ public:
     void set_packet_received_handler(std::function<void(owned_packet_ptr_t)> handler) {
         packet_received_handler = handler;
     }
+
+    uint16_t next_packet_id() {
+
+        if (++packet_id == 0) {
+            ++packet_id;
+        }
+        return packet_id;
+    }
+
+    uint16_t packet_id = 0;
 
     void send_packet(const Packet &);
 

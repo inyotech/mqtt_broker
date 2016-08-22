@@ -14,7 +14,7 @@ void Session::forward_packet(const PublishPacket &packet)
         PublishPacket packet_to_send(packet);
         packet_to_send.dup(false);
         packet_to_send.retain(false);
-        packet_to_send.packet_id = next_packet_id();
+        packet_to_send.packet_id = packet_manager->next_packet_id();
         qos1_pending_puback.push_back(packet_to_send);
         packet_manager->send_packet(packet_to_send);
     } else if (packet.qos() == QoSType::QoS2) {
@@ -22,7 +22,7 @@ void Session::forward_packet(const PublishPacket &packet)
         PublishPacket packet_to_send(packet);
         packet_to_send.dup(false);
         packet_to_send.retain(false);
-        packet_to_send.packet_id = next_packet_id();
+        packet_to_send.packet_id = packet_manager->next_packet_id();
 
         auto previous_packet = find_if(qos2_pending_pubrec.begin(), qos2_pending_pubrec.end(),
                                        [&packet](const PublishPacket &p) { return p.packet_id == packet.packet_id; });
