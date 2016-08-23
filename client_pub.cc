@@ -199,9 +199,7 @@ void parse_arguments(int argc, char *argv[]) {
 }
 
 static void close_cb(struct bufferevent *bev, void *arg) {
-    std::cout << "close cb\n";
     if (evbuffer_get_length(bufferevent_get_output(bev)) == 0) {
-        std::cout << "write buffer empty\n";
         bufferevent_free(bev);
         std::exit(0);
     }

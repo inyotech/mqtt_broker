@@ -52,21 +52,6 @@ public:
 
     }
 
-    void connect_to_broker() {
-
-        struct evdns_base *dns_base;
-
-        bufferevent *bev = bufferevent_socket_new(evloop, -1, BEV_OPT_CLOSE_ON_FREE);
-
-        bufferevent_setcb(bev, NULL, NULL, connect_event_cb, this);
-
-        dns_base = evdns_base_new(evloop, 1);
-
-        bufferevent_socket_connect_hostname(bev, dns_base, AF_UNSPEC, "localhost", 1883);
-
-        evdns_base_free(dns_base, 0);
-
-    }
 
     static void listener_cb(struct evconnlistener *listener, evutil_socket_t fd,
                             struct sockaddr *sa, int socklen, void *_this) {
@@ -99,6 +84,22 @@ public:
         ADD_FAILURE();
 
         event_base_loopexit(_this->evloop, NULL);
+    }
+
+    void connect_to_broker() {
+
+        struct evdns_base *dns_base;
+
+        bufferevent *bev = bufferevent_socket_new(evloop, -1, BEV_OPT_CLOSE_ON_FREE);
+
+        bufferevent_setcb(bev, NULL, NULL, connect_event_cb, this);
+
+        dns_base = evdns_base_new(evloop, 1);
+
+        bufferevent_socket_connect_hostname(bev, dns_base, AF_UNSPEC, "localhost", 1883);
+
+        evdns_base_free(dns_base, 0);
+
     }
 
     virtual void connection_made() = 0;

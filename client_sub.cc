@@ -88,7 +88,6 @@ static void connect_event_cb(struct bufferevent *bev, short events, void *arg) {
         packet_manager->send_packet(connect_packet);
 
     } else if (events & (BEV_EVENT_ERROR | BEV_EVENT_EOF)) {
-        std::cout << "closing\n";
         struct event_base *base = static_cast<struct event_base *>(arg);
         if (events & BEV_EVENT_ERROR) {
             int err = bufferevent_socket_get_dns_error(bev);
@@ -133,6 +132,7 @@ void packet_received_callback(owned_packet_ptr_t packet_ptr) {
         }
 
         case PacketType::Publish: {
+
             PublishPacket &publish_packet = dynamic_cast<PublishPacket &>(*packet_ptr);
             std::cout << std::string(publish_packet.message_data.begin(), publish_packet.message_data.end()) << "\n";
             if (publish_packet.qos() == QoSType::QoS1) {
@@ -214,7 +214,6 @@ void parse_arguments(int argc, char *argv[]) {
 }
 
 static void close_cb(struct bufferevent *bev, void *arg) {
-    std::cout << "close cb\n";
 
     bufferevent_free(bev);
     event_base *base = static_cast<event_base *>(arg);
@@ -223,7 +222,6 @@ static void close_cb(struct bufferevent *bev, void *arg) {
 
 static void signal_cb(evutil_socket_t fd, short event, void *arg) {
 
-    std::cout << "signal_event\n";
     DisconnectPacket disconnect_packet;
     packet_manager->send_packet(disconnect_packet);
 

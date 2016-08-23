@@ -9,9 +9,7 @@
 #include <event2/bufferevent.h>
 
 class SessionManager;
-
 class Message;
-
 class Subscription;
 
 class Session {
@@ -55,6 +53,7 @@ public:
     void handle_disconnect(const DisconnectPacket &);
 
     std::string client_id;
+
     bool clean_session;
 
     std::unique_ptr<PacketManager> packet_manager;
