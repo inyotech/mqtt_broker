@@ -1,5 +1,5 @@
 
-add_executable(run_tests topic_tests.cc packet_tests.cc protocol_tests.cc)
+add_executable(run_tests topic_tests.cc packet_tests.cc protocol_tests.cc session_tests.cc)
 
 include_directories(run_tests ${CMAKE_SOURCE_DIR} ${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
