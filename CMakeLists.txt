@@ -11,7 +11,7 @@ ADD_LIBRARY(mqtt STATIC ${LIB_SOURCES})
 INCLUDE_DIRECTORIES(/opt/local/include)
 LINK_DIRECTORIES(/opt/local/lib)
 
-ADD_EXECUTABLE(mqtt_broker main.cc)
+ADD_EXECUTABLE(mqtt_broker broker.cc)
 TARGET_LINK_LIBRARIES(mqtt_broker mqtt event)
 
 ADD_EXECUTABLE(mqtt_client_pub client_pub.cc)

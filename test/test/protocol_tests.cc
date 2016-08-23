@@ -2,16 +2,13 @@
 // Created by Scott Brumbaugh on 8/22/16.
 //
 
-#include <string>
 
 #include "gtest/gtest.h"
 
 #include "session.h"
 #include "session_manager.h"
-#include "packet_manager.h"
 
 #include <event2/listener.h>
-#include <event2/bufferevent.h>
 #include <event2/dns.h>
 
 class Protocol : public testing::Test {
@@ -24,7 +21,6 @@ public:
     SessionManager session_manager;
 
     void SetUp() {
-
 
         struct sockaddr_in sin;
 
@@ -118,9 +114,6 @@ class Connect : public Protocol {
         ConnectPacket connect_packet;
         packet_manager->send_packet(connect_packet);
 
-        DisconnectPacket disconnect_packet;
-        packet_manager->send_packet(disconnect_packet);
-
     }
 
     virtual void packet_received_callback(std::unique_ptr<Packet> packet) {
@@ -129,10 +122,12 @@ class Connect : public Protocol {
         ConnackPacket &connack_packet = dynamic_cast<ConnackPacket &>(*packet);
         ASSERT_EQ(connack_packet.return_code, ConnackPacket::ReturnCode::Accepted);
 
+        DisconnectPacket disconnect_packet;
+        packet_manager->send_packet(disconnect_packet);
+
         event_base_loopexit(evloop, NULL);
 
     }
-
 
 };
 
@@ -146,12 +141,12 @@ class Ping : public Protocol {
     virtual void packet_received_callback(std::unique_ptr<Packet> packet) {
 
         ASSERT_EQ(packet->type, PacketType::Pingresp);
+
         DisconnectPacket disconnect_packet;
         packet_manager->send_packet(disconnect_packet);
 
         event_base_loopexit(evloop, NULL);
     }
-
 
 };
 

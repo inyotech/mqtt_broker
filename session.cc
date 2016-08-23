@@ -1,10 +1,6 @@
 #include "session.h"
 #include "session_manager.h"
 
-Session::~Session() {
-    std::cout << "~Session\n";
-}
-
 void Session::forward_packet(const PublishPacket &packet)
 {
 
@@ -80,8 +76,6 @@ void Session::resume_session(std::unique_ptr<Session> &session,
                              std::unique_ptr<PacketManager> packet_manager_ptr)
 {
 
-    std::cout << "restoring session for " << session->client_id << "\n";
-
     packet_manager_ptr->set_packet_received_handler(
             std::bind(&Session::packet_received, session.get(), std::placeholders::_1));
     session->packet_manager = std::move(packet_manager_ptr);
@@ -121,8 +115,6 @@ void Session::send_pending_message()
 
 void Session::handle_connect(const ConnectPacket &packet)
 {
-
-    std::cout << "handle " << packet.protocol_name << " connect from " << packet.client_id << "\n";
 
     if (!authorize_connection(packet)) {
         session_manager.remove_session(this);
@@ -187,7 +179,6 @@ void Session::handle_puback(const PubackPacket &packet)
     auto message = find_if(qos1_pending_puback.begin(), qos1_pending_puback.end(),
                            [&packet](const PublishPacket &p) { return p.packet_id == packet.packet_id; });
     if (message != qos1_pending_puback.end()) {
-        std::cout << "removing puback' message\n";
         qos1_pending_puback.erase(message);
     }
 
@@ -244,9 +235,6 @@ void Session::handle_subscribe(const SubscribePacket &packet)
     suback.packet_id = packet.packet_id;
 
     for (auto subscription : packet.subscriptions) {
-        std::cout << "subscribing to topic " << std::string(subscription.topic_filter) << " qos "
-                  << static_cast<int>(subscription.qos)
-                  << "\n";
 
         auto previous_subscription = find_if(subscriptions.begin(), subscriptions.end(),
                                              [&subscription](const Subscription &s) {
@@ -282,10 +270,6 @@ void Session::handle_unsubscribe(const UnsubscribePacket &packet)
 
     UnsubackPacket unsuback;
 
-    for (auto topic : packet.topics) {
-        std::cout << "unsubscribe " << topic << "\n";
-    }
-
     unsuback.packet_id = packet.packet_id;
 
     packet_manager->send_packet(unsuback);
@@ -303,7 +287,5 @@ void Session::handle_pingreq(const PingreqPacket &packet)
 
 void Session::handle_disconnect(const DisconnectPacket &packet)
 {
-
-    std::cout << "handle disconnect\n";
 
 }

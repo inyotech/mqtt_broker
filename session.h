@@ -23,8 +23,6 @@ public:
         packet_manager->set_packet_received_handler(std::bind(&Session::packet_received, this, std::placeholders::_1));
     }
 
-    ~Session();
-
     bool authorize_connection(const ConnectPacket &);
 
     void resume_session(std::unique_ptr<Session> &session,
