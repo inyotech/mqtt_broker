@@ -16,6 +16,7 @@
 #include "mqtt.h"
 #include "packet.h"
 #include "packet_manager.h"
+#include "session_base.h"
 
 static void usage(void);
 
@@ -27,16 +28,69 @@ static void close_cb(struct bufferevent *bev, void *arg);
 
 static void signal_cb(evutil_socket_t, short event, void *);
 
-static void packet_received_callback(owned_packet_ptr_t Packet);
+struct options_t {
+    std::string broker_host = "localhost";
+    uint16_t broker_port = 1883;
+    std::string client_id;
+    std::vector<std::string> topics;
+    QoSType qos = QoSType::QoS0;
+    bool clean_session = false;
+} options;
 
-std::string broker_host = "localhost";
-uint16_t broker_port = 1883;
-std::string client_id;
-std::vector<std::string> topics;
-QoSType qos = QoSType::QoS0;
-bool clean_session = false;
+class ClientSession : public SessionBase
+{
+public:
 
-PacketManager *packet_manager;
+    const options_t & options;
+
+    ClientSession(bufferevent * bev, const options_t & options) : SessionBase(bev), options(options) {}
+
+    void handle_connack(const ConnackPacket & connack_packet) override {
+        SubscribePacket subscribe_packet;
+        subscribe_packet.packet_id = packet_manager->next_packet_id();
+        for (auto topic : options.topics) {
+            subscribe_packet.subscriptions.push_back(Subscription{topic, options.qos});
+        }
+        packet_manager->send_packet(subscribe_packet);
+    }
+
+    void handle_suback(const SubackPacket & suback_packet) override {
+
+        for (int i = 0; i < suback_packet.return_codes.size(); i++) {
+            SubackPacket::ReturnCode code = suback_packet.return_codes[i];
+            if (code == SubackPacket::ReturnCode::Failure) {
+                std::cout << "Subscription to topic " << options.topics[i] << "failed\n";
+            } else if (static_cast<QoSType>(code) != options.qos) {
+                std::cout << "Topic " << options.topics[i] << " requested qos " << static_cast<int>(options.qos)
+                          << " subscribed "
+                          << static_cast<int>(code) << "\n";
+            }
+        }
+    }
+
+    void handle_publish(const PublishPacket & publish_packet) override {
+
+        std::cout << std::string(publish_packet.message_data.begin(), publish_packet.message_data.end()) << "\n";
+
+        if (publish_packet.qos() == QoSType::QoS1) {
+            PubackPacket puback_packet;
+            puback_packet.packet_id = publish_packet.packet_id;
+            packet_manager->send_packet(puback_packet);
+        } else if (publish_packet.qos() == QoSType::QoS2) {
+            PubrecPacket pubrec_packet;
+            pubrec_packet.packet_id = publish_packet.packet_id;
+            packet_manager->send_packet(pubrec_packet);
+        }
+    }
+
+    void handle_pubrel(const PubrelPacket & pubrel_packet) override {
+        PubcompPacket pubcomp_packet;
+        pubcomp_packet.packet_id = pubrel_packet.packet_id;
+        packet_manager->send_packet(pubcomp_packet);
+    }
+};
+
+std::unique_ptr<ClientSession> session;
 
 int main(int argc, char *argv[]) {
 
@@ -64,10 +118,11 @@ int main(int argc, char *argv[]) {
 
     bufferevent_setcb(bev, NULL, NULL, connect_event_cb, evloop);
 
-    bufferevent_socket_connect_hostname(bev, dns_base, AF_UNSPEC, broker_host.c_str(), broker_port);
+    bufferevent_socket_connect_hostname(bev, dns_base, AF_UNSPEC, options.broker_host.c_str(), options.broker_port);
     evdns_base_free(dns_base, 0);
 
     event_base_dispatch(evloop);
+
     event_free(signal_event);
     event_base_free(evloop);
 
@@ -80,12 +135,11 @@ static void connect_event_cb(struct bufferevent *bev, short events, void *arg) {
     if (events & BEV_EVENT_CONNECTED) {
         std::cout << "Connect okay.\n";
 
-        packet_manager = new PacketManager(bev);
-        packet_manager->set_packet_received_handler(packet_received_callback);
+        session = std::unique_ptr<ClientSession>(new ClientSession(bev, options));
 
         ConnectPacket connect_packet;
-        connect_packet.client_id = client_id;
-        packet_manager->send_packet(connect_packet);
+        connect_packet.client_id = options.client_id;
+        session->packet_manager->send_packet(connect_packet);
 
     } else if (events & (BEV_EVENT_ERROR | BEV_EVENT_EOF)) {
         struct event_base *base = static_cast<struct event_base *>(arg);
@@ -97,68 +151,6 @@ static void connect_event_cb(struct bufferevent *bev, short events, void *arg) {
 
         bufferevent_free(bev);
         event_base_loopexit(base, NULL);
-    }
-
-}
-
-void packet_received_callback(owned_packet_ptr_t packet_ptr) {
-
-    switch (packet_ptr->type) {
-        case PacketType::Connack: {
-
-            SubscribePacket subscribe_packet;
-            subscribe_packet.packet_id = packet_manager->next_packet_id();
-            for (auto topic : topics) {
-                subscribe_packet.subscriptions.push_back(Subscription{topic, qos});
-            }
-            packet_manager->send_packet(subscribe_packet);
-            break;
-        }
-
-        case PacketType::Suback: {
-
-            SubackPacket &suback_packet = dynamic_cast<SubackPacket &>(*packet_ptr);
-
-            for (int i = 0; i < suback_packet.return_codes.size(); i++) {
-                SubackPacket::ReturnCode code = suback_packet.return_codes[i];
-                if (code == SubackPacket::ReturnCode::Failure) {
-                    std::cout << "Subscription to topic " << topics[i] << "failed\n";
-                } else if (static_cast<QoSType>(code) != qos) {
-                    std::cout << "Topic " << topics[i] << " requested qos " << static_cast<int>(qos) << " subscribed "
-                              << static_cast<int>(code) << "\n";
-                }
-            }
-            break;
-        }
-
-        case PacketType::Publish: {
-
-            PublishPacket &publish_packet = dynamic_cast<PublishPacket &>(*packet_ptr);
-            std::cout << std::string(publish_packet.message_data.begin(), publish_packet.message_data.end()) << "\n";
-            if (publish_packet.qos() == QoSType::QoS1) {
-                PubackPacket puback_packet;
-                puback_packet.packet_id = publish_packet.packet_id;
-                packet_manager->send_packet(puback_packet);
-            } else if (publish_packet.qos() == QoSType::QoS2) {
-                PubrecPacket pubrec_packet;
-                pubrec_packet.packet_id = publish_packet.packet_id;
-                packet_manager->send_packet(pubrec_packet);
-            }
-            break;
-        }
-
-        case PacketType::Pubrel: {
-
-            PubcompPacket pubcomp_packet;
-            pubcomp_packet.packet_id = dynamic_cast<PubrelPacket &>(*packet_ptr).packet_id;
-            packet_manager->send_packet(pubcomp_packet);
-            break;
-        }
-
-        default:
-            std::cerr << "unexpected packet type " << static_cast<int>(packet_ptr->type) << "\n";
-            throw std::exception();
-
     }
 
 }
@@ -184,22 +176,22 @@ void parse_arguments(int argc, char *argv[]) {
     while ((ch = getopt_long(argc, argv, "b:p:i:t:m:q:c", longopts, NULL)) != -1) {
         switch (ch) {
             case 'b':
-                broker_host = optarg;
+                options.broker_host = optarg;
                 break;
             case 'p':
-                broker_port = static_cast<uint16_t>(atoi(optarg));
+                options.broker_port = static_cast<uint16_t>(atoi(optarg));
                 break;
             case 'i':
-                client_id = optarg;
+                options.client_id = optarg;
                 break;
             case 't':
-                topics.push_back(optarg);
+                options.topics.push_back(optarg);
                 break;
             case 'q':
-                qos = static_cast<QoSType>(atoi(optarg));
+                options.qos = static_cast<QoSType>(atoi(optarg));
                 break;
             case 'c':
-                clean_session = true;
+                options.clean_session = true;
                 break;
             case 'h':
                 usage();
@@ -215,7 +207,6 @@ void parse_arguments(int argc, char *argv[]) {
 
 static void close_cb(struct bufferevent *bev, void *arg) {
 
-    bufferevent_free(bev);
     event_base *base = static_cast<event_base *>(arg);
     event_base_loopexit(base, NULL);
 }
@@ -223,8 +214,8 @@ static void close_cb(struct bufferevent *bev, void *arg) {
 static void signal_cb(evutil_socket_t fd, short event, void *arg) {
 
     DisconnectPacket disconnect_packet;
-    packet_manager->send_packet(disconnect_packet);
+    session->packet_manager->send_packet(disconnect_packet);
 
-    bufferevent_disable(packet_manager->bev, EV_READ);
-    bufferevent_setcb(packet_manager->bev, NULL, close_cb, NULL, arg);
+    bufferevent_disable(session->packet_manager->bev, EV_READ);
+    bufferevent_setcb(session->packet_manager->bev, NULL, close_cb, NULL, arg);
 }

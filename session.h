@@ -1,5 +1,6 @@
 #pragma once
 
+#include "session_base.h"
 #include "packet_manager.h"
 #include "packet.h"
 
@@ -9,16 +10,17 @@
 #include <event2/bufferevent.h>
 
 class SessionManager;
+
 class Message;
+
 class Subscription;
 
-class Session {
+class Session : public SessionBase {
 
 public:
 
-    Session(struct bufferevent *bev, SessionManager &session_manager) : packet_manager(new PacketManager(bev)),
+    Session(struct bufferevent *bev, SessionManager &session_manager) : SessionBase(bev),
                                                                         session_manager(session_manager) {
-        packet_manager->set_packet_received_handler(std::bind(&Session::packet_received, this, std::placeholders::_1));
     }
 
     bool authorize_connection(const ConnectPacket &);
@@ -30,35 +32,7 @@ public:
 
     void forward_packet(const PublishPacket &packet);
 
-    void packet_received(std::unique_ptr<Packet>);
-
-    void handle_connect(const ConnectPacket &);
-
-    void handle_publish(const PublishPacket &);
-
-    void handle_puback(const PubackPacket &);
-
-    void handle_pubrec(const PubrecPacket &);
-
-    void handle_pubrel(const PubrelPacket &);
-
-    void handle_pubcomp(const PubcompPacket &);
-
-    void handle_subscribe(const SubscribePacket &);
-
-    void handle_unsubscribe(const UnsubscribePacket &);
-
-    void handle_pingreq(const PingreqPacket &);
-
-    void handle_disconnect(const DisconnectPacket &);
-
-    std::string client_id;
-
     bool clean_session;
-
-    std::unique_ptr<PacketManager> packet_manager;
-
-    SessionManager &session_manager;
 
     std::vector<Subscription> subscriptions;
 
@@ -77,5 +51,30 @@ public:
     // qos2 pubrel packet ids waiting for pubcomp, will be moved
     // between sessions as part of session state
     std::vector<uint16_t> qos2_pending_pubcomp;
+
+    void packet_received(std::unique_ptr<Packet>) override;
+
+    void handle_connect(const ConnectPacket &) override;
+
+    void handle_publish(const PublishPacket &) override;
+
+    void handle_puback(const PubackPacket &) override;
+
+    void handle_pubrec(const PubrecPacket &) override;
+
+    void handle_pubrel(const PubrelPacket &) override;
+
+    void handle_pubcomp(const PubcompPacket &) override;
+
+    void handle_subscribe(const SubscribePacket &) override;
+
+    void handle_unsubscribe(const UnsubscribePacket &) override;
+
+    void handle_pingreq(const PingreqPacket &) override;
+
+    void handle_disconnect(const DisconnectPacket &) override;
+
+    SessionManager &session_manager;
+
 };
 

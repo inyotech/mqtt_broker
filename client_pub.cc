@@ -15,7 +15,7 @@
 
 #include "mqtt.h"
 #include "packet.h"
-#include "packet_manager.h"
+#include "session_base.h"
 
 static void usage(void);
 
@@ -25,17 +25,61 @@ static void connect_event_cb(struct bufferevent *, short event, void *);
 
 static void close_cb(struct bufferevent *bev, void *arg);
 
-static void packet_received_callback(owned_packet_ptr_t Packet);
+struct options_t {
+    std::string broker_host = "localhost";
+    uint16_t broker_port = 1883;
+    std::string client_id;
+    std::string topic;
+    std::vector<uint8_t> message;
+    QoSType qos = QoSType::QoS0;
+    bool clean_session = false;
+} options;
 
-std::string broker_host = "localhost";
-uint16_t broker_port = 1883;
-std::string client_id;
-std::string topic;
-std::vector<uint8_t> message;
-QoSType qos = QoSType::QoS0;
-bool clean_session = false;
+class ClientSession : public SessionBase {
+public:
+    const options_t &options;
 
-PacketManager *packet_manager;
+    ClientSession(bufferevent *bev, const options_t &options) : SessionBase(bev), options(options) {}
+
+    void handle_connack(const ConnackPacket &connack_packet) override {
+
+        PublishPacket publish_packet;
+        publish_packet.qos(options.qos);
+        publish_packet.topic_name = options.topic;
+        publish_packet.packet_id = packet_manager->next_packet_id();
+        publish_packet.message_data = std::vector<uint8_t>(options.message.begin(), options.message.end());
+        packet_manager->send_packet(publish_packet);
+
+        if (options.qos == QoSType::QoS0) {
+            disconnect();
+        }
+    }
+
+    void handle_puback(const PubackPacket &puback_packet) override {
+        disconnect();
+    }
+
+    void handle_pubrec(const PubrecPacket &pubrec_packet) override {
+        PubrelPacket pubrel_packet;
+        pubrel_packet.packet_id = pubrec_packet.packet_id;
+        packet_manager->send_packet(pubrel_packet);
+
+    }
+
+    void handle_pubcomp(const PubcompPacket &puback_packet) override {
+        disconnect();
+    }
+
+    void disconnect() {
+        DisconnectPacket disconnect_packet;
+        packet_manager->send_packet(disconnect_packet);
+        bufferevent_enable(packet_manager->bev, EV_WRITE);
+        bufferevent_setcb(packet_manager->bev, packet_manager->bev->readcb, close_cb, NULL,
+                          packet_manager->bev->ev_base);
+    }
+};
+
+std::unique_ptr<ClientSession> session;
 
 int main(int argc, char *argv[]) {
 
@@ -57,7 +101,7 @@ int main(int argc, char *argv[]) {
 
     bufferevent_setcb(bev, NULL, NULL, connect_event_cb, evloop);
 
-    bufferevent_socket_connect_hostname(bev, dns_base, AF_UNSPEC, broker_host.c_str(), broker_port);
+    bufferevent_socket_connect_hostname(bev, dns_base, AF_UNSPEC, options.broker_host.c_str(), options.broker_port);
 
     evdns_base_free(dns_base, 0);
 
@@ -68,17 +112,13 @@ int main(int argc, char *argv[]) {
 
 static void connect_event_cb(struct bufferevent *bev, short events, void *arg) {
 
-    std::cout << "connect event\n";
-
     if (events & BEV_EVENT_CONNECTED) {
-        std::cout << "Connect okay.\n";
 
-        packet_manager = new PacketManager(bev);
-        packet_manager->set_packet_received_handler(packet_received_callback);
+        session = std::unique_ptr<ClientSession>(new ClientSession(bev, options));
 
         ConnectPacket connect_packet;
-        connect_packet.client_id = client_id;
-        packet_manager->send_packet(connect_packet);
+        connect_packet.client_id = options.client_id;
+        session->packet_manager->send_packet(connect_packet);
 
     } else if (events & (BEV_EVENT_ERROR | BEV_EVENT_EOF)) {
         std::cout << "closing\n";
@@ -91,57 +131,6 @@ static void connect_event_cb(struct bufferevent *bev, short events, void *arg) {
 
         bufferevent_free(bev);
         event_base_loopexit(base, NULL);
-    }
-
-}
-
-void packet_received_callback(owned_packet_ptr_t packet_ptr) {
-
-    switch (packet_ptr->type) {
-        case PacketType::Connack: {
-
-            PublishPacket publish_packet;
-            publish_packet.qos(qos);
-            publish_packet.topic_name = topic;
-            publish_packet.packet_id = packet_manager->next_packet_id();
-            publish_packet.message_data = std::vector<uint8_t>(message.begin(), message.end());
-            packet_manager->send_packet(publish_packet);
-
-            if (qos == QoSType::QoS0) {
-
-                DisconnectPacket disconnect_packet;
-                packet_manager->send_packet(disconnect_packet);
-                bufferevent_enable(packet_manager->bev, EV_WRITE);
-                bufferevent_setcb(packet_manager->bev, packet_manager->bev->readcb, close_cb, NULL, NULL);
-
-            }
-
-            break;
-        }
-
-        case PacketType::Pubrec: {
-
-            PubrelPacket pubrel_packet;
-            pubrel_packet.packet_id = dynamic_cast<PubrecPacket &>(*packet_ptr).packet_id;
-            packet_manager->send_packet(pubrel_packet);
-            break;
-        }
-
-        case PacketType::Puback:
-        case PacketType::Pubcomp: {
-
-            DisconnectPacket disconnect_packet;
-            packet_manager->send_packet(disconnect_packet);
-            bufferevent_enable(packet_manager->bev, EV_WRITE);
-            bufferevent_setcb(packet_manager->bev, packet_manager->bev->readcb, close_cb, NULL, NULL);
-
-            break;
-        }
-
-        default:
-            std::cerr << "unexpected packet type " << static_cast<int>(packet_ptr->type) << "\n";
-            throw std::exception();
-
     }
 
 }
@@ -167,24 +156,24 @@ void parse_arguments(int argc, char *argv[]) {
     while ((ch = getopt_long(argc, argv, "b:p:i:t:m:q:c", longopts, NULL)) != -1) {
         switch (ch) {
             case 'b':
-                broker_host = optarg;
+                options.broker_host = optarg;
                 break;
             case 'p':
-                broker_port = static_cast<uint16_t>(atoi(optarg));
+                options.broker_port = static_cast<uint16_t>(atoi(optarg));
                 break;
             case 'i':
-                client_id = optarg;
+                options.client_id = optarg;
                 break;
             case 't':
-                topic = optarg;
+                options.topic = optarg;
                 break;
             case 'm':
-                message = std::vector<uint8_t>(optarg, optarg + strlen(optarg));
+                options.message = std::vector<uint8_t>(optarg, optarg + strlen(optarg));
             case 'q':
-                qos = static_cast<QoSType>(atoi(optarg));
+                options.qos = static_cast<QoSType>(atoi(optarg));
                 break;
             case 'c':
-                clean_session = true;
+                options.clean_session = true;
                 break;
             case 'h':
                 usage();
@@ -200,7 +189,7 @@ void parse_arguments(int argc, char *argv[]) {
 
 static void close_cb(struct bufferevent *bev, void *arg) {
     if (evbuffer_get_length(bufferevent_get_output(bev)) == 0) {
-        bufferevent_free(bev);
-        std::exit(0);
+        event_base *base = static_cast<event_base *>(arg);
+        event_base_loopexit(base, NULL);;
     }
 }

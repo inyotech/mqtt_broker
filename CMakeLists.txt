@@ -3,7 +3,7 @@ PROJECT(mqtt)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Werror -std=c++11")
 
-SET(LIB_SOURCES session.cc packet.cc packet_manager.cc packet_data.cc client_id.cc topic.cc
+SET(LIB_SOURCES session_base.cc session.cc packet.cc packet_manager.cc packet_data.cc client_id.cc topic.cc
         session_manager.cc)
 
 ADD_LIBRARY(mqtt STATIC ${LIB_SOURCES})

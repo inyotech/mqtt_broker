@@ -6,6 +6,7 @@
 #include "gtest/gtest.h"
 
 #include "session.h"
+#include "client_session.h"
 #include "session_manager.h"
 
 #include <event2/listener.h>
@@ -17,7 +18,6 @@ public:
     struct event_base *evloop;
     struct evconnlistener *listener;
 
-    std::unique_ptr<PacketManager> packet_manager;
     SessionManager session_manager;
 
     void SetUp() {
@@ -67,17 +67,6 @@ public:
         session_manager.accept_connection(bev);
     }
 
-    static void connect_event_cb(struct bufferevent *bev, short events, void *arg) {
-
-        Protocol *_this = static_cast<Protocol *>(arg);
-
-        _this->packet_manager = std::unique_ptr<PacketManager>(new PacketManager(bev));
-        _this->packet_manager->set_packet_received_handler(
-                std::bind(&Protocol::packet_received_callback, _this, std::placeholders::_1));
-
-        _this->connection_made();
-    }
-
     static void timeout_cb(int fd, short event, void *arg) {
         Protocol *_this = static_cast<Protocol *>(arg);
 
@@ -85,6 +74,16 @@ public:
 
         event_base_loopexit(_this->evloop, NULL);
     }
+
+};
+
+class Client {
+
+public:
+
+    struct event_base *evloop;
+
+    std::unique_ptr<ClientSession> session;
 
     void connect_to_broker() {
 
@@ -100,6 +99,17 @@ public:
 
         evdns_base_free(dns_base, 0);
 
+    }
+
+    static void connect_event_cb(struct bufferevent *bev, short events, void *arg) {
+
+        Protocol *_this = static_cast<Protocol *>(arg);
+
+        _this->packet_manager = std::unique_ptr<PacketManager>(new PacketManager(bev));
+        _this->packet_manager->set_packet_received_handler(
+                std::bind(&Protocol::packet_received_callback, _this, std::placeholders::_1));
+
+        _this->connection_made();
     }
 
     virtual void connection_made() = 0;

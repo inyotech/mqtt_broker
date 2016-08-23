@@ -33,41 +33,7 @@ void Session::forward_packet(const PublishPacket &packet)
 
 void Session::packet_received(std::unique_ptr<Packet> packet)
 {
-
-    switch (packet->type) {
-        case PacketType::Connect:
-            handle_connect(dynamic_cast<const ConnectPacket &>(*packet));
-            break;
-        case PacketType::Publish:
-            handle_publish(dynamic_cast<const PublishPacket &>(*packet));
-            break;
-        case PacketType::Puback:
-            handle_puback(dynamic_cast<const PubackPacket &>(*packet));
-            break;
-        case PacketType::Pubrec:
-            handle_pubrec(dynamic_cast<const PubrecPacket &>(*packet));
-            break;
-        case PacketType::Pubrel:
-            handle_pubrel(dynamic_cast<const PubrelPacket &>(*packet));
-            break;
-        case PacketType::Pubcomp:
-            handle_pubcomp(dynamic_cast<const PubcompPacket &>(*packet));
-            break;
-        case PacketType::Subscribe:
-            handle_subscribe(dynamic_cast<const SubscribePacket &>(*packet));
-            break;
-        case PacketType::Unsubscribe:
-            handle_unsubscribe(dynamic_cast<const UnsubscribePacket &>(*packet));
-            break;
-        case PacketType::Pingreq:
-            handle_pingreq(dynamic_cast<const PingreqPacket &>(*packet));
-            break;
-        case PacketType::Disconnect:
-            handle_disconnect(dynamic_cast<const DisconnectPacket &>(*packet));
-            break;
-        default:
-            break;
-    }
+    SessionBase::packet_received(std::move(packet));
 
     send_pending_message();
 }
