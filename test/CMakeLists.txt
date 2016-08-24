@@ -1,4 +1,3 @@
-project(tests)
+ADD_SUBDIRECTORY(lib/googletest)
 
-add_subdirectory(lib/googletest)
-add_subdirectory(test)
+ADD_SUBDIRECTORY(test)
