@@ -13,20 +13,20 @@ TEST(packets, read_remaining_length) {
 
     PacketDataReader reader1(packet_data);
     ASSERT_TRUE(reader1.has_remaining_length());
-    ASSERT_EQ(reader1.read_remaining_length(), 127);
+    ASSERT_EQ(reader1.read_remaining_length(), static_cast<size_t>(127));
 
     packet_data[0] = 128 + 10;
     packet_data[1] = 127;
     PacketDataReader reader2(packet_data);
     ASSERT_TRUE(reader2.has_remaining_length());
-    ASSERT_EQ(reader2.read_remaining_length(), 10 + 128 * 127);
+    ASSERT_EQ(reader2.read_remaining_length(), static_cast<size_t>(10 + 128 * 127));
 
     packet_data[0] = 128 + 10;
     packet_data[1] = 128 + 10;
     packet_data[2] = 127;
     PacketDataReader reader3(packet_data);
     ASSERT_TRUE(reader3.has_remaining_length());
-    ASSERT_EQ(reader3.read_remaining_length(), 10 + 128 * 10 + 128 * 128 * 127);
+    ASSERT_EQ(reader3.read_remaining_length(), static_cast<size_t>(10 + 128 * 10 + 128 * 128 * 127));
 
     packet_data[0] = 128 + 10;
     packet_data[1] = 128 + 10;
@@ -34,7 +34,7 @@ TEST(packets, read_remaining_length) {
     packet_data[3] = 127;
     PacketDataReader reader4(packet_data);
     ASSERT_TRUE(reader4.has_remaining_length());
-    ASSERT_EQ(reader4.read_remaining_length(), 10 + 128 * 10 + 128 * 128 * 10 + 128 * 128 * 128 * 127);
+    ASSERT_EQ(reader4.read_remaining_length(), static_cast<size_t>(10 + 128 * 10 + 128 * 128 * 10 + 128 * 128 * 128 * 127));
 
     packet_data[0] = 128;
     packet_data[1] = 128;
@@ -249,7 +249,7 @@ TEST(packets, subscribe_packet) {
     ASSERT_EQ(subscribe_packet2.packet_id, subscribe_packet1.packet_id);
     ASSERT_EQ(subscribe_packet2.subscriptions.size(), subscribe_packet1.subscriptions.size());
 
-    for (int i = 0; i < subscribe_packet2.subscriptions.size(); i++) {
+    for (size_t i = 0; i < subscribe_packet2.subscriptions.size(); i++) {
         ASSERT_TRUE(topic_match(subscribe_packet2.subscriptions[i].topic_filter,
                                 subscribe_packet1.subscriptions[i].topic_filter));
         ASSERT_EQ(subscribe_packet2.subscriptions[i].qos, subscribe_packet2.subscriptions[i].qos);
@@ -278,7 +278,7 @@ TEST(packets, suback_packet) {
 
     ASSERT_EQ(suback_packet2.return_codes.size(), suback_packet1.return_codes.size());
 
-    for (int i = 0; i < suback_packet2.return_codes.size(); i++) {
+    for (size_t i = 0; i < suback_packet2.return_codes.size(); i++) {
         ASSERT_EQ(suback_packet2.return_codes[i], suback_packet1.return_codes[i]);
     }
 
@@ -304,7 +304,7 @@ TEST(packets, unsubscribe_packet) {
 
     ASSERT_EQ(unsubscribe_packet2.topics.size(), unsubscribe_packet1.topics.size());
 
-    for (int i = 0; i < unsubscribe_packet2.topics.size(); i++) {
+    for (size_t i = 0; i < unsubscribe_packet2.topics.size(); i++) {
         ASSERT_EQ(unsubscribe_packet2.topics[i], unsubscribe_packet1.topics[i]);
     }
 }

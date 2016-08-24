@@ -8,6 +8,8 @@
 #include <event2/buffer.h>
 #include <evdns.h>
 
+#include <cstring>
+
 void PacketManager::receive_packet_data(struct bufferevent *bev) {
 
     struct evbuffer *input = bufferevent_get_input(bev);

@@ -1,5 +1,5 @@
 
-ADD_EXECUTABLE(run_tests topic_tests.cc packet_tests.cc protocol_tests.cc session_tests.cc)
+ADD_EXECUTABLE(run_tests topic_tests.cc packet_tests.cc protocol_tests.cc)
 
 INCLUDE_DIRECTORIES(run_tests ${CMAKE_SOURCE_DIR}/src ${LIBEVENT_INCLUDE_DIR} ${gtest_SOURCE_DIR}/include
         ${gtest_SOURCE_DIR})

@@ -1,6 +1,8 @@
 #include "session.h"
 #include "session_manager.h"
 
+#include <algorithm>
+
 void Session::forward_packet(const PublishPacket &packet)
 {
 

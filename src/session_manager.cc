@@ -8,6 +8,7 @@
 #include "topic.h"
 
 #include <memory>
+#include <algorithm>
 
 void SessionManager::accept_connection(struct bufferevent *bev) {
 
@@ -30,7 +31,6 @@ void SessionManager::remove_session(const std::string & client_id) {
 
 void SessionManager::remove_session(const Session * session)
 {
-    std::cout << "removing session ";
     sessions.erase(std::remove_if(sessions.begin(), sessions.end(), [session](std::unique_ptr<Session> & s) {
         return s.get() == session;
     }), sessions.end());

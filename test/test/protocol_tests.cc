@@ -11,6 +11,8 @@
 #include <event2/listener.h>
 #include <event2/dns.h>
 
+#include <cstring>
+
 class Protocol : public testing::Test {
 public:
 
@@ -193,7 +195,7 @@ class Subscribe : public Protocol {
         SubackPacket &suback_packet = dynamic_cast<SubackPacket &>(*packet);
         ASSERT_EQ(suback_packet.packet_id, subscribe_packet_id);
 
-        ASSERT_EQ(suback_packet.return_codes.size(), 3);
+        ASSERT_EQ(suback_packet.return_codes.size(), static_cast<size_t>(3));
 
         ASSERT_EQ(suback_packet.return_codes[0], SubackPacket::ReturnCode::SuccessQoS0);
         ASSERT_EQ(suback_packet.return_codes[1], SubackPacket::ReturnCode::SuccessQoS1);

@@ -166,7 +166,7 @@ std::vector<uint8_t> PublishPacket::serialize() const {
     if (qos() != QoSType::QoS0) {
         writer.write_uint16(packet_id);
     }
-    for (int i = 0; i < message_data.size(); i++) {
+    for (size_t i = 0; i < message_data.size(); i++) {
         writer.write_byte(message_data[i]);
     }
 

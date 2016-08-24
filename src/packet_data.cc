@@ -45,7 +45,7 @@ bool PacketDataReader::has_remaining_length() {
 
     size_t remaining = std::min<size_t>(packet_data.size() - offset, 4);
 
-    for (int i=offset; i<offset+remaining; i++) {
+    for (size_t i=offset; i<offset+remaining; i++) {
         if ((packet_data[i] & 0x80) == 0) {
             return true;
         }

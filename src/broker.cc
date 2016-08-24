@@ -3,6 +3,9 @@
 
 #include <event2/listener.h>
 
+#include <csignal>
+#include <cstring>
+
 SessionManager session_manager;
 
 static void signal_cb(evutil_socket_t, short event, void *);

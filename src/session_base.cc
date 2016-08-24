@@ -4,6 +4,8 @@
 
 #include "session_base.h"
 
+#include <string>
+
 void SessionBase::packet_received(std::unique_ptr<Packet> packet)
 {
 

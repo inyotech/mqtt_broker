@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <vector>
+#include <csignal>
 
 #include <getopt.h>
 
@@ -56,7 +57,7 @@ public:
 
     void handle_suback(const SubackPacket & suback_packet) override {
 
-        for (int i = 0; i < suback_packet.return_codes.size(); i++) {
+        for (size_t i = 0; i < suback_packet.return_codes.size(); i++) {
             SubackPacket::ReturnCode code = suback_packet.return_codes[i];
             if (code == SubackPacket::ReturnCode::Failure) {
                 std::cout << "Subscription to topic " << options.topics[i] << "failed\n";
