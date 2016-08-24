@@ -3,14 +3,23 @@
 //
 
 #include "client_id.h"
-#include <uuid/uuid.h>
+#include <ossp/uuid.h>
+
+#include <cstdlib>
 
 std::string generate_client_id() {
 
-    uuid_t uuid;
-    uuid_generate(uuid);
-    uuid_string_t uuid_str;
-    uuid_unparse_lower(uuid, uuid_str);
+    uuid_t * uuid;
+    char * c_str = NULL;
+
+    uuid_create(&uuid);
+    uuid_make(uuid, UUID_MAKE_V4);
+    uuid_export(uuid, UUID_FMT_STR, &c_str, NULL);
+    uuid_destroy(uuid);
+
+    std::string uuid_str(c_str);
+
+    free(c_str);
 
     return std::string(uuid_str);
 
