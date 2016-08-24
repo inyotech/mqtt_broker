@@ -78,95 +78,16 @@ public:
 
 };
 
-class SubscriberSession : public SessionBase {
-
-public:
-
-    SubscriberSession(bufferevent *bev) : SessionBase(bev) {}
-
-    std::function<void()> on_ready;
-
-    void connection_made() {
-        ConnectPacket connect_packet;
-        packet_manager->send_packet(connect_packet);
-    }
-
-    static void close_cb(struct bufferevent *bev, void *arg) {
-        if (evbuffer_get_length(bufferevent_get_output(bev)) == 0) {
-            event_base *base = static_cast<event_base *>(arg);
-            event_base_loopexit(base, NULL);;
-        }
-    }
-
-    void handle_connack(const ConnackPacket &connack_packet) override {
-        SubscribePacket subscribe_packet;
-        subscribe_packet.packet_id = packet_manager->next_packet_id();
-        std::string topic = "a/b/c";
-        subscribe_packet.subscriptions.push_back(Subscription{topic, QoSType::QoS0});
-        packet_manager->send_packet(subscribe_packet);
-    }
-
-    void handle_suback(const SubackPacket &suback_packet) override {
-        on_ready();
-    }
-
-    void handle_publish(const PublishPacket &publish_packet) override {
-
-        std::string message = "test message";
-        ASSERT_EQ(publish_packet.message_data, std::vector<uint8_t>(message.begin(), message.end()));
-
-        DisconnectPacket disconnect_packet;
-        packet_manager->send_packet(disconnect_packet);
-
-        bufferevent_enable(packet_manager->bev, EV_WRITE);
-        bufferevent_disable(packet_manager->bev, EV_READ);
-        bufferevent_setcb(packet_manager->bev, NULL, close_cb, NULL,
-                          bufferevent_get_base(packet_manager->bev));
-
-    }
-};
-
-class PublisherSession : public SessionBase {
-public:
-
-    PublisherSession(bufferevent *bev) : SessionBase(bev) {}
-
-    std::function<void()> on_ready;
-
-    void connection_made() {
-        ConnectPacket connect_packet;
-        packet_manager->send_packet(connect_packet);
-    }
-
-    void handle_connack(const ConnackPacket &connack_packet) override {
-
-        PublishPacket publish_packet;
-        publish_packet.qos(QoSType::QoS0);
-        publish_packet.topic_name = "a/b/c";
-        publish_packet.packet_id = packet_manager->next_packet_id();
-        std::string message = "test message";
-        publish_packet.message_data = std::vector<uint8_t>(message.begin(), message.end());
-        packet_manager->send_packet(publish_packet);
-
-        DisconnectPacket disconnect_packet;
-        packet_manager->send_packet(disconnect_packet);
-
-    }
-
-};
-
-template<typename T>
+template<typename SessionType>
 class Client {
 
 public:
 
-    Client(event_base *evbase, std::function<void()> on_ready = [](){}) : evloop(evbase), on_ready(on_ready) {}
+    Client(event_base *evbase) : evloop(evbase) {}
 
     struct event_base *evloop;
 
-    typedef T SessionType;
-
-    std::function<void()> on_ready;
+    std::function<void()> on_ready = []() {};
 
     std::unique_ptr<SessionType> session;
 
@@ -174,7 +95,7 @@ public:
 
         struct evdns_base *dns_base;
 
-        bufferevent * bev = bufferevent_socket_new(evloop, -1, BEV_OPT_CLOSE_ON_FREE);
+        bufferevent *bev = bufferevent_socket_new(evloop, -1, BEV_OPT_CLOSE_ON_FREE);
 
         bufferevent_setcb(bev, NULL, NULL, connect_event_cb, this);
 
@@ -188,7 +109,7 @@ public:
 
     static void connect_event_cb(struct bufferevent *bev, short events, void *arg) {
 
-        Client<T> *_this = static_cast<Client<T> *>(arg);
+        Client<SessionType> *_this = static_cast<Client<SessionType> *>(arg);
 
         _this->session = std::unique_ptr<SessionType>(new SessionType(bev));
 
@@ -200,14 +121,181 @@ public:
 
 };
 
+class TestSession : public SessionBase {
+
+public:
+
+    TestSession(bufferevent *bev) : SessionBase(bev) {}
+
+    std::function<void()> on_ready;
+
+    void connection_made() {
+        ConnectPacket connect_packet;
+        packet_manager->send_packet(connect_packet);
+    }
+
+    void disconnect_all() {
+
+        DisconnectPacket disconnect_packet;
+        packet_manager->send_packet(disconnect_packet);
+
+        bufferevent_enable(packet_manager->bev, EV_WRITE);
+        bufferevent_disable(packet_manager->bev, EV_READ);
+        bufferevent_setcb(packet_manager->bev, NULL, close_cb, NULL,
+                          bufferevent_get_base(packet_manager->bev));
+
+    }
+
+    static void close_cb(struct bufferevent *bev, void *arg) {
+        if (evbuffer_get_length(bufferevent_get_output(bev)) == 0) {
+            event_base *base = static_cast<event_base *>(arg);
+            event_base_loopexit(base, NULL);;
+        }
+    }
+};
+
+struct TestParams {
+    std::string test_topic;
+    std::string test_message;
+    QoSType qos;
+};
+
+static TestParams qos0_params = {
+        .test_topic = "a/b/c",
+        .test_message = "test message",
+        .qos = QoSType::QoS0,
+};
+
+static TestParams qos1_params = {
+        .test_topic = "a/b/c",
+        .test_message = "test message",
+        .qos = QoSType::QoS1,
+};
+
+static TestParams qos2_params = {
+        .test_topic = "a/b/c",
+        .test_message = "test message",
+        .qos = QoSType::QoS2,
+};
+
+template<typename ::TestParams &params>
+class SubscriberSession;
+
+template<typename ::TestParams &params>
+class PublisherSession;
+
 TEST_F(SessionProtocol, qos0_test) {
 
-    Client<PublisherSession> publisher(evloop);
+    Client<PublisherSession<qos0_params>> publisher(evloop);
 
-    Client<SubscriberSession> subscriber(evloop, [&publisher](){publisher.connect_to_broker();});
+    Client<SubscriberSession<qos0_params>> subscriber(evloop);
+
+    subscriber.on_ready = [&publisher]() { publisher.connect_to_broker(); };
 
     subscriber.connect_to_broker();
 
     event_base_dispatch(evloop);
 
 }
+
+TEST_F(SessionProtocol, qos1_test) {
+
+    Client<PublisherSession<qos1_params>> publisher(evloop);
+
+    Client<SubscriberSession<qos1_params>> subscriber(evloop);
+
+    subscriber.on_ready = [&publisher]() { publisher.connect_to_broker(); };
+
+    subscriber.connect_to_broker();
+
+    event_base_dispatch(evloop);
+
+}
+
+TEST_F(SessionProtocol, qos2_test) {
+
+    Client<PublisherSession<qos2_params>> publisher(evloop);
+
+    Client<SubscriberSession<qos2_params>> subscriber(evloop);
+
+    subscriber.on_ready = [&publisher]() { publisher.connect_to_broker(); };
+
+    subscriber.connect_to_broker();
+
+    event_base_dispatch(evloop);
+
+}
+
+template<typename ::TestParams &params>
+class SubscriberSession : public TestSession {
+
+public:
+
+    SubscriberSession(bufferevent *bev) : TestSession(bev) {}
+
+    void handle_connack(const ConnackPacket &connack_packet) override {
+
+        SubscribePacket subscribe_packet;
+        subscribe_packet.packet_id = packet_manager->next_packet_id();
+        subscribe_packet.subscriptions.push_back(Subscription{params.test_topic, params.qos});
+        packet_manager->send_packet(subscribe_packet);
+    }
+
+    void handle_suback(const SubackPacket &suback_packet) override {
+        on_ready();
+    }
+
+    void handle_publish(const PublishPacket &publish_packet) override {
+
+        ASSERT_EQ(publish_packet.message_data,
+                  std::vector<uint8_t>(params.test_message.begin(), params.test_message.end()));
+
+        disconnect_all();
+    }
+};
+
+template<typename ::TestParams &params>
+class PublisherSession : public TestSession {
+public:
+
+    PublisherSession(bufferevent *bev) : TestSession(bev) {}
+
+    void handle_connack(const ConnackPacket &connack_packet) override {
+
+        PublishPacket publish_packet;
+        publish_packet.qos(params.qos);
+        publish_packet.topic_name = params.test_topic;
+        publish_packet.packet_id = packet_manager->next_packet_id();
+        publish_packet.message_data = std::vector<uint8_t>(params.test_message.begin(),
+                                                           params.test_message.end());
+        packet_manager->send_packet(publish_packet);
+
+        if (params.qos == QoSType::QoS0) {
+            DisconnectPacket disconnect_packet;
+            packet_manager->send_packet(disconnect_packet);
+        }
+    }
+
+    void handle_puback(const PubackPacket &puback_packet) override {
+        ASSERT_EQ(params.qos, QoSType::QoS1);
+
+        DisconnectPacket disconnect_packet;
+        packet_manager->send_packet(disconnect_packet);
+    }
+
+    void handle_pubrec(const PubrecPacket &pubrec_packet) override {
+        ASSERT_EQ(params.qos, QoSType::QoS2);
+
+        PubrelPacket pubrel_packet;
+        pubrel_packet.packet_id = pubrec_packet.packet_id;
+        packet_manager->send_packet(pubrel_packet);
+    }
+
+    void handle_pubcomp(const PubcompPacket &pubcomp_packet) override {
+        ASSERT_EQ(params.qos, QoSType::QoS2);
+
+        DisconnectPacket disconnect_packet;
+        packet_manager->send_packet(disconnect_packet);
+    }
+
+};
