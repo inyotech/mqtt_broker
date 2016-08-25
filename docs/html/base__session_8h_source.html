@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>MQTT Broker and Clients: /Users/scottb/src/mqtt/src/session_base.h Source File</title>
+<title>MQTT Broker and Clients: /Users/scottb/src/mqtt/src/base_session.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -85,7 +85,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">session_base.h</div>  </div>
+<div class="title">base_session.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//</span></div>
@@ -100,17 +100,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;event2/bufferevent.h&gt;</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="class_session_base.html">   13</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_session_base.html">SessionBase</a> {</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="class_base_session.html">   13</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_base_session.html">BaseSession</a> {</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="class_session_base.html">SessionBase</a>(<span class="keyword">struct</span> bufferevent *bev) : packet_manager(<span class="keyword">new</span> <a class="code" href="class_packet_manager.html">PacketManager</a>(bev)) {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="class_base_session.html">BaseSession</a>(<span class="keyword">struct</span> bufferevent *bev) : packet_manager(<span class="keyword">new</span> <a class="code" href="class_packet_manager.html">PacketManager</a>(bev)) {</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        packet_manager-&gt;set_packet_received_handler(</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                std::bind(&amp;SessionBase::packet_received, <span class="keyword">this</span>, std::placeholders::_1));</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        packet_manager-&gt;set_event_handler(std::bind(&amp;SessionBase::packet_manager_event, <span class="keyword">this</span>, std::placeholders::_1));</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                std::bind(&amp;BaseSession::packet_received, <span class="keyword">this</span>, std::placeholders::_1));</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        packet_manager-&gt;set_event_handler(std::bind(&amp;BaseSession::packet_manager_event, <span class="keyword">this</span>, std::placeholders::_1));</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    }</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="class_session_base.html">SessionBase</a>() {}</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="class_base_session.html">BaseSession</a>() {}</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    std::string client_id;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
@@ -152,6 +152,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="class_pingresp_packet_html"><div class="ttname"><a href="class_pingresp_packet.html">PingrespPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:399</div></div>
 <div class="ttc" id="class_unsuback_packet_html"><div class="ttname"><a href="class_unsuback_packet.html">UnsubackPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:368</div></div>
 <div class="ttc" id="class_disconnect_packet_html"><div class="ttname"><a href="class_disconnect_packet.html">DisconnectPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:413</div></div>
+<div class="ttc" id="class_base_session_html"><div class="ttname"><a href="class_base_session.html">BaseSession</a></div><div class="ttdef"><b>Definition:</b> base_session.h:13</div></div>
 <div class="ttc" id="class_pubcomp_packet_html"><div class="ttname"><a href="class_pubcomp_packet.html">PubcompPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:289</div></div>
 <div class="ttc" id="class_pubrel_packet_html"><div class="ttname"><a href="class_pubrel_packet.html">PubrelPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:273</div></div>
 <div class="ttc" id="class_connack_packet_html"><div class="ttname"><a href="class_connack_packet.html">ConnackPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:154</div></div>
@@ -162,7 +163,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="class_unsubscribe_packet_html"><div class="ttname"><a href="class_unsubscribe_packet.html">UnsubscribePacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:349</div></div>
 <div class="ttc" id="class_pingreq_packet_html"><div class="ttname"><a href="class_pingreq_packet.html">PingreqPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:385</div></div>
 <div class="ttc" id="class_connect_packet_html"><div class="ttname"><a href="class_connect_packet.html">ConnectPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:60</div></div>
-<div class="ttc" id="class_session_base_html"><div class="ttname"><a href="class_session_base.html">SessionBase</a></div><div class="ttdef"><b>Definition:</b> session_base.h:13</div></div>
 <div class="ttc" id="class_packet_manager_html"><div class="ttname"><a href="class_packet_manager.html">PacketManager</a></div><div class="ttdef"><b>Definition:</b> packet_manager.h:17</div></div>
 <div class="ttc" id="class_suback_packet_html"><div class="ttname"><a href="class_suback_packet.html">SubackPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:324</div></div>
 </div><!-- fragment --></div><!-- contents -->

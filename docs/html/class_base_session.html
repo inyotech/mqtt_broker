@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>MQTT Broker and Clients: SessionBase Class Reference</title>
+<title>MQTT Broker and Clients: BaseSession Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -85,89 +85,89 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="class_session_base-members.html">List of all members</a>  </div>
+<a href="class_base_session-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">SessionBase Class Reference</div>  </div>
+<div class="title">BaseSession Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="dynheader">
-Inheritance diagram for SessionBase:</div>
+Inheritance diagram for BaseSession:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="class_session_base.png" usemap="#SessionBase_map" alt=""/>
-  <map id="SessionBase_map" name="SessionBase_map">
-<area href="class_client_session.html" alt="ClientSession" shape="rect" coords="0,56,88,80"/>
-<area href="class_client_session.html" alt="ClientSession" shape="rect" coords="98,56,186,80"/>
-<area href="class_session.html" alt="Session" shape="rect" coords="196,56,284,80"/>
+  <img src="class_base_session.png" usemap="#BaseSession_map" alt=""/>
+  <map id="BaseSession_map" name="BaseSession_map">
+<area href="class_broker_session.html" alt="BrokerSession" shape="rect" coords="0,56,94,80"/>
+<area href="class_client_session.html" alt="ClientSession" shape="rect" coords="104,56,198,80"/>
+<area href="class_client_session.html" alt="ClientSession" shape="rect" coords="208,56,302,80"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a01b9e9a2e20bd697bcfcdaf5e38ce380"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a01b9e9a2e20bd697bcfcdaf5e38ce380"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SessionBase</b> (struct bufferevent *bev)</td></tr>
-<tr class="separator:a01b9e9a2e20bd697bcfcdaf5e38ce380"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c0d9644df454cb6b86861fd12185f83"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3c0d9644df454cb6b86861fd12185f83"></a>
+<tr class="memitem:a08a81804545478ab29c3620a356c1e0d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a08a81804545478ab29c3620a356c1e0d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BaseSession</b> (struct bufferevent *bev)</td></tr>
+<tr class="separator:a08a81804545478ab29c3620a356c1e0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1304e6200ac9c5c546fdea93679b2f51"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1304e6200ac9c5c546fdea93679b2f51"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>packet_received</b> (std::unique_ptr&lt; <a class="el" href="class_packet.html">Packet</a> &gt;)</td></tr>
-<tr class="separator:a3c0d9644df454cb6b86861fd12185f83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72b7398e932432ff3ee17034701d3aaa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a72b7398e932432ff3ee17034701d3aaa"></a>
+<tr class="separator:a1304e6200ac9c5c546fdea93679b2f51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55eb078750a419ee1a50f71f83e01531"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55eb078750a419ee1a50f71f83e01531"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>packet_manager_event</b> (PacketManager::EventType event)</td></tr>
-<tr class="separator:a72b7398e932432ff3ee17034701d3aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bfd30cbc85261932b0c128cacdc2af0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6bfd30cbc85261932b0c128cacdc2af0"></a>
+<tr class="separator:a55eb078750a419ee1a50f71f83e01531"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a390456799ae0f454d6a0b50417ef6cbf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a390456799ae0f454d6a0b50417ef6cbf"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_connect</b> (const <a class="el" href="class_connect_packet.html">ConnectPacket</a> &amp;)</td></tr>
-<tr class="separator:a6bfd30cbc85261932b0c128cacdc2af0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83a77b68ac8b1e592ecd9391c36b32c4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a83a77b68ac8b1e592ecd9391c36b32c4"></a>
+<tr class="separator:a390456799ae0f454d6a0b50417ef6cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cbe48eafa78c205830d08fb8b151178"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4cbe48eafa78c205830d08fb8b151178"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_connack</b> (const <a class="el" href="class_connack_packet.html">ConnackPacket</a> &amp;)</td></tr>
-<tr class="separator:a83a77b68ac8b1e592ecd9391c36b32c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc6b6c8d9657d1e9d5c61aa3575e6dff"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc6b6c8d9657d1e9d5c61aa3575e6dff"></a>
+<tr class="separator:a4cbe48eafa78c205830d08fb8b151178"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22b29a26661c440a9cfa06863e4444f4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a22b29a26661c440a9cfa06863e4444f4"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_publish</b> (const <a class="el" href="class_publish_packet.html">PublishPacket</a> &amp;)</td></tr>
-<tr class="separator:acc6b6c8d9657d1e9d5c61aa3575e6dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeaaf9a36208c30901ce0c9703824667f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeaaf9a36208c30901ce0c9703824667f"></a>
+<tr class="separator:a22b29a26661c440a9cfa06863e4444f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab679ba7fcd3f3ca6e46df53debe413e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab679ba7fcd3f3ca6e46df53debe413e4"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_puback</b> (const <a class="el" href="class_puback_packet.html">PubackPacket</a> &amp;)</td></tr>
-<tr class="separator:aeaaf9a36208c30901ce0c9703824667f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52fb3895eac904d09fc68e7e0c24919e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52fb3895eac904d09fc68e7e0c24919e"></a>
+<tr class="separator:ab679ba7fcd3f3ca6e46df53debe413e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2ee97356bd9bdcd6b2e09374f75cd35"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2ee97356bd9bdcd6b2e09374f75cd35"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_pubrec</b> (const <a class="el" href="class_pubrec_packet.html">PubrecPacket</a> &amp;)</td></tr>
-<tr class="separator:a52fb3895eac904d09fc68e7e0c24919e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e4cfb869654f128aefbf5fdaa4c8ca3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4e4cfb869654f128aefbf5fdaa4c8ca3"></a>
+<tr class="separator:ae2ee97356bd9bdcd6b2e09374f75cd35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1d8f3e0cf71c58c8343db51b72d9671"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae1d8f3e0cf71c58c8343db51b72d9671"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_pubrel</b> (const <a class="el" href="class_pubrel_packet.html">PubrelPacket</a> &amp;)</td></tr>
-<tr class="separator:a4e4cfb869654f128aefbf5fdaa4c8ca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad612f71ae3e429298faa7acc2578eda9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad612f71ae3e429298faa7acc2578eda9"></a>
+<tr class="separator:ae1d8f3e0cf71c58c8343db51b72d9671"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae159cba41ef62a7602d17f8713a3be20"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae159cba41ef62a7602d17f8713a3be20"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_pubcomp</b> (const <a class="el" href="class_pubcomp_packet.html">PubcompPacket</a> &amp;)</td></tr>
-<tr class="separator:ad612f71ae3e429298faa7acc2578eda9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ef4566674b3ee51f2e0827dff4e814c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ef4566674b3ee51f2e0827dff4e814c"></a>
+<tr class="separator:ae159cba41ef62a7602d17f8713a3be20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7d2964dd68245f239d9d62c073ff060"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7d2964dd68245f239d9d62c073ff060"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_subscribe</b> (const <a class="el" href="class_subscribe_packet.html">SubscribePacket</a> &amp;)</td></tr>
-<tr class="separator:a7ef4566674b3ee51f2e0827dff4e814c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38c047e3f3064ee57689080ead1398f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38c047e3f3064ee57689080ead1398f9"></a>
+<tr class="separator:ac7d2964dd68245f239d9d62c073ff060"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade4cce3268d203d54529cfc517066849"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade4cce3268d203d54529cfc517066849"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_suback</b> (const <a class="el" href="class_suback_packet.html">SubackPacket</a> &amp;)</td></tr>
-<tr class="separator:a38c047e3f3064ee57689080ead1398f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb7c7d3ad33c8cb4db291786b9d5e934"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb7c7d3ad33c8cb4db291786b9d5e934"></a>
+<tr class="separator:ade4cce3268d203d54529cfc517066849"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fc7cf0c2e9fcd45ff91297681380cf5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1fc7cf0c2e9fcd45ff91297681380cf5"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_unsubscribe</b> (const <a class="el" href="class_unsubscribe_packet.html">UnsubscribePacket</a> &amp;)</td></tr>
-<tr class="separator:aeb7c7d3ad33c8cb4db291786b9d5e934"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a42d0e8702b212573d9c2cadb8a47f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a42d0e8702b212573d9c2cadb8a47f1"></a>
+<tr class="separator:a1fc7cf0c2e9fcd45ff91297681380cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3f031e9b3f497ff6945e90ce7a8e997"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3f031e9b3f497ff6945e90ce7a8e997"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_unsuback</b> (const <a class="el" href="class_unsuback_packet.html">UnsubackPacket</a> &amp;)</td></tr>
-<tr class="separator:a5a42d0e8702b212573d9c2cadb8a47f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa85299ce542324c6d2e8f610ad49cd56"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa85299ce542324c6d2e8f610ad49cd56"></a>
+<tr class="separator:ab3f031e9b3f497ff6945e90ce7a8e997"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1135af0bd05770411912bc71ad739f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac1135af0bd05770411912bc71ad739f2"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_pingreq</b> (const <a class="el" href="class_pingreq_packet.html">PingreqPacket</a> &amp;)</td></tr>
-<tr class="separator:aa85299ce542324c6d2e8f610ad49cd56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea323394e9ceb00b3d21881a6755a43f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aea323394e9ceb00b3d21881a6755a43f"></a>
+<tr class="separator:ac1135af0bd05770411912bc71ad739f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27ea92beeef983bca1a71017a6bf7f61"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a27ea92beeef983bca1a71017a6bf7f61"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_pingresp</b> (const <a class="el" href="class_pingresp_packet.html">PingrespPacket</a> &amp;)</td></tr>
-<tr class="separator:aea323394e9ceb00b3d21881a6755a43f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08489cca8a119beee5f9d2dc3dc45d89"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a08489cca8a119beee5f9d2dc3dc45d89"></a>
+<tr class="separator:a27ea92beeef983bca1a71017a6bf7f61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab024f2e1383d3bd1ab189f8d523746be"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab024f2e1383d3bd1ab189f8d523746be"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_disconnect</b> (const <a class="el" href="class_disconnect_packet.html">DisconnectPacket</a> &amp;)</td></tr>
-<tr class="separator:a08489cca8a119beee5f9d2dc3dc45d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ab024f2e1383d3bd1ab189f8d523746be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a7a60111f9fa02834cdde1a6944867496"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a60111f9fa02834cdde1a6944867496"></a>
+<tr class="memitem:a0c5e6c15f009622c218dc5d3a4127574"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0c5e6c15f009622c218dc5d3a4127574"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>client_id</b></td></tr>
-<tr class="separator:a7a60111f9fa02834cdde1a6944867496"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a419588adefbd8a1ce82635085be915f0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a419588adefbd8a1ce82635085be915f0"></a>
+<tr class="separator:a0c5e6c15f009622c218dc5d3a4127574"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03cdd6366ba72257d25bf7906d7aef2b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a03cdd6366ba72257d25bf7906d7aef2b"></a>
 std::unique_ptr&lt; <a class="el" href="class_packet_manager.html">PacketManager</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>packet_manager</b></td></tr>
-<tr class="separator:a419588adefbd8a1ce82635085be915f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a03cdd6366ba72257d25bf7906d7aef2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/Users/scottb/src/mqtt/src/<a class="el" href="session__base_8h_source.html">session_base.h</a></li>
-<li>/Users/scottb/src/mqtt/src/session_base.cc</li>
+<li>/Users/scottb/src/mqtt/src/<a class="el" href="base__session_8h_source.html">base_session.h</a></li>
+<li>/Users/scottb/src/mqtt/src/base_session.cc</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
