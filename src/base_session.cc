@@ -2,11 +2,11 @@
 // Created by Scott Brumbaugh on 8/23/16.
 //
 
-#include "session_base.h"
+#include "base_session.h"
 
 #include <string>
 
-void SessionBase::packet_received(std::unique_ptr<Packet> packet) {
+void BaseSession::packet_received(std::unique_ptr<Packet> packet) {
 
     switch (packet->type) {
         case PacketType::Connect:
@@ -57,62 +57,62 @@ void SessionBase::packet_received(std::unique_ptr<Packet> packet) {
 
 }
 
-void SessionBase::packet_manager_event(PacketManager::EventType event) {
+void BaseSession::packet_manager_event(PacketManager::EventType event) {
     packet_manager->close_connection();
 }
 
-void SessionBase::handle_connect(const ConnectPacket &) {
+void BaseSession::handle_connect(const ConnectPacket &) {
     throw std::exception();
 }
 
-void SessionBase::handle_connack(const ConnackPacket &) {
+void BaseSession::handle_connack(const ConnackPacket &) {
     throw std::exception();
 }
 
-void SessionBase::handle_publish(const PublishPacket &) {
+void BaseSession::handle_publish(const PublishPacket &) {
     throw std::exception();
 }
 
-void SessionBase::handle_puback(const PubackPacket &) {
+void BaseSession::handle_puback(const PubackPacket &) {
     throw std::exception();
 }
 
-void SessionBase::handle_pubrec(const PubrecPacket &) {
+void BaseSession::handle_pubrec(const PubrecPacket &) {
     throw std::exception();
 }
 
-void SessionBase::handle_pubrel(const PubrelPacket &) {
+void BaseSession::handle_pubrel(const PubrelPacket &) {
     throw std::exception();
 }
 
-void SessionBase::handle_pubcomp(const PubcompPacket &) {
+void BaseSession::handle_pubcomp(const PubcompPacket &) {
     throw std::exception();
 }
 
-void SessionBase::handle_subscribe(const SubscribePacket &) {
+void BaseSession::handle_subscribe(const SubscribePacket &) {
     throw std::exception();
 }
 
-void SessionBase::handle_suback(const SubackPacket &) {
+void BaseSession::handle_suback(const SubackPacket &) {
     throw std::exception();
 }
 
-void SessionBase::handle_unsubscribe(const UnsubscribePacket &) {
+void BaseSession::handle_unsubscribe(const UnsubscribePacket &) {
     throw std::exception();
 }
 
-void SessionBase::handle_unsuback(const UnsubackPacket &) {
+void BaseSession::handle_unsuback(const UnsubackPacket &) {
     throw std::exception();
 }
 
-void SessionBase::handle_pingreq(const PingreqPacket &) {
+void BaseSession::handle_pingreq(const PingreqPacket &) {
     throw std::exception();
 }
 
-void SessionBase::handle_pingresp(const PingrespPacket &) {
+void BaseSession::handle_pingresp(const PingrespPacket &) {
     throw std::exception();
 }
 
-void SessionBase::handle_disconnect(const DisconnectPacket &) {
+void BaseSession::handle_disconnect(const DisconnectPacket &) {
     throw std::exception();
 }

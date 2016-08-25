@@ -10,7 +10,7 @@
 
 #include "mqtt.h"
 #include "packet.h"
-#include "session_base.h"
+#include "base_session.h"
 
 #include <event2/event.h>
 #include <event2/bufferevent.h>
@@ -103,7 +103,7 @@ static struct options_t {
  * Override base class control packet handlers used in message publishing.  Any control packets received be handled by
  * the default methods.  In most cases that will result in a thrown exception.
  */
-class ClientSession : public SessionBase {
+class ClientSession : public BaseSession {
 
 public:
 
@@ -113,7 +113,7 @@ public:
      * @param bev       Pointer to the buffer event structure for the broker connection.
      * @param options   Options structure.
      */
-    ClientSession(bufferevent *bev, const options_t &options) : SessionBase(bev), options(options) {}
+    ClientSession(bufferevent *bev, const options_t &options) : BaseSession(bev), options(options) {}
 
     /** Reference to the options structure with members updated from command line arguments. */
     const options_t &options;

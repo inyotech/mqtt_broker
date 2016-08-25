@@ -8,7 +8,7 @@
  * */
 
 #include "session_manager.h"
-#include "session.h"
+#include "broker_session.h"
 
 #include <event2/listener.h>
 

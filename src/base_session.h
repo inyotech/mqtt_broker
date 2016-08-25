@@ -10,17 +10,17 @@
 #include <event2/bufferevent.h>
 #include <string>
 
-class SessionBase {
+class BaseSession {
 
 public:
 
-    SessionBase(struct bufferevent *bev) : packet_manager(new PacketManager(bev)) {
+    BaseSession(struct bufferevent *bev) : packet_manager(new PacketManager(bev)) {
         packet_manager->set_packet_received_handler(
-                std::bind(&SessionBase::packet_received, this, std::placeholders::_1));
-        packet_manager->set_event_handler(std::bind(&SessionBase::packet_manager_event, this, std::placeholders::_1));
+                std::bind(&BaseSession::packet_received, this, std::placeholders::_1));
+        packet_manager->set_event_handler(std::bind(&BaseSession::packet_manager_event, this, std::placeholders::_1));
     }
 
-    virtual ~SessionBase() {}
+    virtual ~BaseSession() {}
 
     std::string client_id;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "session_base.h"
+#include "base_session.h"
 #include "packet_manager.h"
 #include "packet.h"
 
@@ -15,17 +15,17 @@ class Message;
 
 class Subscription;
 
-class Session : public SessionBase {
+class BrokerSession : public BaseSession {
 
 public:
 
-    Session(struct bufferevent *bev, SessionManager &session_manager) : SessionBase(bev),
+    BrokerSession(struct bufferevent *bev, SessionManager &session_manager) : BaseSession(bev),
                                                                         session_manager(session_manager) {
     }
 
     bool authorize_connection(const ConnectPacket &);
 
-    void resume_session(std::unique_ptr<Session> &session,
+    void resume_session(std::unique_ptr<BrokerSession> &session,
                         std::unique_ptr<PacketManager> packet_manager);
 
     void send_pending_message(void);
