@@ -7,10 +7,10 @@
  * arguments to this program.
  * See [the MQTT specification](http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html)
  */
-#include <iostream>
-#include <vector>
 
-#include <getopt.h>
+#include "mqtt.h"
+#include "packet.h"
+#include "session_base.h"
 
 #include <event2/event.h>
 #include <event2/bufferevent.h>
@@ -18,9 +18,11 @@
 #include <event2/dns.h>
 #include <evdns.h>
 
-#include "mqtt.h"
-#include "packet.h"
-#include "session_base.h"
+#include <getopt.h>
+
+#include <iostream>
+#include <vector>
+#include <cstring>
 
 /**
  * Display usage message

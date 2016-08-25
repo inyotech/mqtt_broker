@@ -13,6 +13,7 @@
 #include <event2/listener.h>
 
 #include <csignal>
+#include <cstring>
 
 /**
  * Manange sessions for each client.
