@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 
     evloop = event_base_new();
     if (!evloop) {
-        fprintf(stderr, "Could not initialize libevent\n");
+        std::cerr << "Could not initialize libevent\n";
         return 1;
     }
 
@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
                                        LEV_OPT_REUSEABLE | LEV_OPT_CLOSE_ON_FREE, -1,
                                        (struct sockaddr *) &sin, sizeof(sin));
     if (!listener) {
-        fprintf(stderr, "Could not create a listener!\n");
+        std::cerr << "Could not create a listener!\n";
         return 1;
     }
 
@@ -89,7 +89,7 @@ static void listener_cb(struct evconnlistener *listener, evutil_socket_t fd,
 
     bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
     if (!bev) {
-        fprintf(stderr, "Error constructing bufferevent!");
+        std::cerr << "Error constructing bufferevent!\n";
         event_base_loopbreak(base);
         return;
     }
@@ -98,8 +98,6 @@ static void listener_cb(struct evconnlistener *listener, evutil_socket_t fd,
 }
 
 static void signal_cb(evutil_socket_t fd, short event, void *arg) {
-
-    std::cout << "signal_event " << fd << " " << event << "\n";
 
     event_base *base = static_cast<event_base *>(arg);
 

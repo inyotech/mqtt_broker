@@ -17,6 +17,13 @@
 class PacketManager {
 public:
 
+    enum class EventType {
+        NetworkError,
+        ProtocolError,
+        ConnectionClosed,
+        Timeout,
+    };
+
     PacketManager(struct bufferevent * bev) : bev(bev) {
         bufferevent_setcb(bev, input_ready, NULL, other_event, this);
         bufferevent_enable(bev, EV_READ);
@@ -29,14 +36,14 @@ public:
         }
     }
 
-    static void input_ready(struct bufferevent * bev, void * _this) {
-        PacketManager * p = static_cast<PacketManager *>(_this);
-        p->receive_packet_data(bev);
+    static void input_ready(struct bufferevent * bev, void * arg) {
+        PacketManager * _this = static_cast<PacketManager *>(arg);
+        _this->receive_packet_data(bev);
     }
 
-    static void other_event(struct bufferevent * bev, short events, void * _this) {
-        PacketManager * p = static_cast<PacketManager *>(_this);
-        p->handle_other_events(events);
+    static void other_event(struct bufferevent * bev, short events, void * arg) {
+        PacketManager * _this = static_cast<PacketManager *>(arg);
+        _this->handle_other_events(events);
     }
 
     void receive_packet_data(struct bufferevent * bev);
@@ -48,6 +55,12 @@ public:
     void set_packet_received_handler(std::function<void(owned_packet_ptr_t)> handler) {
         packet_received_handler = handler;
     }
+
+    void set_event_handler(std::function<void(EventType)> handler) {
+        event_handler = handler;
+    }
+
+    void close_connection();
 
     uint16_t next_packet_id() {
 
@@ -68,4 +81,5 @@ public:
 
     std::function<void(owned_packet_ptr_t)> packet_received_handler;
 
+    std::function<void(EventType)> event_handler;
 };

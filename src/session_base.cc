@@ -6,8 +6,7 @@
 
 #include <string>
 
-void SessionBase::packet_received(std::unique_ptr<Packet> packet)
-{
+void SessionBase::packet_received(std::unique_ptr<Packet> packet) {
 
     switch (packet->type) {
         case PacketType::Connect:
@@ -56,6 +55,10 @@ void SessionBase::packet_received(std::unique_ptr<Packet> packet)
             break;
     }
 
+}
+
+void SessionBase::packet_manager_event(PacketManager::EventType event) {
+    packet_manager->close_connection();
 }
 
 void SessionBase::handle_connect(const ConnectPacket &) {

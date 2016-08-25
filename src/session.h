@@ -54,6 +54,8 @@ public:
 
     void packet_received(std::unique_ptr<Packet>) override;
 
+    void packet_manager_event(PacketManager::EventType event) override;
+
     void handle_connect(const ConnectPacket &) override;
 
     void handle_publish(const PublishPacket &) override;

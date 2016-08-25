@@ -3,8 +3,7 @@
 
 #include <algorithm>
 
-void Session::forward_packet(const PublishPacket &packet)
-{
+void Session::forward_packet(const PublishPacket &packet) {
 
     if (packet.qos() == QoSType::QoS0) {
         packet_manager->send_packet(packet);
@@ -33,36 +32,40 @@ void Session::forward_packet(const PublishPacket &packet)
     }
 }
 
-void Session::packet_received(std::unique_ptr<Packet> packet)
-{
+void Session::packet_received(std::unique_ptr<Packet> packet) {
     SessionBase::packet_received(std::move(packet));
-
     send_pending_message();
 }
 
-void Session::resume_session(std::unique_ptr<Session> &session,
-                             std::unique_ptr<PacketManager> packet_manager_ptr)
-{
+void Session::packet_manager_event(PacketManager::EventType event) {
+    SessionBase::packet_manager_event(event);
+    if (clean_session) {
+        session_manager.remove_session(this);
+    }
+}
 
+void Session::resume_session(std::unique_ptr<Session> &session,
+                             std::unique_ptr<PacketManager> packet_manager_ptr) {
+
+    packet_manager_ptr->set_event_handler(
+            std::bind(&Session::packet_manager_event, session.get(), std::placeholders::_1));
     packet_manager_ptr->set_packet_received_handler(
             std::bind(&Session::packet_received, session.get(), std::placeholders::_1));
     session->packet_manager = std::move(packet_manager_ptr);
 
     ConnackPacket connack;
 
-    connack.session_present(false);
+    connack.session_present(true);
     connack.return_code = ConnackPacket::ReturnCode::Accepted;
 
     session->packet_manager->send_packet(connack);
 }
 
-bool Session::authorize_connection(const ConnectPacket &packet)
-{
+bool Session::authorize_connection(const ConnectPacket &packet) {
     return true;
 }
 
-void Session::send_pending_message()
-{
+void Session::send_pending_message() {
 
     if (!qos1_pending_puback.empty()) {
         packet_manager->send_packet(qos1_pending_puback[0]);
@@ -81,8 +84,7 @@ void Session::send_pending_message()
     return;
 }
 
-void Session::handle_connect(const ConnectPacket &packet)
-{
+void Session::handle_connect(const ConnectPacket &packet) {
 
     if (!authorize_connection(packet)) {
         session_manager.remove_session(this);
@@ -113,8 +115,7 @@ void Session::handle_connect(const ConnectPacket &packet)
 
 }
 
-void Session::handle_publish(const PublishPacket &packet)
-{
+void Session::handle_publish(const PublishPacket &packet) {
 
     if (packet.qos() == QoSType::QoS0) {
 
@@ -141,8 +142,7 @@ void Session::handle_publish(const PublishPacket &packet)
 }
 
 
-void Session::handle_puback(const PubackPacket &packet)
-{
+void Session::handle_puback(const PubackPacket &packet) {
 
     auto message = find_if(qos1_pending_puback.begin(), qos1_pending_puback.end(),
                            [&packet](const PublishPacket &p) { return p.packet_id == packet.packet_id; });
@@ -152,8 +152,7 @@ void Session::handle_puback(const PubackPacket &packet)
 
 }
 
-void Session::handle_pubrec(const PubrecPacket &packet)
-{
+void Session::handle_pubrec(const PubrecPacket &packet) {
 
     qos2_pending_pubrec.erase(
             std::remove_if(qos2_pending_pubrec.begin(), qos2_pending_pubrec.end(),
@@ -162,7 +161,7 @@ void Session::handle_pubrec(const PubrecPacket &packet)
     );
 
     auto pubcomp_packet = find_if(qos2_pending_pubcomp.begin(), qos2_pending_pubcomp.end(),
-                                 [&packet](uint16_t packet_id) { return packet_id == packet.packet_id; });
+                                  [&packet](uint16_t packet_id) { return packet_id == packet.packet_id; });
 
     if (pubcomp_packet == qos2_pending_pubcomp.end()) {
         qos2_pending_pubcomp.push_back(packet.packet_id);
@@ -170,8 +169,7 @@ void Session::handle_pubrec(const PubrecPacket &packet)
 
 }
 
-void Session::handle_pubrel(const PubrelPacket &packet)
-{
+void Session::handle_pubrel(const PubrelPacket &packet) {
 
     qos2_pending_pubrel.erase(
             std::remove_if(qos2_pending_pubrel.begin(), qos2_pending_pubrel.end(),
@@ -184,8 +182,7 @@ void Session::handle_pubrel(const PubrelPacket &packet)
     packet_manager->send_packet(pubcomp);
 }
 
-void Session::handle_pubcomp(const PubcompPacket &packet)
-{
+void Session::handle_pubcomp(const PubcompPacket &packet) {
 
     qos2_pending_pubcomp.erase(
             std::remove_if(qos2_pending_pubcomp.begin(), qos2_pending_pubcomp.end(),
@@ -195,8 +192,7 @@ void Session::handle_pubcomp(const PubcompPacket &packet)
 
 }
 
-void Session::handle_subscribe(const SubscribePacket &packet)
-{
+void Session::handle_subscribe(const SubscribePacket &packet) {
 
     SubackPacket suback;
 
@@ -233,8 +229,7 @@ void Session::handle_subscribe(const SubscribePacket &packet)
 
 }
 
-void Session::handle_unsubscribe(const UnsubscribePacket &packet)
-{
+void Session::handle_unsubscribe(const UnsubscribePacket &packet) {
 
     UnsubackPacket unsuback;
 
@@ -244,8 +239,7 @@ void Session::handle_unsubscribe(const UnsubscribePacket &packet)
 
 }
 
-void Session::handle_pingreq(const PingreqPacket &packet)
-{
+void Session::handle_pingreq(const PingreqPacket &packet) {
 
     PingrespPacket pingresp;
 
@@ -253,7 +247,8 @@ void Session::handle_pingreq(const PingreqPacket &packet)
 
 }
 
-void Session::handle_disconnect(const DisconnectPacket &packet)
-{
-
+void Session::handle_disconnect(const DisconnectPacket &packet) {
+    if (clean_session) {
+        session_manager.remove_session(this);
+    }
 }

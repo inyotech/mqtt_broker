@@ -33,11 +33,12 @@ void PacketManager::receive_packet_data(struct bufferevent *bev) {
             reader.read_byte();
             if (!reader.has_remaining_length()) {
                 if (peek_size == 5) {
-                    throw std::exception();
-                } else {
-                    return;
+                    if (event_handler) {
+                        event_handler(EventType::ProtocolError);
+                    }
+                    evbuffer_drain(input, peek_size);
                 }
-
+                return;
             }
 
             remaining_length = reader.read_remaining_length();
@@ -54,12 +55,12 @@ void PacketManager::receive_packet_data(struct bufferevent *bev) {
         std::vector<uint8_t> packet_data(packet_size);
         evbuffer_remove(input, &packet_data[0], packet_size);
 
-        std::unique_ptr<Packet> packet = parse_packet_data(packet_data);
-
         fixed_header_length = 0;
         remaining_length = 0;
 
-        if (packet_received_handler) {
+        std::unique_ptr<Packet> packet = parse_packet_data(packet_data);
+
+        if (packet && packet_received_handler) {
             packet_received_handler(std::move(packet));
         }
     }
@@ -71,51 +72,56 @@ std::unique_ptr<Packet> PacketManager::parse_packet_data(const std::vector<uint8
 
     std::unique_ptr<Packet> packet;
 
-    switch (type) {
-        case PacketType::Connect:
-            packet = std::unique_ptr<ConnectPacket>(new ConnectPacket(packet_data));
-            break;
-        case PacketType::Connack:
-            packet = std::unique_ptr<ConnackPacket>(new ConnackPacket(packet_data));
-            break;
-        case PacketType::Publish:
-            packet = std::unique_ptr<PublishPacket>(new PublishPacket(packet_data));
-            break;
-        case PacketType::Puback:
-            packet = std::unique_ptr<PubackPacket>(new PubackPacket(packet_data));
-            break;
-        case PacketType::Pubrec:
-            packet = std::unique_ptr<PubrecPacket>(new PubrecPacket(packet_data));
-            break;
-        case PacketType::Pubrel:
-            packet = std::unique_ptr<PubrelPacket>(new PubrelPacket(packet_data));
-            break;
-        case PacketType::Pubcomp:
-            packet = std::unique_ptr<PubcompPacket>(new PubcompPacket(packet_data));
-            break;
-        case PacketType::Subscribe:
-            packet = std::unique_ptr<SubscribePacket>(new SubscribePacket(packet_data));
-            break;
-        case PacketType::Suback:
-            packet = std::unique_ptr<SubackPacket>(new SubackPacket(packet_data));
-            break;
-        case PacketType::Unsubscribe:
-            packet = std::unique_ptr<UnsubscribePacket>(new UnsubscribePacket(packet_data));
-            break;
-        case PacketType::Unsuback:
-            packet = std::unique_ptr<UnsubackPacket>(new UnsubackPacket(packet_data));
-            break;
-        case PacketType::Pingreq:
-            packet = std::unique_ptr<PingreqPacket>(new PingreqPacket(packet_data));
-            break;
-        case PacketType::Pingresp:
-            packet = std::unique_ptr<PingrespPacket>(new PingrespPacket(packet_data));
-            break;
-        case PacketType::Disconnect:
-            packet = std::unique_ptr<DisconnectPacket>(new DisconnectPacket(packet_data));
-            break;
+    try {
+        switch (type) {
+            case PacketType::Connect:
+                packet = std::unique_ptr<ConnectPacket>(new ConnectPacket(packet_data));
+                break;
+            case PacketType::Connack:
+                packet = std::unique_ptr<ConnackPacket>(new ConnackPacket(packet_data));
+                break;
+            case PacketType::Publish:
+                packet = std::unique_ptr<PublishPacket>(new PublishPacket(packet_data));
+                break;
+            case PacketType::Puback:
+                packet = std::unique_ptr<PubackPacket>(new PubackPacket(packet_data));
+                break;
+            case PacketType::Pubrec:
+                packet = std::unique_ptr<PubrecPacket>(new PubrecPacket(packet_data));
+                break;
+            case PacketType::Pubrel:
+                packet = std::unique_ptr<PubrelPacket>(new PubrelPacket(packet_data));
+                break;
+            case PacketType::Pubcomp:
+                packet = std::unique_ptr<PubcompPacket>(new PubcompPacket(packet_data));
+                break;
+            case PacketType::Subscribe:
+                packet = std::unique_ptr<SubscribePacket>(new SubscribePacket(packet_data));
+                break;
+            case PacketType::Suback:
+                packet = std::unique_ptr<SubackPacket>(new SubackPacket(packet_data));
+                break;
+            case PacketType::Unsubscribe:
+                packet = std::unique_ptr<UnsubscribePacket>(new UnsubscribePacket(packet_data));
+                break;
+            case PacketType::Unsuback:
+                packet = std::unique_ptr<UnsubackPacket>(new UnsubackPacket(packet_data));
+                break;
+            case PacketType::Pingreq:
+                packet = std::unique_ptr<PingreqPacket>(new PingreqPacket(packet_data));
+                break;
+            case PacketType::Pingresp:
+                packet = std::unique_ptr<PingrespPacket>(new PingrespPacket(packet_data));
+                break;
+            case PacketType::Disconnect:
+                packet = std::unique_ptr<DisconnectPacket>(new DisconnectPacket(packet_data));
+                break;
+        }
+    } catch (std::exception &e) {
+        if (event_handler) {
+            event_handler(EventType::ProtocolError);
+        }
     }
-
     return packet;
 }
 
@@ -128,18 +134,28 @@ void PacketManager::send_packet(const Packet &packet) {
     }
 }
 
+void PacketManager::close_connection() {
+    if (bev) {
+        evutil_socket_t fd = bufferevent_getfd(bev);
+        evutil_closesocket(fd);
+        bufferevent_free(bev);
+        bev = nullptr;
+    }
+}
+
 void PacketManager::handle_other_events(short events) {
+
     if (events & BEV_EVENT_EOF) {
-        std::cout << "Connection closed\n";
-        bufferevent_free(bev);
-        bev = nullptr;
+        if (event_handler) {
+            event_handler(EventType::ConnectionClosed);
+        }
     } else if (events & BEV_EVENT_ERROR) {
-        std::cout << "Got an error on the connection: " << std::strerror(errno) << "\n";
-        bufferevent_free(bev);
-        bev = nullptr;
+        if (event_handler) {
+            event_handler(EventType::NetworkError);
+        }
     } else if (events & BEV_EVENT_TIMEOUT) {
-        std::cout << "Timeout: " << std::strerror(errno) << "\n";
-        bufferevent_free(bev);
-        bev = nullptr;
+        if (event_handler) {
+            event_handler(EventType::Timeout);
+        }
     }
 }

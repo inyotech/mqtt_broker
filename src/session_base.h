@@ -17,7 +17,7 @@ public:
     SessionBase(struct bufferevent *bev) : packet_manager(new PacketManager(bev)) {
         packet_manager->set_packet_received_handler(
                 std::bind(&SessionBase::packet_received, this, std::placeholders::_1));
-
+        packet_manager->set_event_handler(std::bind(&SessionBase::packet_manager_event, this, std::placeholders::_1));
     }
 
     virtual ~SessionBase() {}
@@ -25,6 +25,8 @@ public:
     std::string client_id;
 
     virtual void packet_received(std::unique_ptr<Packet>);
+
+    virtual void packet_manager_event(PacketManager::EventType event);
 
     virtual void handle_connect(const ConnectPacket &);
 

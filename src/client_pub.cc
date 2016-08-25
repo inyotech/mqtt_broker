@@ -251,7 +251,7 @@ static void connect_event_cb(struct bufferevent *bev, short events, void *arg) {
         session->packet_manager->send_packet(connect_packet);
 
     } else if (events & (BEV_EVENT_ERROR | BEV_EVENT_EOF)) {
-        std::cout << "closing\n";
+        std::cerr << "error connecting to broker\n";
         struct event_base *base = static_cast<struct event_base *>(arg);
         if (events & BEV_EVENT_ERROR) {
             int err = bufferevent_socket_get_dns_error(bev);

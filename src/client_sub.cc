@@ -89,6 +89,11 @@ public:
         pubcomp_packet.packet_id = pubrel_packet.packet_id;
         packet_manager->send_packet(pubcomp_packet);
     }
+
+    void packet_manager_event(PacketManager::EventType event) override {
+        event_base_loopexit(packet_manager->bev->ev_base, NULL);
+        SessionBase::packet_manager_event(event);
+     }
 };
 
 std::unique_ptr<ClientSession> session;
@@ -131,15 +136,13 @@ int main(int argc, char *argv[]) {
 
 static void connect_event_cb(struct bufferevent *bev, short events, void *arg) {
 
-    std::cout << "connect event\n";
-
     if (events & BEV_EVENT_CONNECTED) {
-        std::cout << "Connect okay.\n";
 
         session = std::unique_ptr<ClientSession>(new ClientSession(bev, options));
 
         ConnectPacket connect_packet;
         connect_packet.client_id = options.client_id;
+        connect_packet.clean_session(options.clean_session);
         session->packet_manager->send_packet(connect_packet);
 
     } else if (events & (BEV_EVENT_ERROR | BEV_EVENT_EOF)) {
