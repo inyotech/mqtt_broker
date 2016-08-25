@@ -4,7 +4,7 @@
 
 #include "session_manager.h"
 
-#include "session.h"
+#include "broker_session.h"
 #include "topic.h"
 
 #include <memory>
@@ -12,26 +12,26 @@
 
 void SessionManager::accept_connection(struct bufferevent *bev) {
 
-    auto session = std::unique_ptr<Session>(new Session(bev, *this));
+    auto session = std::unique_ptr<BrokerSession>(new BrokerSession(bev, *this));
     sessions.push_back(std::move(session));
 }
 
-std::list<std::unique_ptr<Session>>::iterator SessionManager::find_session(const std::string &client_id) {
+std::list<std::unique_ptr<BrokerSession>>::iterator SessionManager::find_session(const std::string &client_id) {
 
-    return find_if(sessions.begin(), sessions.end(), [&client_id](const std::unique_ptr<Session> & s) {
+    return find_if(sessions.begin(), sessions.end(), [&client_id](const std::unique_ptr<BrokerSession> & s) {
         return (!s->client_id.empty() and (s->client_id == client_id));
     });
 }
 
 void SessionManager::remove_session(const std::string & client_id) {
-    sessions.erase(std::remove_if(sessions.begin(), sessions.end(), [&client_id](std::unique_ptr<Session> &s) {
+    sessions.erase(std::remove_if(sessions.begin(), sessions.end(), [&client_id](std::unique_ptr<BrokerSession> &s) {
         return (!s->client_id.empty() and (s->client_id == client_id));
     }), sessions.end());
 }
 
-void SessionManager::remove_session(const Session * session)
+void SessionManager::remove_session(const BrokerSession * session)
 {
-    sessions.erase(std::remove_if(sessions.begin(), sessions.end(), [session](std::unique_ptr<Session> & s) {
+    sessions.erase(std::remove_if(sessions.begin(), sessions.end(), [session](std::unique_ptr<BrokerSession> & s) {
         return s.get() == session;
     }), sessions.end());
 

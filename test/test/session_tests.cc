@@ -5,8 +5,8 @@
 
 #include "gtest/gtest.h"
 
-#include "session_base.h"
-#include "session.h"
+#include "base_session.h"
+#include "broker_session.h"
 #include "session_manager.h"
 
 #include <event2/listener.h>
@@ -121,11 +121,11 @@ public:
 
 };
 
-class TestSession : public SessionBase {
+class TestSession : public BaseSession {
 
 public:
 
-    TestSession(bufferevent *bev) : SessionBase(bev) {}
+    TestSession(bufferevent *bev) : BaseSession(bev) {}
 
     std::function<void()> on_ready;
 

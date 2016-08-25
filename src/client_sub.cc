@@ -17,7 +17,7 @@
 #include "mqtt.h"
 #include "packet.h"
 #include "packet_manager.h"
-#include "session_base.h"
+#include "base_session.h"
 
 static void usage(void);
 
@@ -38,13 +38,13 @@ struct options_t {
     bool clean_session = false;
 } options;
 
-class ClientSession : public SessionBase
+class ClientSession : public BaseSession
 {
 public:
 
     const options_t & options;
 
-    ClientSession(bufferevent * bev, const options_t & options) : SessionBase(bev), options(options) {}
+    ClientSession(bufferevent * bev, const options_t & options) : BaseSession(bev), options(options) {}
 
     void handle_connack(const ConnackPacket & connack_packet) override {
         SubscribePacket subscribe_packet;
@@ -92,7 +92,7 @@ public:
 
     void packet_manager_event(PacketManager::EventType event) override {
         event_base_loopexit(packet_manager->bev->ev_base, NULL);
-        SessionBase::packet_manager_event(event);
+        BaseSession::packet_manager_event(event);
      }
 };
 

@@ -5,7 +5,7 @@
 
 #include "gtest/gtest.h"
 
-#include "session.h"
+#include "broker_session.h"
 #include "session_manager.h"
 
 #include <event2/listener.h>

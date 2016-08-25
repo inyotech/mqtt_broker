@@ -1,4 +1,4 @@
-SET(LIB_SOURCES session_base.cc session.cc packet.cc packet_manager.cc packet_data.cc client_id.cc topic.cc
+SET(LIB_SOURCES base_session.cc broker_session.cc packet.cc packet_manager.cc packet_data.cc client_id.cc topic.cc
         session_manager.cc)
 
 ADD_LIBRARY(mqtt STATIC ${LIB_SOURCES})
