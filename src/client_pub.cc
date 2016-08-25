@@ -40,12 +40,30 @@ static void usage(void);
  * @param argc Command line argument count.
  * @param argv Command line argument values.
  */
-static void parse_arguments(int argc, char * argv[]);
+static void parse_arguments(int argc, char *argv[]);
 
+/**
+ * On broker connection callback.
+ *
+ * @param bev    Pointer to bufferevent internal control structure.
+ * @param event  The bufferevent event code, on success this will be EV_EVENT_CONNECTED, it can also be one of
+ * EV_EVENT_EOF, EV_EVENT_ERROR, or EV_EVENT_TIMEOUT.
+ * @param arg    Pointer to user data passed in when callback is set.  Here this should be a pointer to the event_base
+ * object.
+ */
+static void connect_event_cb(struct bufferevent *bev, short event, void *arg);
 
-static void connect_event_cb(struct bufferevent * bev, short event, void * arg);
-
-static void close_cb(struct bufferevent * bev, void * arg);
+/**
+ * Socket close handler.
+ *
+ * When the session is closing this function is set to be called when the write buffer is empty.  When called it will
+ * close the connection and exit the event loop.
+ *
+ * @param bev Pointer to the bufferevent internal control structure.
+ * @param arg Pointer to user data passed in when callback is set.  Here this should be a pointer to the event_base
+ * object.
+ */
+static void close_cb(struct bufferevent *bev, void *arg);
 
 /**
  * Options settable on through command line arguments.
@@ -209,8 +227,11 @@ public:
     }
 };
 
-/** The session instance. */
-
+/**
+ * The session instance.
+ *
+ * MQTT requires that both the client and server maintain a session state.
+ * */
 static std::unique_ptr<ClientSession> session;
 
 int main(int argc, char *argv[]) {
@@ -268,7 +289,24 @@ static void connect_event_cb(struct bufferevent *bev, short events, void *arg) {
 }
 
 static void usage() {
-    std::cout << "usage: client [options]\n";
+    std::cout <<
+R"END(usage: mqtt_client_pub [OPTIONS]
+
+Connect to an MQTT broker and publish a single message to a single topic.
+
+OPTIONS
+
+--broker-host | -b        Broker host name or ip address, default localhost
+--broker-port | -p        Broker port, default 1883
+--client-id | -i          Client id, default none
+--topic | -t              Topic string, default none
+--message | -m            Message data, default none
+--qos | -q                QoS (Quality of Service), should be 0, 1, or 2, default 0
+--clean-session | -c      Disable session persistence, default false
+--help | -h               Display this message and exit
+
+)END";
+
 }
 
 static void parse_arguments(int argc, char *argv[]) {
@@ -285,7 +323,7 @@ static void parse_arguments(int argc, char *argv[]) {
 
 
     int ch;
-    while ((ch = getopt_long(argc, argv, "b:p:i:t:m:q:c", longopts, NULL)) != -1) {
+    while ((ch = getopt_long(argc, argv, "b:p:i:t:m:q:ch", longopts, NULL)) != -1) {
         switch (ch) {
             case 'b':
                 options.broker_host = optarg;
@@ -320,8 +358,7 @@ static void parse_arguments(int argc, char *argv[]) {
 }
 
 static void close_cb(struct bufferevent *bev, void *arg) {
-    if (evbuffer_get_length(bufferevent_get_output(bev)) == 0) {
-        event_base *base = static_cast<event_base *>(arg);
-        event_base_loopexit(base, NULL);;
-    }
+    session->packet_manager->close_connection();
+    event_base *base = static_cast<event_base *>(arg);
+    event_base_loopexit(base, NULL);;
 }
