@@ -26,10 +26,10 @@ void PacketManager::receive_packet_data(struct bufferevent *bev) {
 
             size_t peek_size = std::min<uint8_t>(static_cast<uint8_t>(available), 5);
 
-            uint8_t peek_buffer[peek_size];
-            evbuffer_copyout(input, peek_buffer, peek_size);
+            std::vector<uint8_t> peek_buffer(peek_size);
+            evbuffer_copyout(input, &peek_buffer[0], peek_size);
 
-            PacketDataReader reader(std::vector<uint8_t>(peek_buffer, peek_buffer + peek_size));
+            PacketDataReader reader(peek_buffer);
             reader.read_byte();
             if (!reader.has_remaining_length()) {
                 if (peek_size == 5) {
