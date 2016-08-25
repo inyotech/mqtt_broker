@@ -1,22 +1,50 @@
+/**
+ * @file broker.cc
+ *
+ * MQTT Broker (server)
+ *
+ * Listen for connections from clients.  Accept subscribe, unsubscribe and publish commands and forward according to
+ * the [MQTT protocol](http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html)
+ * */
+
 #include "session_manager.h"
 #include "session.h"
 
 #include <event2/listener.h>
 
 #include <csignal>
-#include <cstring>
 
+/**
+ * Manange sessions for each client.
+ * Sessions will persist between connections and are identified by the client id of the connecting client.
+ */
 SessionManager session_manager;
 
-static void signal_cb(evutil_socket_t, short event, void *);
+/**
+ * Callback run when SIGINT or SIGTERM is attached, will cleanly exit.
+ *
+ * @param signal Integer value of signal.
+ * @param event  Should be EV_SIGNAL.
+ * @param arg    Pointer originally passed to evsignal_new.
+ * */
+static void signal_cb(evutil_socket_t signal, short event, void * arg);
 
-static void listener_cb(struct evconnlistener *, evutil_socket_t,
-                        struct sockaddr *, int socklen, void *);
+/**
+ * Callback run when connection is received on the listening socket.
+ *
+ * @param listener Pointer to this listener's internal control structure.
+ * @param fd       File descriptor of the newly accepted socket.
+ * @param addr     Address structure for the peer.
+ * @param socklen  Length of the address structure.
+ * @param arg      Pointer orignally passed to evconlistener_new_bind.
+ */
+static void listener_cb(struct evconnlistener * listener, evutil_socket_t fd,
+                        struct sockaddr * addr, int socklen, void * arg);
 
 int main(int argc, char *argv[]) {
 
     struct event_base *evloop;
-    struct event * signal_event;
+    struct event *signal_event;
     struct evconnlistener *listener;
     struct sockaddr_in sin;
 
@@ -69,11 +97,11 @@ static void listener_cb(struct evconnlistener *listener, evutil_socket_t fd,
     session_manager.accept_connection(bev);
 }
 
-static void signal_cb(evutil_socket_t fd, short event, void * arg) {
+static void signal_cb(evutil_socket_t fd, short event, void *arg) {
 
-    std::cout << "signal_event\n";
+    std::cout << "signal_event " << fd << " " << event << "\n";
 
-    event_base * base = static_cast<event_base *>(arg);
+    event_base *base = static_cast<event_base *>(arg);
 
     if (event_base_loopexit(base, NULL)) {
         std::cerr << "failed to exit event loop\n";
