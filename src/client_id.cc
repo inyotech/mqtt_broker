@@ -3,24 +3,24 @@
 //
 
 #include "client_id.h"
-#include <ossp/uuid.h>
 
 #include <cstdlib>
+#include <ctime>
+#include <mutex>
 
-std::string generate_client_id() {
+static const std::string characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+static std::once_flag init_rnd;
 
-    uuid_t * uuid;
-    char * c_str = NULL;
+std::string generate_client_id(size_t len) {
 
-    uuid_create(&uuid);
-    uuid_make(uuid, UUID_MAKE_V4);
-    uuid_export(uuid, UUID_FMT_STR, &c_str, NULL);
-    uuid_destroy(uuid);
+    std::call_once(init_rnd, [](){ std::srand(std::time(nullptr)); });
 
-    std::string uuid_str(c_str);
+    std::string random_string;
 
-    free(c_str);
+    for (size_t i=0; i<len; i++) {
+        random_string += characters[std::rand() % characters.size()];
+    }
 
-    return std::string(uuid_str);
+    return random_string;
 
 }

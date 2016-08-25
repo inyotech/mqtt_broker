@@ -13,11 +13,6 @@ IF (NOT LibEvent_FOUND)
     MESSAGE(FATAL_ERROR "Libevent required but not found")
 ENDIF()
 
-FIND_PACKAGE(OsspUUID REQUIRED)
-IF (NOT OsspUUID_FOUND)
-    MESSAGE(FATAL_ERROR "Ossp UUID required but not found")
-ENDIF()
-
 ADD_SUBDIRECTORY(src)
 
 ADD_SUBDIRECTORY(test)

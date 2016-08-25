@@ -6,4 +6,4 @@
 
 #include <string>
 
-std::string generate_client_id(void);
+std::string generate_client_id(size_t len=32);
