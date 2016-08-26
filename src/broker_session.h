@@ -32,8 +32,6 @@ public:
 
     void forward_packet(const PublishPacket &packet);
 
-    bool clean_session;
-
     std::vector<Subscription> subscriptions;
 
     // qos1 messages waiting for puback, will be moved between

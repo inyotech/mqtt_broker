@@ -1,6 +1,6 @@
-//
-// Created by Scott Brumbaugh on 8/23/16.
-//
+/**
+ * @file base_session.cc
+ */
 
 #include "base_session.h"
 
@@ -106,12 +106,11 @@ void BaseSession::handle_unsuback(const UnsubackPacket &) {
 }
 
 void BaseSession::handle_pingreq(const PingreqPacket &) {
-    throw std::exception();
+    PingreqPacket pingresp_packet;
+    packet_manager->send_packet(pingresp_packet);
 }
 
-void BaseSession::handle_pingresp(const PingrespPacket &) {
-    throw std::exception();
-}
+void BaseSession::handle_pingresp(const PingrespPacket &) {}
 
 void BaseSession::handle_disconnect(const DisconnectPacket &) {
     throw std::exception();

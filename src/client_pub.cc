@@ -98,10 +98,10 @@ static struct options_t {
 } options;
 
 /**
- * Session class specialized for this client.
+ * Session class specialized for this publishing client.
  *
- * Override base class control packet handlers used in message publishing.  Any control packets received be handled by
- * the default methods.  In most cases that will result in a thrown exception.
+ * Override base class control packet handlers used in message publishing.  Any other control packets received will be
+ * handled by default methods, in most cases that will result in a thrown exception.
  */
 class ClientSession : public BaseSession {
 
@@ -231,7 +231,7 @@ public:
  * The session instance.
  *
  * MQTT requires that both the client and server maintain a session state.
- * */
+ */
 static std::unique_ptr<ClientSession> session;
 
 int main(int argc, char *argv[]) {
@@ -304,7 +304,6 @@ OPTIONS
 --qos | -q                QoS (Quality of Service), should be 0, 1, or 2, default 0
 --clean-session | -c      Disable session persistence, default false
 --help | -h               Display this message and exit
-
 )END";
 
 }
