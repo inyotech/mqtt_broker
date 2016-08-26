@@ -1,12 +1,12 @@
-//
-// Created by Scott Brumbaugh on 8/5/16.
-//
+/**
+ * @file topic.cc
+ */
 
 #include "topic.h"
 
 #include <regex>
 
-TopicName::TopicName(const std::string &s) {
+TopicName::TopicName(const std::string & s) {
     if (!is_valid(s)) {
         throw std::exception();
     }
@@ -30,7 +30,6 @@ TopicFilter::TopicFilter(const std::string &s) {
     if (!is_valid(s)) {
         throw std::exception();
     }
-
 
     filter = s;
 }
