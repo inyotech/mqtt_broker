@@ -1,7 +1,25 @@
+/**
+ * @file packet.h
+ *
+ * Standard control packet classes.
+ *
+ * The MQTT 3.1.1 standard specifies the wire-level structure and operational behavior protocol control packets.  This
+ * structure and some low level behavior is implemented here.
+ *
+ * Serialization of a control packet instance to wire format is accomplisted through instance serialization methods.
+ *
+ * Deserialization from the wire level is handled by a control packet constructor that accepts a octect sequence.
+ *
+ * Control packet instances also provide a default constructor that will create an instance using default values.
+ */
+
 #pragma once
 
 #include "packet_data.h"
 #include "topic.h"
+
+#include <event2/event.h>
+#include <event2/bufferevent.h>
 
 #include <iostream>
 #include <string>
@@ -11,9 +29,11 @@
 #include <memory>
 #include <cassert>
 
-#include <event2/event.h>
-#include <event2/bufferevent.h>
-
+/**
+ * Enumeration constants for packet types.
+ *
+ * The interger values correspond to control packet type values as defined in the MQTT 3.1.1 standard.
+ */
 enum class PacketType {
     Connect = 1,
     Connack = 2,
@@ -31,18 +51,32 @@ enum class PacketType {
     Disconnect = 14,
 };
 
+/**
+ * Enumeration constants for QoS values.
+ */
 enum class QoSType : uint8_t {
     QoS0 = 0,
     QoS1 = 1,
     QoS2 = 2,
 };
 
+/**
+ * Subscription Class
+ *
+ * A subscription is composed of a TopicFilter and a QoS.  Matching rules for topic filters differ from topic
+ * names.
+ */
 class Subscription {
 public:
     TopicFilter topic_filter;
     QoSType qos;
 };
 
+/**
+ * Abstract base control packet class.
+ *
+ * Packet classes inherit this and extend as necessary.  The serialize method implementation is required.
+ */
 class Packet {
 public:
     PacketType type;
@@ -57,6 +91,9 @@ public:
 
 };
 
+/**
+ * Connect control packet class
+ */
 class ConnectPacket : public Packet {
 public:
 
@@ -151,6 +188,9 @@ public:
 
 };
 
+/**
+ * Connack control packet class.
+ */
 class ConnackPacket : public Packet {
 public:
 
@@ -189,6 +229,9 @@ public:
 
 };
 
+/**
+ * Publish control packet class.
+ */
 class PublishPacket : public Packet {
 public:
 
@@ -238,6 +281,9 @@ public:
     }
 };
 
+/**
+ * Puback control packet class.
+ */
 class PubackPacket : public Packet {
 
 public:
@@ -254,6 +300,9 @@ public:
     uint16_t packet_id;
 };
 
+/**
+ * Pubrec control packet class.
+ */
 class PubrecPacket : public Packet {
 
 public:
@@ -270,6 +319,9 @@ public:
     uint16_t packet_id;
 };
 
+/**
+ * Pubrel control packet class.
+ */
 class PubrelPacket : public Packet {
 
 public:
@@ -286,6 +338,9 @@ public:
     uint16_t packet_id;
 };
 
+/**
+ * Pubcomp control packet class.
+ */
 class PubcompPacket : public Packet {
 
 public:
@@ -302,6 +357,9 @@ public:
     uint16_t packet_id;
 };
 
+/**
+ * Subscribe control packet class.
+ */
 class SubscribePacket : public Packet {
 
 public:
@@ -321,6 +379,9 @@ public:
 
 };
 
+/**
+ * Suback control packet class.
+ */
 class SubackPacket : public Packet {
 
 public:
@@ -346,6 +407,9 @@ public:
 
 };
 
+/**
+ * Unsubscribe control packet class.
+ */
 class UnsubscribePacket : public Packet {
 
 public:
@@ -365,6 +429,9 @@ public:
 
 };
 
+/**
+ * Unsuback control packet class.
+ */
 class UnsubackPacket : public Packet {
 
 public:
@@ -382,6 +449,9 @@ public:
 
 };
 
+/**
+ * Pingreq control packet class.
+ */
 class PingreqPacket : public Packet {
 
 public:
@@ -396,6 +466,9 @@ public:
     std::vector<uint8_t> serialize() const;
 };
 
+/**
+ * Pingresp control packet class.
+ */
 class PingrespPacket : public Packet {
 
 public:
@@ -410,6 +483,9 @@ public:
     std::vector<uint8_t> serialize() const;
 };
 
+/**
+ * Disconnect control packet class.
+ */
 class DisconnectPacket : public Packet {
 
 public:
