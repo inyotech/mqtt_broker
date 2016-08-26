@@ -1,6 +1,6 @@
-//
-// Created by Scott Brumbaugh on 8/3/16.
-//
+/**
+ * @file packet_data.cc
+ */
 
 #include "packet_data.h"
 
@@ -106,21 +106,21 @@ std::string PacketDataReader::read_string() {
     return s;
 }
 
-packet_data_t PacketDataReader::read_bytes() {
+std::vector<uint8_t> PacketDataReader::read_bytes() {
     uint16_t len = read_uint16();
     if (offset + len > packet_data.size()) {
         throw std::exception();
     }
-    packet_data_t v(&packet_data[offset], &packet_data[offset + len]);
+    std::vector<uint8_t> v(&packet_data[offset], &packet_data[offset + len]);
     offset += len;
     return v;
 }
 
-packet_data_t PacketDataReader::read_bytes(size_t len) {
+std::vector<uint8_t> PacketDataReader::read_bytes(size_t len) {
     if (offset + len > packet_data.size()) {
         throw std::exception();
     }
-    packet_data_t v(&packet_data[offset], &packet_data[offset + len]);
+    std::vector<uint8_t> v(&packet_data[offset], &packet_data[offset + len]);
     offset += len;
     return v;
 }
