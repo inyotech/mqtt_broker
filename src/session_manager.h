@@ -1,13 +1,14 @@
-//
-// Created by Scott Brumbaugh on 8/8/16.
-//
+/**
+ * @file session_manager.h
+ */
 
 #pragma once
 
 #include <list>
+#include <string>
 #include <memory>
 
-#include <event2/bufferevent.h>
+struct bufferevent;
 
 class BrokerSession;
 class PublishPacket;

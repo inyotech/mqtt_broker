@@ -1,9 +1,8 @@
-//
-// Created by Scott Brumbaugh on 8/8/16.
-//
+/**
+ * @file session_manager.cc
+ */
 
 #include "session_manager.h"
-
 #include "broker_session.h"
 #include "topic.h"
 
