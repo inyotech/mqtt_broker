@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['basesession',['BaseSession',['../class_base_session.html#a08a81804545478ab29c3620a356c1e0d',1,'BaseSession']]]
+  ['authorize_5fconnection',['authorize_connection',['../class_broker_session.html#abb926c5d338782d59fab05fb563fb105',1,'BrokerSession']]]
 ];

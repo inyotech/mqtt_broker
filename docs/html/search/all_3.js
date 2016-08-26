@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['generate_5fclient_5fid',['generate_client_id',['../client__id_8h.html#a4f4c42826cb7fc51004b8487d3fb5942',1,'client_id.cc']]]
+  ['disconnect',['disconnect',['../class_client_session.html#a921d837e954032fb13e44c0372ed5f2e',1,'ClientSession']]],
+  ['disconnectpacket',['DisconnectPacket',['../class_disconnect_packet.html',1,'']]]
 ];

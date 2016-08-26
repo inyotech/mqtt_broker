@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['signal_5fcb',['signal_cb',['../broker_8cc.html#a086821b55672b6110d0a58e9e1c0143a',1,'signal_cb(evutil_socket_t signal, short event, void *arg):&#160;broker.cc'],['../client__sub_8cc.html#ab04a64a7ebfd4c7b660640c9fd075eee',1,'signal_cb(evutil_socket_t, short event, void *):&#160;client_sub.cc']]]
+  ['is_5fvalid',['is_valid',['../class_topic_name.html#a6d5ff64cc86938bbc8c4c008123c6461',1,'TopicName::is_valid()'],['../class_topic_filter.html#a9bb0c33c6e1eb64f4c97b8ab0dd72528',1,'TopicFilter::is_valid()']]]
 ];

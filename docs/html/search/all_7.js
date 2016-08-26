@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['options',['options',['../class_client_session.html#afe81f42f89b41970e2945543bd6489b1',1,'ClientSession']]],
-  ['options_5ft',['options_t',['../structoptions__t.html',1,'']]]
+  ['is_5fvalid',['is_valid',['../class_topic_name.html#a6d5ff64cc86938bbc8c4c008123c6461',1,'TopicName::is_valid()'],['../class_topic_filter.html#a9bb0c33c6e1eb64f4c97b8ab0dd72528',1,'TopicFilter::is_valid()']]]
 ];

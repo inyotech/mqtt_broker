@@ -91,34 +91,178 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">TopicName Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="topic_8h_source.html">topic.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a613177ab69aa19aef841576487c45ab0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a613177ab69aa19aef841576487c45ab0"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TopicName</b> (const std::string &amp;)</td></tr>
-<tr class="separator:a613177ab69aa19aef841576487c45ab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fac9fba7a61a8715ea52d3d82d7f2e0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1fac9fba7a61a8715ea52d3d82d7f2e0"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_valid</b> (const std::string &amp;) const </td></tr>
-<tr class="separator:a1fac9fba7a61a8715ea52d3d82d7f2e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d29514a039095a0077c8b321a6a3fba"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d29514a039095a0077c8b321a6a3fba"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>operator std::string</b> () const </td></tr>
+<tr class="memitem:a4897b80f54f21bee4a778adc115e77ba"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_topic_name.html#a4897b80f54f21bee4a778adc115e77ba">TopicName</a> (const std::string &amp;name)</td></tr>
+<tr class="separator:a4897b80f54f21bee4a778adc115e77ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d5ff64cc86938bbc8c4c008123c6461"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_topic_name.html#a6d5ff64cc86938bbc8c4c008123c6461">is_valid</a> (const std::string &amp;name) const </td></tr>
+<tr class="separator:a6d5ff64cc86938bbc8c4c008123c6461"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d29514a039095a0077c8b321a6a3fba"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_topic_name.html#a6d29514a039095a0077c8b321a6a3fba">operator std::string</a> () const </td></tr>
 <tr class="separator:a6d29514a039095a0077c8b321a6a3fba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a7afdafad82262e36c18c05457b6c84c5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7afdafad82262e36c18c05457b6c84c5"></a>
-static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>MaxNameSize</b> = 65535</td></tr>
+<tr class="memitem:a7afdafad82262e36c18c05457b6c84c5"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_topic_name.html#a7afdafad82262e36c18c05457b6c84c5">MaxNameSize</a> = 65535</td></tr>
 <tr class="separator:a7afdafad82262e36c18c05457b6c84c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:a22be3b3682941b462117f4480933323a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a22be3b3682941b462117f4480933323a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>topic_match</b> (const <a class="el" href="class_topic_filter.html">TopicFilter</a> &amp;, const <a class="el" href="class_topic_name.html">TopicName</a> &amp;)</td></tr>
+<tr class="memitem:a22be3b3682941b462117f4480933323a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_topic_name.html#a22be3b3682941b462117f4480933323a">topic_match</a> (const <a class="el" href="class_topic_filter.html">TopicFilter</a> &amp;, const <a class="el" href="class_topic_name.html">TopicName</a> &amp;)</td></tr>
 <tr class="separator:a22be3b3682941b462117f4480933323a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Topic Name</p>
+<p>Topic names are UTF-8 encoded character strings. The have a structure imposed by the MQTT 3.1.1 standard. This class enforces that structure. Topic names differe from topic filters in that topic filters allow wildcard characters.</p>
+<p>This class friends the topic_match function. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a4897b80f54f21bee4a778adc115e77ba"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TopicName::TopicName </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor</p>
+<p>The string will be validated against the MQTT topic name rules. An exception will be thrown if the name is invalid.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>A reference to a the topic name string. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a6d5ff64cc86938bbc8c4c008123c6461"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool TopicName::is_valid </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Validate the topic name against the MQTT 3.1.1 standard rules.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>A name string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Topic name is valid. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6d29514a039095a0077c8b321a6a3fba"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TopicName::operator std::string </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Cast an instance of this class to a std::string.</p>
+<dl class="section return"><dt>Returns</dt><dd>std::string </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a class="anchor" id="a22be3b3682941b462117f4480933323a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool topic_match </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_topic_filter.html">TopicFilter</a> &amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="class_topic_name.html">TopicName</a> &amp;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Matching friend function.</p>
+<p>Match a <a class="el" href="class_topic_filter.html">TopicFilter</a> against a <a class="el" href="class_topic_name.html">TopicName</a>.</p>
+<p>The MQTT 3.1.1 standard topic filter matching rules will be applied including wildcard characters.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">topic_filter</td><td>A reference to a <a class="el" href="class_topic_filter.html">TopicFilter</a>. </td></tr>
+    <tr><td class="paramname">topic_name</td><td>A reference to a <a class="el" href="class_topic_name.html">TopicName</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>match </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a7afdafad82262e36c18c05457b6c84c5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const size_t TopicName::MaxNameSize = 65535</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Maximum lenght of a topic name according the the MQTT 3.1.1 standard. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/scottb/src/mqtt/src/<a class="el" href="topic_8h_source.html">topic.h</a></li>
-<li>/Users/scottb/src/mqtt/src/topic.cc</li>
+<li>/Users/scottb/src/mqtt/src/<a class="el" href="topic_8cc.html">topic.cc</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -1,13 +1,12 @@
 var searchData=
 [
-  ['clean_5fsession',['clean_session',['../structoptions__t.html#a83369831b8ed524e93db01d6771218ba',1,'options_t']]],
-  ['client_5fid',['client_id',['../structoptions__t.html#aef09121b9a56ee63bd487e7978c28999',1,'options_t']]],
-  ['client_5fid_2eh',['client_id.h',['../client__id_8h.html',1,'']]],
-  ['client_5fpub_2ecc',['client_pub.cc',['../client__pub_8cc.html',1,'']]],
-  ['client_5fsub_2ecc',['client_sub.cc',['../client__sub_8cc.html',1,'']]],
-  ['clientsession',['ClientSession',['../class_client_session.html',1,'ClientSession'],['../class_client_session.html#a6d72f6c9be7cf497a8103df867d66665',1,'ClientSession::ClientSession(bufferevent *bev, const options_t &amp;options)'],['../class_client_session.html#a6d72f6c9be7cf497a8103df867d66665',1,'ClientSession::ClientSession(bufferevent *bev, const options_t &amp;options)']]],
-  ['close_5fcb',['close_cb',['../client__pub_8cc.html#ae4a8aab88901cff74d7146e6908c9652',1,'close_cb(struct bufferevent *bev, void *arg):&#160;client_pub.cc'],['../client__sub_8cc.html#ae4a8aab88901cff74d7146e6908c9652',1,'close_cb(struct bufferevent *bev, void *arg):&#160;client_sub.cc']]],
-  ['connackpacket',['ConnackPacket',['../class_connack_packet.html',1,'']]],
-  ['connect_5fevent_5fcb',['connect_event_cb',['../client__pub_8cc.html#abb18e61de60ac7fc39803b8d84fa20eb',1,'connect_event_cb(struct bufferevent *bev, short event, void *arg):&#160;client_pub.cc'],['../client__sub_8cc.html#abb18e61de60ac7fc39803b8d84fa20eb',1,'connect_event_cb(struct bufferevent *bev, short event, void *arg):&#160;client_sub.cc']]],
-  ['connectpacket',['ConnectPacket',['../class_connect_packet.html',1,'']]]
+  ['base_5fsession_2ecc',['base_session.cc',['../base__session_8cc.html',1,'']]],
+  ['base_5fsession_2eh',['base_session.h',['../base__session_8h.html',1,'']]],
+  ['basesession',['BaseSession',['../class_base_session.html',1,'BaseSession'],['../class_base_session.html#a08a81804545478ab29c3620a356c1e0d',1,'BaseSession::BaseSession()']]],
+  ['broker_2ecc',['broker.cc',['../broker_8cc.html',1,'']]],
+  ['broker_5fhost',['broker_host',['../structoptions__t.html#a6b95859468b46bc3d00a468b20304f1b',1,'options_t']]],
+  ['broker_5fport',['broker_port',['../structoptions__t.html#ae35f2171516702dbf491c187b3440054',1,'options_t']]],
+  ['broker_5fsession_2ecc',['broker_session.cc',['../broker__session_8cc.html',1,'']]],
+  ['broker_5fsession_2eh',['broker_session.h',['../broker__session_8h.html',1,'']]],
+  ['brokersession',['BrokerSession',['../class_broker_session.html',1,'BrokerSession'],['../class_broker_session.html#a1fb77bc801e27f91b9fc210e6d8581b6',1,'BrokerSession::BrokerSession()']]]
 ];
