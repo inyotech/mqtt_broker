@@ -52,7 +52,7 @@ void PacketManager::receive_packet_data(struct bufferevent *bev) {
             return;
         }
 
-        std::vector<uint8_t> packet_data(packet_size);
+        packet_data_t packet_data(packet_size);
         evbuffer_remove(input, &packet_data[0], packet_size);
 
         fixed_header_length = 0;

@@ -19,7 +19,7 @@ void Packet::read_fixed_header(PacketDataReader &reader) {
     }
 }
 
-ConnectPacket::ConnectPacket(const std::vector<uint8_t> &packet_data) {
+ConnectPacket::ConnectPacket(const packet_data_t &packet_data) {
 
     PacketDataReader reader(packet_data);
 
@@ -58,8 +58,8 @@ ConnectPacket::ConnectPacket(const std::vector<uint8_t> &packet_data) {
 
 }
 
-std::vector<uint8_t> ConnectPacket::serialize() const {
-    std::vector<uint8_t> packet_data;
+packet_data_t ConnectPacket::serialize() const {
+    packet_data_t packet_data;
     PacketDataWriter writer(packet_data);
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
 
@@ -105,7 +105,7 @@ std::vector<uint8_t> ConnectPacket::serialize() const {
     return packet_data;
 }
 
-ConnackPacket::ConnackPacket(const std::vector<uint8_t> &packet_data) {
+ConnackPacket::ConnackPacket(const packet_data_t &packet_data) {
 
     PacketDataReader reader(packet_data);
 
@@ -123,9 +123,9 @@ ConnackPacket::ConnackPacket(const std::vector<uint8_t> &packet_data) {
     return_code = static_cast<ReturnCode>(reader.read_byte());
 }
 
-std::vector<uint8_t> ConnackPacket::serialize() const {
+packet_data_t ConnackPacket::serialize() const {
 
-    std::vector<uint8_t> packet_data;
+    packet_data_t packet_data;
     PacketDataWriter writer(packet_data);
 
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
@@ -135,7 +135,7 @@ std::vector<uint8_t> ConnackPacket::serialize() const {
     return packet_data;
 }
 
-PublishPacket::PublishPacket(const std::vector<uint8_t> &packet_data) {
+PublishPacket::PublishPacket(const packet_data_t &packet_data) {
 
     PacketDataReader reader(packet_data);
 
@@ -157,8 +157,8 @@ PublishPacket::PublishPacket(const std::vector<uint8_t> &packet_data) {
 
 }
 
-std::vector<uint8_t> PublishPacket::serialize() const {
-    std::vector<uint8_t> packet_data;
+packet_data_t PublishPacket::serialize() const {
+    packet_data_t packet_data;
     PacketDataWriter writer(packet_data);
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
     uint16_t remaining_length = 2 + topic_name.size() + message_data.size();
@@ -177,7 +177,7 @@ std::vector<uint8_t> PublishPacket::serialize() const {
     return packet_data;
 }
 
-PubackPacket::PubackPacket(const std::vector<uint8_t> &packet_data) {
+PubackPacket::PubackPacket(const packet_data_t &packet_data) {
 
     PacketDataReader reader(packet_data);
 
@@ -195,9 +195,9 @@ PubackPacket::PubackPacket(const std::vector<uint8_t> &packet_data) {
 
 }
 
-std::vector<uint8_t> PubackPacket::serialize() const {
+packet_data_t PubackPacket::serialize() const {
 
-    std::vector<uint8_t> packet_data;
+    packet_data_t packet_data;
     PacketDataWriter writer(packet_data);
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
     writer.write_remaining_length(2);
@@ -205,7 +205,7 @@ std::vector<uint8_t> PubackPacket::serialize() const {
     return packet_data;
 }
 
-PubrecPacket::PubrecPacket(const std::vector<uint8_t> &packet_data) {
+PubrecPacket::PubrecPacket(const packet_data_t &packet_data) {
 
     PacketDataReader reader(packet_data);
 
@@ -223,9 +223,9 @@ PubrecPacket::PubrecPacket(const std::vector<uint8_t> &packet_data) {
 
 }
 
-std::vector<uint8_t> PubrecPacket::serialize() const {
+packet_data_t PubrecPacket::serialize() const {
 
-    std::vector<uint8_t> packet_data;
+    packet_data_t packet_data;
     PacketDataWriter writer(packet_data);
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
     writer.write_remaining_length(2);
@@ -233,7 +233,7 @@ std::vector<uint8_t> PubrecPacket::serialize() const {
     return packet_data;
 }
 
-PubrelPacket::PubrelPacket(const std::vector<uint8_t> &packet_data) {
+PubrelPacket::PubrelPacket(const packet_data_t &packet_data) {
 
     PacketDataReader reader(packet_data);
 
@@ -251,9 +251,9 @@ PubrelPacket::PubrelPacket(const std::vector<uint8_t> &packet_data) {
 
 }
 
-std::vector<uint8_t> PubrelPacket::serialize() const {
+packet_data_t PubrelPacket::serialize() const {
 
-    std::vector<uint8_t> packet_data;
+    packet_data_t packet_data;
     PacketDataWriter writer(packet_data);
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
     writer.write_remaining_length(2);
@@ -261,7 +261,7 @@ std::vector<uint8_t> PubrelPacket::serialize() const {
     return packet_data;
 }
 
-PubcompPacket::PubcompPacket(const std::vector<uint8_t> &packet_data) {
+PubcompPacket::PubcompPacket(const packet_data_t &packet_data) {
 
     PacketDataReader reader(packet_data);
 
@@ -279,9 +279,9 @@ PubcompPacket::PubcompPacket(const std::vector<uint8_t> &packet_data) {
 
 }
 
-std::vector<uint8_t> PubcompPacket::serialize() const {
+packet_data_t PubcompPacket::serialize() const {
 
-    std::vector<uint8_t> packet_data;
+    packet_data_t packet_data;
     PacketDataWriter writer(packet_data);
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
     writer.write_remaining_length(2);
@@ -289,7 +289,7 @@ std::vector<uint8_t> PubcompPacket::serialize() const {
     return packet_data;
 }
 
-SubscribePacket::SubscribePacket(const std::vector<uint8_t> &packet_data) {
+SubscribePacket::SubscribePacket(const packet_data_t &packet_data) {
 
     PacketDataReader reader(packet_data);
 
@@ -313,9 +313,9 @@ SubscribePacket::SubscribePacket(const std::vector<uint8_t> &packet_data) {
     } while (!reader.empty());
 }
 
-std::vector<uint8_t> SubscribePacket::serialize() const {
+packet_data_t SubscribePacket::serialize() const {
 
-    std::vector<uint8_t> packet_data;
+    packet_data_t packet_data;
     PacketDataWriter writer(packet_data);
 
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
@@ -337,7 +337,7 @@ std::vector<uint8_t> SubscribePacket::serialize() const {
 
 }
 
-SubackPacket::SubackPacket(const std::vector<uint8_t> &packet_data) {
+SubackPacket::SubackPacket(const packet_data_t &packet_data) {
 
     PacketDataReader reader(packet_data);
 
@@ -359,9 +359,9 @@ SubackPacket::SubackPacket(const std::vector<uint8_t> &packet_data) {
     } while (!reader.empty());
 }
 
-std::vector<uint8_t> SubackPacket::serialize() const {
+packet_data_t SubackPacket::serialize() const {
 
-    std::vector<uint8_t> packet_data;
+    packet_data_t packet_data;
     PacketDataWriter writer(packet_data);
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
     writer.write_remaining_length(2 + return_codes.size());
@@ -372,7 +372,7 @@ std::vector<uint8_t> SubackPacket::serialize() const {
     return packet_data;
 }
 
-UnsubscribePacket::UnsubscribePacket(const std::vector<uint8_t> &packet_data) {
+UnsubscribePacket::UnsubscribePacket(const packet_data_t &packet_data) {
 
     PacketDataReader reader(packet_data);
 
@@ -393,9 +393,9 @@ UnsubscribePacket::UnsubscribePacket(const std::vector<uint8_t> &packet_data) {
     } while (!reader.empty());
 }
 
-std::vector<uint8_t> UnsubscribePacket::serialize() const {
+packet_data_t UnsubscribePacket::serialize() const {
 
-    std::vector<uint8_t> packet_data;
+    packet_data_t packet_data;
     PacketDataWriter writer(packet_data);
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
     size_t topics_size = 0;
@@ -411,7 +411,7 @@ std::vector<uint8_t> UnsubscribePacket::serialize() const {
     return packet_data;
 }
 
-UnsubackPacket::UnsubackPacket(const std::vector<uint8_t> &packet_data) {
+UnsubackPacket::UnsubackPacket(const packet_data_t &packet_data) {
 
     PacketDataReader reader(packet_data);
 
@@ -428,9 +428,9 @@ UnsubackPacket::UnsubackPacket(const std::vector<uint8_t> &packet_data) {
     packet_id = reader.read_uint16();
 }
 
-std::vector<uint8_t> UnsubackPacket::serialize() const {
+packet_data_t UnsubackPacket::serialize() const {
 
-    std::vector<uint8_t> packet_data;
+    packet_data_t packet_data;
     PacketDataWriter writer(packet_data);
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
     writer.write_remaining_length(2);
@@ -438,7 +438,7 @@ std::vector<uint8_t> UnsubackPacket::serialize() const {
     return packet_data;
 }
 
-PingreqPacket::PingreqPacket(const std::vector<uint8_t> &packet_data) {
+PingreqPacket::PingreqPacket(const packet_data_t &packet_data) {
 
     PacketDataReader reader(packet_data);
 
@@ -453,16 +453,16 @@ PingreqPacket::PingreqPacket(const std::vector<uint8_t> &packet_data) {
     }
 }
 
-std::vector<uint8_t> PingreqPacket::serialize() const {
+packet_data_t PingreqPacket::serialize() const {
 
-    std::vector<uint8_t> packet_data;
+    packet_data_t packet_data;
     PacketDataWriter writer(packet_data);
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
     writer.write_remaining_length(0);
     return packet_data;
 }
 
-PingrespPacket::PingrespPacket(const std::vector<uint8_t> &packet_data) {
+PingrespPacket::PingrespPacket(const packet_data_t &packet_data) {
 
     PacketDataReader reader(packet_data);
 
@@ -477,15 +477,15 @@ PingrespPacket::PingrespPacket(const std::vector<uint8_t> &packet_data) {
     }
 }
 
-std::vector<uint8_t> PingrespPacket::serialize() const {
-    std::vector<uint8_t> packet_data;
+packet_data_t PingrespPacket::serialize() const {
+    packet_data_t packet_data;
     PacketDataWriter writer(packet_data);
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
     writer.write_remaining_length(0);
     return packet_data;
 }
 
-DisconnectPacket::DisconnectPacket(const std::vector<uint8_t> &packet_data) {
+DisconnectPacket::DisconnectPacket(const packet_data_t &packet_data) {
 
     PacketDataReader reader(packet_data);
 
@@ -501,8 +501,8 @@ DisconnectPacket::DisconnectPacket(const std::vector<uint8_t> &packet_data) {
 
 }
 
-std::vector<uint8_t> DisconnectPacket::serialize() const {
-    std::vector<uint8_t> packet_data;
+packet_data_t DisconnectPacket::serialize() const {
+    packet_data_t packet_data;
     PacketDataWriter writer(packet_data);
     writer.write_byte((static_cast<uint8_t>(type) << 4) | (header_flags & 0x0F));
     writer.write_remaining_length(0);

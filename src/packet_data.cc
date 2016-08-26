@@ -36,7 +36,7 @@ void PacketDataWriter::write_string(const std::string &s) {
     std::copy(s.begin(), s.end(), std::back_inserter(packet_data));
 }
 
-void PacketDataWriter::write_bytes(const std::vector<uint8_t> &b) {
+void PacketDataWriter::write_bytes(const packet_data_t & b) {
     write_uint16(b.size());
     std::copy(b.begin(), b.end(), std::back_inserter(packet_data));
 }
@@ -106,21 +106,21 @@ std::string PacketDataReader::read_string() {
     return s;
 }
 
-std::vector<uint8_t> PacketDataReader::read_bytes() {
+packet_data_t PacketDataReader::read_bytes() {
     uint16_t len = read_uint16();
     if (offset + len > packet_data.size()) {
         throw std::exception();
     }
-    std::vector<uint8_t> v(&packet_data[offset], &packet_data[offset + len]);
+    packet_data_t v(&packet_data[offset], &packet_data[offset + len]);
     offset += len;
     return v;
 }
 
-std::vector<uint8_t> PacketDataReader::read_bytes(size_t len) {
+packet_data_t PacketDataReader::read_bytes(size_t len) {
     if (offset + len > packet_data.size()) {
         throw std::exception();
     }
-    std::vector<uint8_t> v(&packet_data[offset], &packet_data[offset + len]);
+    packet_data_t v(&packet_data[offset], &packet_data[offset + len]);
     offset += len;
     return v;
 }

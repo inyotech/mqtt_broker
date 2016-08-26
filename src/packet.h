@@ -86,8 +86,8 @@ public:
 
     void read_fixed_header(PacketDataReader &);
 
-    //  static Packet unserialize(const std::vector<uint8_t> &);
-    virtual std::vector<uint8_t> serialize(void) const = 0;
+    //  static Packet unserialize(const packet_data_t &);
+    virtual packet_data_t serialize(void) const = 0;
 
 };
 
@@ -104,9 +104,9 @@ public:
         protocol_level = 4;
     }
 
-    ConnectPacket(const std::vector<uint8_t> &packet_data);
+    ConnectPacket(const packet_data_t &packet_data);
 
-    std::vector<uint8_t> serialize() const;
+    packet_data_t serialize() const;
 
     std::string protocol_name;
     uint8_t protocol_level;
@@ -199,7 +199,7 @@ public:
         header_flags = 0;
     }
 
-    ConnackPacket(const std::vector<uint8_t> &packet_data);
+    ConnackPacket(const packet_data_t &packet_data);
 
     enum class ReturnCode : uint8_t {
         Accepted = 0x00,
@@ -210,7 +210,7 @@ public:
         NotAuthorized = 0x05
     };
 
-    std::vector<uint8_t> serialize() const;
+    packet_data_t serialize() const;
 
     uint8_t acknowledge_flags;
     ReturnCode return_code;
@@ -240,9 +240,9 @@ public:
         header_flags = 0;
     }
 
-    PublishPacket(const std::vector<uint8_t> &packet_data);
+    PublishPacket(const packet_data_t &packet_data);
 
-    std::vector<uint8_t> serialize() const;
+    packet_data_t serialize() const;
 
     std::string topic_name;
     std::vector<uint8_t> message_data;
@@ -293,9 +293,9 @@ public:
         header_flags = 0;
     }
 
-    PubackPacket(const std::vector<uint8_t> &packet_data);
+    PubackPacket(const packet_data_t &packet_data);
 
-    std::vector<uint8_t> serialize() const;
+    packet_data_t serialize() const;
 
     uint16_t packet_id;
 };
@@ -312,9 +312,9 @@ public:
         header_flags = 0;
     }
 
-    PubrecPacket(const std::vector<uint8_t> &packet_data);
+    PubrecPacket(const packet_data_t &packet_data);
 
-    std::vector<uint8_t> serialize() const;
+    packet_data_t serialize() const;
 
     uint16_t packet_id;
 };
@@ -331,9 +331,9 @@ public:
         header_flags = 0x02;
     }
 
-    PubrelPacket(const std::vector<uint8_t> &packet_data);
+    PubrelPacket(const packet_data_t &packet_data);
 
-    std::vector<uint8_t> serialize() const;
+    packet_data_t serialize() const;
 
     uint16_t packet_id;
 };
@@ -350,9 +350,9 @@ public:
         header_flags = 0;
     }
 
-    PubcompPacket(const std::vector<uint8_t> &packet_data);
+    PubcompPacket(const packet_data_t &packet_data);
 
-    std::vector<uint8_t> serialize() const;
+    packet_data_t serialize() const;
 
     uint16_t packet_id;
 };
@@ -369,9 +369,9 @@ public:
         header_flags = 0x02;
     }
 
-    SubscribePacket(const std::vector<uint8_t> &packet_data);
+    SubscribePacket(const packet_data_t &packet_data);
 
-    std::vector<uint8_t> serialize() const;
+    packet_data_t serialize() const;
 
     uint16_t packet_id;
 
@@ -391,9 +391,9 @@ public:
         header_flags = 0;
     }
 
-    SubackPacket(const std::vector<uint8_t> &packet_data);
+    SubackPacket(const packet_data_t &packet_data);
 
-    std::vector<uint8_t> serialize() const;
+    packet_data_t serialize() const;
 
     enum class ReturnCode : uint8_t {
         SuccessQoS0 = 0x00,
@@ -419,9 +419,9 @@ public:
         header_flags = 0x02;
     }
 
-    UnsubscribePacket(const std::vector<uint8_t> &packet_data);
+    UnsubscribePacket(const packet_data_t &packet_data);
 
-    std::vector<uint8_t> serialize() const;
+    packet_data_t serialize() const;
 
     uint16_t packet_id;
 
@@ -441,9 +441,9 @@ public:
         header_flags = 0;
     }
 
-    UnsubackPacket(const std::vector<uint8_t> &packet_data);
+    UnsubackPacket(const packet_data_t &packet_data);
 
-    std::vector<uint8_t> serialize() const;
+    packet_data_t serialize() const;
 
     uint16_t packet_id;
 
@@ -461,9 +461,9 @@ public:
         header_flags = 0;
     }
 
-    PingreqPacket(const std::vector<uint8_t> &packet_data);
+    PingreqPacket(const packet_data_t &packet_data);
 
-    std::vector<uint8_t> serialize() const;
+    packet_data_t serialize() const;
 };
 
 /**
@@ -478,9 +478,9 @@ public:
         header_flags = 0;
     }
 
-    PingrespPacket(const std::vector<uint8_t> &packet_data);
+    PingrespPacket(const packet_data_t &packet_data);
 
-    std::vector<uint8_t> serialize() const;
+    packet_data_t serialize() const;
 };
 
 /**
@@ -495,8 +495,8 @@ public:
         header_flags = 0;
     }
 
-    DisconnectPacket(const std::vector<uint8_t> &packet_data);
+    DisconnectPacket(const packet_data_t &packet_data);
 
-    std::vector<uint8_t> serialize() const;
+    packet_data_t serialize() const;
 };
 

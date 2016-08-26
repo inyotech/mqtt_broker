@@ -8,7 +8,6 @@
  * See [the MQTT specification](http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html)
  */
 
-#include "mqtt.h"
 #include "packet.h"
 #include "base_session.h"
 
