@@ -111,14 +111,14 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>receive_packet_data</b> (struct bufferevent *bev)</td></tr>
 <tr class="separator:a6043c7f7e30c61c232b2843f9d1042fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47ccff19597c6555b918f69e878d4eaf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a47ccff19597c6555b918f69e878d4eaf"></a>
-owned_packet_ptr_t&#160;</td><td class="memItemRight" valign="bottom"><b>parse_packet_data</b> (const packet_data_t &amp;packet_data)</td></tr>
+std::unique_ptr&lt; <a class="el" href="class_packet.html">Packet</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>parse_packet_data</b> (const <a class="el" href="packet__data_8h.html#a6f5fa06638d1866d3bbabfb51b9d43b6">packet_data_t</a> &amp;packet_data)</td></tr>
 <tr class="separator:a47ccff19597c6555b918f69e878d4eaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2173d4f14a9019329424b97b2e29c0b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2173d4f14a9019329424b97b2e29c0b5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_other_events</b> (short events)</td></tr>
 <tr class="separator:a2173d4f14a9019329424b97b2e29c0b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47cfb70efa37da7be13e8d256caf376d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a47cfb70efa37da7be13e8d256caf376d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_packet_received_handler</b> (std::function&lt; void(owned_packet_ptr_t)&gt; handler)</td></tr>
-<tr class="separator:a47cfb70efa37da7be13e8d256caf376d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70300df11c21ac4848d23cc168ad103b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70300df11c21ac4848d23cc168ad103b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_packet_received_handler</b> (std::function&lt; void(std::unique_ptr&lt; <a class="el" href="class_packet.html">Packet</a> &gt;)&gt; handler)</td></tr>
+<tr class="separator:a70300df11c21ac4848d23cc168ad103b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15bdbf5c05834e7a625f25953163a42a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a15bdbf5c05834e7a625f25953163a42a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>set_event_handler</b> (std::function&lt; void(EventType)&gt; handler)</td></tr>
 <tr class="separator:a15bdbf5c05834e7a625f25953163a42a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,9 +155,9 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>remaining_length</b
 <tr class="memitem:aaf7532d74d9ebe771ed78a2ee0548692"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaf7532d74d9ebe771ed78a2ee0548692"></a>
 struct bufferevent *&#160;</td><td class="memItemRight" valign="bottom"><b>bev</b></td></tr>
 <tr class="separator:aaf7532d74d9ebe771ed78a2ee0548692"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad83cdf7986ec233cb93491c5b91d51f0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad83cdf7986ec233cb93491c5b91d51f0"></a>
-std::function&lt; void(owned_packet_ptr_t)&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>packet_received_handler</b></td></tr>
-<tr class="separator:ad83cdf7986ec233cb93491c5b91d51f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48451c07bfde3141a339c78a8ccd25fb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a48451c07bfde3141a339c78a8ccd25fb"></a>
+std::function&lt; void(std::unique_ptr&lt; <a class="el" href="class_packet.html">Packet</a> &gt;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>packet_received_handler</b></td></tr>
+<tr class="separator:a48451c07bfde3141a339c78a8ccd25fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accd734ee0fbad0245a72e2164b4c6540"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="accd734ee0fbad0245a72e2164b4c6540"></a>
 std::function&lt; void(EventType)&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>event_handler</b></td></tr>
 <tr class="separator:accd734ee0fbad0245a72e2164b4c6540"><td class="memSeparator" colspan="2">&#160;</td></tr>

@@ -1,10 +1,12 @@
 var searchData=
 [
-  ['topic',['topic',['../structoptions__t.html#acacb3b974c3edbc32705057116181f80',1,'options_t']]],
-  ['topic_2ecc',['topic.cc',['../topic_8cc.html',1,'']]],
-  ['topic_2eh',['topic.h',['../topic_8h.html',1,'']]],
-  ['topic_5fmatch',['topic_match',['../class_topic_name.html#a22be3b3682941b462117f4480933323a',1,'TopicName::topic_match()'],['../class_topic_filter.html#a22be3b3682941b462117f4480933323a',1,'TopicFilter::topic_match()'],['../class_topic_filter.html#aea151a26659b92ce57a78dcd422db66f',1,'TopicFilter::topic_match()'],['../topic_8cc.html#a25d45a362405ce33bdafd53878ed3f03',1,'topic_match(const TopicFilter &amp;filter, const TopicName &amp;name):&#160;topic.cc'],['../topic_8cc.html#a24657e7c8c2e0eb2e359c06fe9f4ad32',1,'topic_match(const TopicFilter &amp;filter1, const TopicFilter &amp;filter2):&#160;topic.cc'],['../topic_8h.html#aaa0cc8d461a4b8b97424cbc2a80e8fdb',1,'topic_match(const TopicFilter &amp;topic_filter, const TopicName &amp;topic_name):&#160;topic.cc'],['../topic_8h.html#a8a467c2c88453510a7042108a27acdce',1,'topic_match(const TopicFilter &amp;topic_filter, const TopicFilter &amp;topic_name):&#160;topic.cc']]],
-  ['topicfilter',['TopicFilter',['../class_topic_filter.html',1,'TopicFilter'],['../class_topic_filter.html#aec761ffe5603f812023f62a309e88605',1,'TopicFilter::TopicFilter()']]],
-  ['topicname',['TopicName',['../class_topic_name.html',1,'TopicName'],['../class_topic_name.html#a4897b80f54f21bee4a778adc115e77ba',1,'TopicName::TopicName()']]],
-  ['topics',['topics',['../structoptions__t.html#adc22c9ebb0386ffcefecd0b5595c7df3',1,'options_t']]]
+  ['send_5fpending_5fmessage',['send_pending_message',['../class_broker_session.html#a69a41141c5da009674d0d07fad5d5e9b',1,'BrokerSession']]],
+  ['session',['session',['../client__pub_8cc.html#a104286d2b2326e1455ee905326e02aba',1,'session():&#160;client_pub.cc'],['../client__sub_8cc.html#a104286d2b2326e1455ee905326e02aba',1,'session():&#160;client_sub.cc']]],
+  ['session_5fmanager',['session_manager',['../class_broker_session.html#a278d933750c7f03f773827d5f89e81cd',1,'BrokerSession::session_manager()'],['../broker_8cc.html#a3e55f023028f8b817b8b12b22b60d326',1,'session_manager():&#160;broker.cc']]],
+  ['sessionmanager',['SessionManager',['../class_session_manager.html',1,'']]],
+  ['signal_5fcb',['signal_cb',['../broker_8cc.html#a086821b55672b6110d0a58e9e1c0143a',1,'signal_cb(evutil_socket_t signal, short event, void *arg):&#160;broker.cc'],['../client__sub_8cc.html#ab04a64a7ebfd4c7b660640c9fd075eee',1,'signal_cb(evutil_socket_t, short event, void *):&#160;client_sub.cc']]],
+  ['subackpacket',['SubackPacket',['../class_suback_packet.html',1,'']]],
+  ['subscribepacket',['SubscribePacket',['../class_subscribe_packet.html',1,'']]],
+  ['subscription',['Subscription',['../class_subscription.html',1,'']]],
+  ['subscriptions',['subscriptions',['../class_broker_session.html#a94b0735554a839f255bfaa6a63611f1f',1,'BrokerSession']]]
 ];

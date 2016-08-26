@@ -89,46 +89,270 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">PacketDataReader Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="packet__data_8h_source.html">packet_data.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a892911f92946f3b9d835dc359f26bb6f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a892911f92946f3b9d835dc359f26bb6f"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PacketDataReader</b> (const std::vector&lt; uint8_t &gt; &amp;packet_data)</td></tr>
-<tr class="separator:a892911f92946f3b9d835dc359f26bb6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2cfb8d2ec4882e7a845a17b3db8499f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa2cfb8d2ec4882e7a845a17b3db8499f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>has_remaining_length</b> ()</td></tr>
+<tr class="memitem:a789361f393fe35aed8211305487be66b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_reader.html#a789361f393fe35aed8211305487be66b">PacketDataReader</a> (const <a class="el" href="packet__data_8h.html#a6f5fa06638d1866d3bbabfb51b9d43b6">packet_data_t</a> &amp;packet_data)</td></tr>
+<tr class="separator:a789361f393fe35aed8211305487be66b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2cfb8d2ec4882e7a845a17b3db8499f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_reader.html#aa2cfb8d2ec4882e7a845a17b3db8499f">has_remaining_length</a> ()</td></tr>
 <tr class="separator:aa2cfb8d2ec4882e7a845a17b3db8499f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3e2f9820deb340b890f8487a2f5b6f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af3e2f9820deb340b890f8487a2f5b6f9"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>read_remaining_length</b> ()</td></tr>
+<tr class="memitem:af3e2f9820deb340b890f8487a2f5b6f9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_reader.html#af3e2f9820deb340b890f8487a2f5b6f9">read_remaining_length</a> ()</td></tr>
 <tr class="separator:af3e2f9820deb340b890f8487a2f5b6f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe5a92d7aa0b15aa7ef633ae9d053bee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afe5a92d7aa0b15aa7ef633ae9d053bee"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>read_byte</b> ()</td></tr>
+<tr class="memitem:afe5a92d7aa0b15aa7ef633ae9d053bee"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_reader.html#afe5a92d7aa0b15aa7ef633ae9d053bee">read_byte</a> ()</td></tr>
 <tr class="separator:afe5a92d7aa0b15aa7ef633ae9d053bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49a9f5b65ac3d7acf65bf88209d94a3d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a49a9f5b65ac3d7acf65bf88209d94a3d"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>read_uint16</b> ()</td></tr>
+<tr class="memitem:a49a9f5b65ac3d7acf65bf88209d94a3d"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_reader.html#a49a9f5b65ac3d7acf65bf88209d94a3d">read_uint16</a> ()</td></tr>
 <tr class="separator:a49a9f5b65ac3d7acf65bf88209d94a3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9d53c4d7f956ef858ddd56b748f03b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae9d53c4d7f956ef858ddd56b748f03b9"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>read_string</b> ()</td></tr>
+<tr class="memitem:ae9d53c4d7f956ef858ddd56b748f03b9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_reader.html#ae9d53c4d7f956ef858ddd56b748f03b9">read_string</a> ()</td></tr>
 <tr class="separator:ae9d53c4d7f956ef858ddd56b748f03b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01482f5ca65a079b797b63c67c6dea7f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a01482f5ca65a079b797b63c67c6dea7f"></a>
-std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>read_bytes</b> ()</td></tr>
+<tr class="memitem:a01482f5ca65a079b797b63c67c6dea7f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_reader.html#a01482f5ca65a079b797b63c67c6dea7f">read_bytes</a> ()</td></tr>
 <tr class="separator:a01482f5ca65a079b797b63c67c6dea7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae864455a7fc09b74e0f98cae2454c9c0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae864455a7fc09b74e0f98cae2454c9c0"></a>
-std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>read_bytes</b> (size_t n)</td></tr>
-<tr class="separator:ae864455a7fc09b74e0f98cae2454c9c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcd03d2fde8d74bbabbf022b1e227bc9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afcd03d2fde8d74bbabbf022b1e227bc9"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> ()</td></tr>
+<tr class="memitem:a5a8a8f65157671a4b00bd516598f2d1b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_reader.html#a5a8a8f65157671a4b00bd516598f2d1b">read_bytes</a> (size_t len)</td></tr>
+<tr class="separator:a5a8a8f65157671a4b00bd516598f2d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcd03d2fde8d74bbabbf022b1e227bc9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_reader.html#afcd03d2fde8d74bbabbf022b1e227bc9">empty</a> ()</td></tr>
 <tr class="separator:afcd03d2fde8d74bbabbf022b1e227bc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff18cc4f3e9256c759fd5920d419f38f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aff18cc4f3e9256c759fd5920d419f38f"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>get_offset</b> ()</td></tr>
+<tr class="memitem:aff18cc4f3e9256c759fd5920d419f38f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_reader.html#aff18cc4f3e9256c759fd5920d419f38f">get_offset</a> ()</td></tr>
 <tr class="separator:aff18cc4f3e9256c759fd5920d419f38f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8be2074973f1e8d6fa2f54fc1c05c81b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8be2074973f1e8d6fa2f54fc1c05c81b"></a>
-std::vector&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_packet_data</b> ()</td></tr>
-<tr class="separator:a8be2074973f1e8d6fa2f54fc1c05c81b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12154e8873800fa1a8f3179bacc12085"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="packet__data_8h.html#a6f5fa06638d1866d3bbabfb51b9d43b6">packet_data_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_reader.html#a12154e8873800fa1a8f3179bacc12085">get_packet_data</a> ()</td></tr>
+<tr class="separator:a12154e8873800fa1a8f3179bacc12085"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Deserialization class.</p>
+<p>Methods are provided to read native types from the wire encoded control packets received over the network connection. MQTT 3.1.1 standard decoding methods are implemented. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a789361f393fe35aed8211305487be66b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PacketDataReader::PacketDataReader </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="packet__data_8h.html#a6f5fa06638d1866d3bbabfb51b9d43b6">packet_data_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>packet_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructor</p>
+<p>Accepts a reference to a packet_data_t container that contains data received directly over a network connection. The class also contains a current offset pointer that is initialized to point to the beginning of the container. Each data read will advance the offset pointer forward to the next item in the container.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">packet_data</td><td>A reference to a packet_data_t container. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="afcd03d2fde8d74bbabbf022b1e227bc9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool PacketDataReader::empty </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Is the packet_data_t container empty.</p>
+<dl class="section return"><dt>Returns</dt><dd>empty. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aff18cc4f3e9256c759fd5920d419f38f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t PacketDataReader::get_offset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Return the current packet_data_t container offset pointer.</p>
+<dl class="section return"><dt>Returns</dt><dd>integer. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a12154e8873800fa1a8f3179bacc12085"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="packet__data_8h.html#a6f5fa06638d1866d3bbabfb51b9d43b6">packet_data_t</a>&amp; PacketDataReader::get_packet_data </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Get a reference to the packet_data_t container.</p>
+<dl class="section return"><dt>Returns</dt><dd>Reference to packet_data_t container. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa2cfb8d2ec4882e7a845a17b3db8499f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool PacketDataReader::has_remaining_length </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Is a remaing lenght value present.</p>
+<p>Primitive function indicating a valid remaining_length value can be read from the current position in the packet_data_t container. The remaining length value is encoded in a variable sequence from 1 to 4 bytes.</p>
+<dl class="section return"><dt>Returns</dt><dd>valid remaining length. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="afe5a92d7aa0b15aa7ef633ae9d053bee"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t PacketDataReader::read_byte </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Read a single byte from the packet_data_t container.</p>
+<dl class="section return"><dt>Returns</dt><dd>byte. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a01482f5ca65a079b797b63c67c6dea7f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; uint8_t &gt; PacketDataReader::read_bytes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Read a byte sequence from the packet_data_t container.</p>
+<p>The sequence is assumed to be encoded according to the MQTT 3.1.1 standard wire format for a byte sequence. The sequence length is encoded along with the data.</p>
+<dl class="section return"><dt>Returns</dt><dd>byte seqence. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5a8a8f65157671a4b00bd516598f2d1b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; uint8_t &gt; PacketDataReader::read_bytes </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Read a byte sequence from the packet_data_t contianer.</p>
+<p>The number of bytes read is passed as an argument to the method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">len</td><td>Lenght of the sequence to read. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Byte sequence </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af3e2f9820deb340b890f8487a2f5b6f9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t PacketDataReader::read_remaining_length </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Read the remaining length value from the packet_data_t container.</p>
+<dl class="section return"><dt>Returns</dt><dd>integer. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae9d53c4d7f956ef858ddd56b748f03b9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string PacketDataReader::read_string </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Read a UTF-8 encoded string from the packet_data_t container.</p>
+<dl class="section return"><dt>Returns</dt><dd>character string. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a49a9f5b65ac3d7acf65bf88209d94a3d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t PacketDataReader::read_uint16 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Read a 16 bit value from the packet_data_t container.</p>
+<dl class="section return"><dt>Returns</dt><dd>16 bit integer. </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/scottb/src/mqtt/src/<a class="el" href="packet__data_8h_source.html">packet_data.h</a></li>
-<li>/Users/scottb/src/mqtt/src/packet_data.cc</li>
+<li>/Users/scottb/src/mqtt/src/<a class="el" href="packet__data_8cc.html">packet_data.cc</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

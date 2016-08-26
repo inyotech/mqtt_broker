@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['forward_5fpacket',['forward_packet',['../class_broker_session.html#ab2d742a0e47098c072a995a33c786968',1,'BrokerSession']]]
+  ['empty',['empty',['../class_packet_data_reader.html#afcd03d2fde8d74bbabbf022b1e227bc9',1,'PacketDataReader']]]
 ];

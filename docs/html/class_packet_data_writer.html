@@ -84,43 +84,160 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_packet_data_writer-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">PacketDataWriter Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="packet__data_8h_source.html">packet_data.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:adb7eb01b6d705dc46106b1ed16958c8e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adb7eb01b6d705dc46106b1ed16958c8e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PacketDataWriter</b> (std::vector&lt; uint8_t &gt; &amp;packet_data)</td></tr>
-<tr class="separator:adb7eb01b6d705dc46106b1ed16958c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5f18b27da26e6cb7a21e001d92ffa7b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae5f18b27da26e6cb7a21e001d92ffa7b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>write_remaining_length</b> (size_t length)</td></tr>
+<tr class="memitem:a963a4f0ab6171af84e30382385d13ac9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_writer.html#a963a4f0ab6171af84e30382385d13ac9">PacketDataWriter</a> (<a class="el" href="packet__data_8h.html#a6f5fa06638d1866d3bbabfb51b9d43b6">packet_data_t</a> &amp;packet_data)</td></tr>
+<tr class="separator:a963a4f0ab6171af84e30382385d13ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5f18b27da26e6cb7a21e001d92ffa7b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_writer.html#ae5f18b27da26e6cb7a21e001d92ffa7b">write_remaining_length</a> (size_t length)</td></tr>
 <tr class="separator:ae5f18b27da26e6cb7a21e001d92ffa7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aafca0b76c79fecf6ea7ed66a2d1d03c0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aafca0b76c79fecf6ea7ed66a2d1d03c0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>write_byte</b> (uint8_t byte)</td></tr>
+<tr class="memitem:aafca0b76c79fecf6ea7ed66a2d1d03c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_writer.html#aafca0b76c79fecf6ea7ed66a2d1d03c0">write_byte</a> (uint8_t byte)</td></tr>
 <tr class="separator:aafca0b76c79fecf6ea7ed66a2d1d03c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4421781091c1fd0839e2e64bb5b54f60"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4421781091c1fd0839e2e64bb5b54f60"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>write_uint16</b> (uint16_t word)</td></tr>
+<tr class="memitem:a4421781091c1fd0839e2e64bb5b54f60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_writer.html#a4421781091c1fd0839e2e64bb5b54f60">write_uint16</a> (uint16_t word)</td></tr>
 <tr class="separator:a4421781091c1fd0839e2e64bb5b54f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acacf88eb1ddb8b05f9883e1ae5047b28"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acacf88eb1ddb8b05f9883e1ae5047b28"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>write_string</b> (const std::string &amp;s)</td></tr>
+<tr class="memitem:acacf88eb1ddb8b05f9883e1ae5047b28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_writer.html#acacf88eb1ddb8b05f9883e1ae5047b28">write_string</a> (const std::string &amp;s)</td></tr>
 <tr class="separator:acacf88eb1ddb8b05f9883e1ae5047b28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4420ddcd4bc11eca0aa962a79b26af6b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4420ddcd4bc11eca0aa962a79b26af6b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>write_bytes</b> (const std::vector&lt; uint8_t &gt; &amp;b)</td></tr>
-<tr class="separator:a4420ddcd4bc11eca0aa962a79b26af6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:aedfe875a7f5b3970965d93316e2d3971"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aedfe875a7f5b3970965d93316e2d3971"></a>
-std::vector&lt; uint8_t &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>packet_data</b></td></tr>
-<tr class="separator:aedfe875a7f5b3970965d93316e2d3971"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12db43500d07b3ab12f39e5be3c806fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_data_writer.html#a12db43500d07b3ab12f39e5be3c806fe">write_bytes</a> (const <a class="el" href="packet__data_8h.html#a6f5fa06638d1866d3bbabfb51b9d43b6">packet_data_t</a> &amp;b)</td></tr>
+<tr class="separator:a12db43500d07b3ab12f39e5be3c806fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Serialization class.</p>
+<p>Methods are provided to write native types to the MQTT 3.1.1 standard wire format. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a963a4f0ab6171af84e30382385d13ac9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PacketDataWriter::PacketDataWriter </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="packet__data_8h.html#a6f5fa06638d1866d3bbabfb51b9d43b6">packet_data_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>packet_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructor</p>
+<p>Accepts a reference to a packet_data_t container. This container will be filled with serialized data and can be sent directly through the network connection.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">packet_data</td><td>A reference to a packet_data_t container. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="aafca0b76c79fecf6ea7ed66a2d1d03c0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PacketDataWriter::write_byte </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>byte</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Write a byte to the packet_data_t container. </p>
+
+</div>
+</div>
+<a class="anchor" id="a12db43500d07b3ab12f39e5be3c806fe"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PacketDataWriter::write_bytes </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="packet__data_8h.html#a6f5fa06638d1866d3bbabfb51b9d43b6">packet_data_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Copy the contents of a packet_data_t container into this instance's container. </p>
+
+</div>
+</div>
+<a class="anchor" id="ae5f18b27da26e6cb7a21e001d92ffa7b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PacketDataWriter::write_remaining_length </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>length</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Write the integer length to the container using the MQTT 3.1.1 remaining length encoding scheme.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">length</td><td>The value to encode. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="acacf88eb1ddb8b05f9883e1ae5047b28"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PacketDataWriter::write_string </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Write a UTF-8 character string to the packet_data_t container. </p>
+
+</div>
+</div>
+<a class="anchor" id="a4421781091c1fd0839e2e64bb5b54f60"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PacketDataWriter::write_uint16 </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>word</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Write a 16 bit value to the packet_data_t container. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/scottb/src/mqtt/src/<a class="el" href="packet__data_8h_source.html">packet_data.h</a></li>
-<li>/Users/scottb/src/mqtt/src/packet_data.cc</li>
+<li>/Users/scottb/src/mqtt/src/<a class="el" href="packet__data_8cc.html">packet_data.cc</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

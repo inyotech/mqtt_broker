@@ -94,7 +94,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;mqtt.h&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="packet_8h.html">packet.h</a>&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
@@ -138,11 +138,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span> receive_packet_data(<span class="keyword">struct</span> bufferevent * bev);</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    owned_packet_ptr_t parse_packet_data(<span class="keyword">const</span> packet_data_t &amp; packet_data);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    std::unique_ptr&lt;Packet&gt; parse_packet_data(<span class="keyword">const</span> <a class="code" href="packet__data_8h.html#a6f5fa06638d1866d3bbabfb51b9d43b6">packet_data_t</a> &amp; packet_data);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">void</span> handle_other_events(<span class="keywordtype">short</span> events);</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span> set_packet_received_handler(std::function&lt;<span class="keywordtype">void</span>(owned_packet_ptr_t)&gt; handler) {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span> set_packet_received_handler(std::function&lt;<span class="keywordtype">void</span>(std::unique_ptr&lt;Packet&gt;)&gt; handler) {</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        packet_received_handler = handler;</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
@@ -169,11 +169,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">struct </span>bufferevent * bev;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    std::function&lt;void(owned_packet_ptr_t)&gt; packet_received_handler;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    std::function&lt;void(std::unique_ptr&lt;Packet&gt;)&gt; packet_received_handler;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    std::function&lt;void(EventType)&gt; event_handler;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
 <div class="ttc" id="class_packet_manager_html"><div class="ttname"><a href="class_packet_manager.html">PacketManager</a></div><div class="ttdef"><b>Definition:</b> packet_manager.h:17</div></div>
+<div class="ttc" id="packet_8h_html"><div class="ttname"><a href="packet_8h.html">packet.h</a></div></div>
+<div class="ttc" id="packet__data_8h_html_a6f5fa06638d1866d3bbabfb51b9d43b6"><div class="ttname"><a href="packet__data_8h.html#a6f5fa06638d1866d3bbabfb51b9d43b6">packet_data_t</a></div><div class="ttdeci">std::vector&lt; uint8_t &gt; packet_data_t</div><div class="ttdef"><b>Definition:</b> packet_data.h:15</div></div>
 <div class="ttc" id="class_packet_html"><div class="ttname"><a href="class_packet.html">Packet</a></div><div class="ttdef"><b>Definition:</b> packet.h:80</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

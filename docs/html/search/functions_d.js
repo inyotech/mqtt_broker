@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['topic_5fmatch',['topic_match',['../topic_8cc.html#a25d45a362405ce33bdafd53878ed3f03',1,'topic_match(const TopicFilter &amp;filter, const TopicName &amp;name):&#160;topic.cc'],['../topic_8cc.html#a24657e7c8c2e0eb2e359c06fe9f4ad32',1,'topic_match(const TopicFilter &amp;filter1, const TopicFilter &amp;filter2):&#160;topic.cc'],['../topic_8h.html#aaa0cc8d461a4b8b97424cbc2a80e8fdb',1,'topic_match(const TopicFilter &amp;topic_filter, const TopicName &amp;topic_name):&#160;topic.cc'],['../topic_8h.html#a8a467c2c88453510a7042108a27acdce',1,'topic_match(const TopicFilter &amp;topic_filter, const TopicFilter &amp;topic_name):&#160;topic.cc']]],
-  ['topicfilter',['TopicFilter',['../class_topic_filter.html#aec761ffe5603f812023f62a309e88605',1,'TopicFilter']]],
-  ['topicname',['TopicName',['../class_topic_name.html#a4897b80f54f21bee4a778adc115e77ba',1,'TopicName']]]
+  ['send_5fpending_5fmessage',['send_pending_message',['../class_broker_session.html#a69a41141c5da009674d0d07fad5d5e9b',1,'BrokerSession']]],
+  ['signal_5fcb',['signal_cb',['../broker_8cc.html#a086821b55672b6110d0a58e9e1c0143a',1,'signal_cb(evutil_socket_t signal, short event, void *arg):&#160;broker.cc'],['../client__sub_8cc.html#ab04a64a7ebfd4c7b660640c9fd075eee',1,'signal_cb(evutil_socket_t, short event, void *):&#160;client_sub.cc']]]
 ];
