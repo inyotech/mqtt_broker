@@ -1,7 +1,32 @@
+/**
+ * @file broker_session.cc
+ */
+
 #include "broker_session.h"
 #include "session_manager.h"
 
 #include <algorithm>
+
+bool BrokerSession::authorize_connection(const ConnectPacket &packet) {
+    return true;
+}
+
+void BrokerSession::resume_session(std::unique_ptr<BrokerSession> &session,
+                                   std::unique_ptr<PacketManager> packet_manager_ptr) {
+
+    packet_manager_ptr->set_event_handler(
+            std::bind(&BrokerSession::packet_manager_event, session.get(), std::placeholders::_1));
+    packet_manager_ptr->set_packet_received_handler(
+            std::bind(&BrokerSession::packet_received, session.get(), std::placeholders::_1));
+    session->packet_manager = std::move(packet_manager_ptr);
+
+    ConnackPacket connack;
+
+    connack.session_present(true);
+    connack.return_code = ConnackPacket::ReturnCode::Accepted;
+
+    session->packet_manager->send_packet(connack);
+}
 
 void BrokerSession::forward_packet(const PublishPacket &packet) {
 
@@ -32,39 +57,6 @@ void BrokerSession::forward_packet(const PublishPacket &packet) {
     }
 }
 
-void BrokerSession::packet_received(std::unique_ptr<Packet> packet) {
-    BaseSession::packet_received(std::move(packet));
-    send_pending_message();
-}
-
-void BrokerSession::packet_manager_event(PacketManager::EventType event) {
-    BaseSession::packet_manager_event(event);
-    if (clean_session) {
-        session_manager.remove_session(this);
-    }
-}
-
-void BrokerSession::resume_session(std::unique_ptr<BrokerSession> &session,
-                             std::unique_ptr<PacketManager> packet_manager_ptr) {
-
-    packet_manager_ptr->set_event_handler(
-            std::bind(&BrokerSession::packet_manager_event, session.get(), std::placeholders::_1));
-    packet_manager_ptr->set_packet_received_handler(
-            std::bind(&BrokerSession::packet_received, session.get(), std::placeholders::_1));
-    session->packet_manager = std::move(packet_manager_ptr);
-
-    ConnackPacket connack;
-
-    connack.session_present(true);
-    connack.return_code = ConnackPacket::ReturnCode::Accepted;
-
-    session->packet_manager->send_packet(connack);
-}
-
-bool BrokerSession::authorize_connection(const ConnectPacket &packet) {
-    return true;
-}
-
 void BrokerSession::send_pending_message() {
 
     if (!qos1_pending_puback.empty()) {
@@ -82,6 +74,18 @@ void BrokerSession::send_pending_message() {
     }
 
     return;
+}
+
+void BrokerSession::packet_received(std::unique_ptr<Packet> packet) {
+    BaseSession::packet_received(std::move(packet));
+    send_pending_message();
+}
+
+void BrokerSession::packet_manager_event(PacketManager::EventType event) {
+    BaseSession::packet_manager_event(event);
+    if (clean_session) {
+        session_manager.remove_session(this);
+    }
 }
 
 void BrokerSession::handle_connect(const ConnectPacket &packet) {
@@ -140,7 +144,6 @@ void BrokerSession::handle_publish(const PublishPacket &packet) {
     }
 
 }
-
 
 void BrokerSession::handle_puback(const PubackPacket &packet) {
 
@@ -236,14 +239,6 @@ void BrokerSession::handle_unsubscribe(const UnsubscribePacket &packet) {
     unsuback.packet_id = packet.packet_id;
 
     packet_manager->send_packet(unsuback);
-
-}
-
-void BrokerSession::handle_pingreq(const PingreqPacket &packet) {
-
-    PingrespPacket pingresp;
-
-    packet_manager->send_packet(pingresp);
 
 }
 

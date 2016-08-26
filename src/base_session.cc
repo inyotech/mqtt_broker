@@ -51,8 +51,6 @@ void BaseSession::packet_received(std::unique_ptr<Packet> packet) {
         case PacketType::Disconnect:
             handle_disconnect(dynamic_cast<const DisconnectPacket &>(*packet));
             break;
-        default:
-            break;
     }
 
 }
@@ -106,7 +104,7 @@ void BaseSession::handle_unsuback(const UnsubackPacket &) {
 }
 
 void BaseSession::handle_pingreq(const PingreqPacket &) {
-    PingreqPacket pingresp_packet;
+    PingrespPacket pingresp_packet;
     packet_manager->send_packet(pingresp_packet);
 }
 
