@@ -1,12 +1,17 @@
-//
-// Created by Scott Brumbaugh on 8/11/16.
-//
+/**
+ * @file client_sub.cc
+ *
+ * MQTT Subscriber (client)
+ *
+ * Connect to a listening broker and add a subscription a topic then listen for pubished messages from the broker.
+ * Topic strings can follow the MQTT 3.1.1 specification including wildcards.
+ * See [the MQTT specification](http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html)
+ */
 
-#include <iostream>
-#include <vector>
-#include <csignal>
-
-#include <getopt.h>
+#include "mqtt.h"
+#include "packet.h"
+#include "packet_manager.h"
+#include "base_session.h"
 
 #include <event2/event.h>
 #include <event2/bufferevent.h>
@@ -14,48 +19,141 @@
 #include <event2/dns.h>
 #include <evdns.h>
 
-#include "mqtt.h"
-#include "packet.h"
-#include "packet_manager.h"
-#include "base_session.h"
+#include <getopt.h>
 
+#include <iostream>
+#include <vector>
+#include <csignal>
+
+/**
+ * Display usage message
+ *
+ * Displays help on command line arguments.
+ */
 static void usage(void);
 
+/**
+ * Parse command line.
+ *
+ * Recognized command line arguments are parsed and added to the options instance.  This options instance will be
+ * passed to the session instance.
+ *
+ * @param argc Command line argument count.
+ * @param argv Command line argument values.
+ */
 static void parse_arguments(int argc, char *argv[]);
 
-static void connect_event_cb(struct bufferevent *, short event, void *);
+/**
+ * On broker connection callback.
+ *
+ * @param bev    Pointer to bufferevent internal control structure.
+ * @param event  The bufferevent event code, on success this will be EV_EVENT_CONNECTED, it can also be one of
+ * EV_EVENT_EOF, EV_EVENT_ERROR, or EV_EVENT_TIMEOUT.
+ * @param arg    Pointer to user data passed in when callback is set.  Here this should be a pointer to the event_base
+ * object.
+ */
+static void connect_event_cb(struct bufferevent *bev, short event, void *arg);
 
+/**
+ * Socket close handler.
+ *
+ * When the session is closing this function is set to be called when the write buffer is empty.  When called it will
+ * close the connection and exit the event loop.
+ *
+ * @param bev Pointer to the bufferevent internal control structure.
+ * @param arg Pointer to user data passed in when callback is set.  Here this should be a pointer to the event_base
+ * object.
+ */
 static void close_cb(struct bufferevent *bev, void *arg);
 
+/**
+ * Callback run when SIGINT or SIGTERM is attached, will cleanly exit.
+ *
+ * @param signal Integer value of signal.
+ * @param event  Should be EV_SIGNAL.
+ * @param arg    Pointer originally passed to evsignal_new.
+ */
 static void signal_cb(evutil_socket_t, short event, void *);
 
+/**
+ * Options settable on through command line arguments.
+ */
 struct options_t {
+
+    /** Broker host to connect to.  DNS name is allowed. */
     std::string broker_host = "localhost";
+
+    /** Broker port. */
     uint16_t broker_port = 1883;
+
+    /** Client id.  If empty no client id will be sent.  The broker will generate a client id automatically. */
     std::string client_id;
+
+    /** Topics to subscribe to.  This option can be specified more than once to subscribe to multiple topics. */
     std::vector<std::string> topics;
+
+    /** Quality of service specifier for message. */
     QoSType qos = QoSType::QoS0;
+
+    /**
+     * Drop this session on exit if true.  If false this session will persist in the broker after disconnection
+     * and will be continued at the next connection with the same client id.  This feature isn't useful when a client
+     * id is not provided.
+     */
     bool clean_session = false;
+
 } options;
 
-class ClientSession : public BaseSession
-{
+/**
+ * Session class specialized for this publishing client.
+ *
+ * Override base class control packet handlers used to subscribe to topics and to receive messages forwarded from the
+ * broker.  Any other control packets received will be handled by default methods, in most cases that will result in a
+ * thrown exception.
+ */
+class ClientSession : public BaseSession {
 public:
 
-    const options_t & options;
+    /**
+     * Constructor
+     *
+     * @param bev       Pointer to the buffer event structure for the broker connection.
+     * @param options   Options structure.
+     */
+    ClientSession(bufferevent *bev, const options_t &options) : BaseSession(bev), options(options) {}
 
-    ClientSession(bufferevent * bev, const options_t & options) : BaseSession(bev), options(options) {}
+    /** Reference to the options structure with members updated from command line arguments. */
+    const options_t &options;
 
-    void handle_connack(const ConnackPacket & connack_packet) override {
+    /**
+     * Handle a connack control packet from the broker.
+     *
+     * This packet will be sent in response to the connect packet that this client will send.   Check the return code
+     * and disconnect on any error.  Otherwise construct a subscribe packet from the options and send it to the broker.
+     *
+     * @param connack_packet  The connack control packet received.
+     */
+    void handle_connack(const ConnackPacket &connack_packet) override {
+
         SubscribePacket subscribe_packet;
         subscribe_packet.packet_id = packet_manager->next_packet_id();
+
         for (auto topic : options.topics) {
             subscribe_packet.subscriptions.push_back(Subscription{topic, options.qos});
         }
         packet_manager->send_packet(subscribe_packet);
     }
 
-    void handle_suback(const SubackPacket & suback_packet) override {
+    /**
+     * Handle a suback control packet from the broker.
+     *
+     * This packet will be sent in response to a subscribe message. Check the error code in the packet and if there is
+     * an error output an error message but continue to listen for messages.  Also check the qos field in the suback
+     * packet and compare with the requested qos in the original subscribe.  If there is a mismatch output a message.
+     *
+     * @param suback_packet The received suback control packet.
+     */
+    void handle_suback(const SubackPacket &suback_packet) override {
 
         for (size_t i = 0; i < suback_packet.return_codes.size(); i++) {
             SubackPacket::ReturnCode code = suback_packet.return_codes[i];
@@ -69,7 +167,17 @@ public:
         }
     }
 
-    void handle_publish(const PublishPacket & publish_packet) override {
+    /**
+     * Handle a publish control packet from the broker.
+     *
+     * This packet will contain forwarded messages from other clients published to the topic. Output the message and
+     * acknowledge based on the QoS in the packet.  In the case of a QoS 0 message there is no acknowledegment.
+     * A Qos 1 message will require a Puback packet in response.  A QoS 2 message requires a Pubrec packet from the
+     * subscriber followed by a Pubrel packet from the broker and finally a Pubcomp packet is sent from the subscriber.
+     *
+     * @param publish_packet the received publish packet
+     */
+    void handle_publish(const PublishPacket &publish_packet) override {
 
         std::cout << std::string(publish_packet.message_data.begin(), publish_packet.message_data.end()) << "\n";
 
@@ -84,18 +192,40 @@ public:
         }
     }
 
-    void handle_pubrel(const PubrelPacket & pubrel_packet) override {
+
+    /**
+     * Handle a pubrel control packet from the broker.
+     *
+     * This packet will be sent in repsponse to a Pubrel packet in the QoS 2 protocol flow. Send a Pubcomp packet
+     * in response.  This completes the QoS 2 flow.
+     *
+     * @param pubrel_packet The received pubrel control packet.
+     */
+    void handle_pubrel(const PubrelPacket &pubrel_packet) override {
         PubcompPacket pubcomp_packet;
         pubcomp_packet.packet_id = pubrel_packet.packet_id;
         packet_manager->send_packet(pubcomp_packet);
     }
 
+    /**
+     * Handle protocol events in the packet manager.
+     *
+     * This callback will be called by the packet manager in case of protocol or network error.  In most cases the
+     * response is to close the connection to the broker.
+     *
+     * @param event The specific type of the event reported by the packet manager.
+     */
     void packet_manager_event(PacketManager::EventType event) override {
         event_base_loopexit(packet_manager->bev->ev_base, NULL);
         BaseSession::packet_manager_event(event);
-     }
+    }
 };
 
+/**
+ * The session instance.
+ *
+ * MQTT requires that both the client and server maintain a session state.
+ */
 std::unique_ptr<ClientSession> session;
 
 int main(int argc, char *argv[]) {
@@ -160,7 +290,23 @@ static void connect_event_cb(struct bufferevent *bev, short events, void *arg) {
 }
 
 void usage() {
-    std::cout << "usage: client [options]\n";
+    std::cout <<
+R"END(usage: mqtt_client_sub [options]
+
+Connect to an MQTT broker and publish a single message to a single topic.
+
+OPTIONS
+
+--broker-host | -b        Broker host name or ip address, default localhost
+--broker-port | -p        Broker port, default 1883
+--client-id | -i          Client id, default none
+--topic | -t              Topic string to subscribe to, this option can be provided more that once to subscribe
+                          to multiple topics, default none
+--qos | -q                QoS (Quality of Service), should be 0, 1, or 2, default 0
+--clean-session | -c      Disable session persistence, default false
+--help | -h               Display this message and exit
+)END";
+
 }
 
 void parse_arguments(int argc, char *argv[]) {
@@ -169,7 +315,6 @@ void parse_arguments(int argc, char *argv[]) {
             {"broker-port",   required_argument, NULL, 'p'},
             {"client-id",     required_argument, NULL, 'i'},
             {"topic",         required_argument, NULL, 't'},
-            {"message",       required_argument, NULL, 'm'},
             {"qos",           required_argument, NULL, 'q'},
             {"clean-session", no_argument,       NULL, 'c'},
             {"help",          no_argument,       NULL, 'h'}
@@ -177,7 +322,7 @@ void parse_arguments(int argc, char *argv[]) {
 
 
     int ch;
-    while ((ch = getopt_long(argc, argv, "b:p:i:t:m:q:c", longopts, NULL)) != -1) {
+    while ((ch = getopt_long(argc, argv, "b:p:i:t:q:ch", longopts, NULL)) != -1) {
         switch (ch) {
             case 'b':
                 options.broker_host = optarg;

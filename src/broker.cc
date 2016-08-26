@@ -27,7 +27,7 @@ SessionManager session_manager;
  * @param signal Integer value of signal.
  * @param event  Should be EV_SIGNAL.
  * @param arg    Pointer originally passed to evsignal_new.
- * */
+ */
 static void signal_cb(evutil_socket_t signal, short event, void * arg);
 
 /**
