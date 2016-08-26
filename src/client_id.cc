@@ -1,6 +1,6 @@
-//
-// Created by Scott Brumbaugh on 8/4/16.
-//
+/**
+ * @file client_id.cc
+ */
 
 #include "client_id.h"
 

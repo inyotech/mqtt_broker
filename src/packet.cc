@@ -1,3 +1,7 @@
+/**
+ * @file packet.cc
+ */
+
 #include "packet.h"
 #include "client_id.h"
 

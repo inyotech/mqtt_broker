@@ -40,7 +40,7 @@ public:
      * client that session will be abandoned and the PacketManager instance from that session will be installed into
      * the saved session. This is how session persistence is implemented.
      *
-     * @param bev A pointer to a bufferevent internal control structure.
+     * @param bev Pointer to a bufferevent internal control structure.
      */
     BaseSession(struct bufferevent *bev) : packet_manager(new PacketManager(bev)) {
         packet_manager->set_packet_received_handler(
