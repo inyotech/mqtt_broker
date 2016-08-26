@@ -1,6 +1,6 @@
-//
-// Created by Scott Brumbaugh on 8/3/16.
-//
+/**
+ * @file packet_data.cc
+ */
 
 #include "packet_data.h"
 
@@ -36,7 +36,7 @@ void PacketDataWriter::write_string(const std::string &s) {
     std::copy(s.begin(), s.end(), std::back_inserter(packet_data));
 }
 
-void PacketDataWriter::write_bytes(const std::vector<uint8_t> &b) {
+void PacketDataWriter::write_bytes(const packet_data_t & b) {
     write_uint16(b.size());
     std::copy(b.begin(), b.end(), std::back_inserter(packet_data));
 }

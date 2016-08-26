@@ -269,6 +269,13 @@ class PublishQoS0 : public Protocol {
 
         ConnectPacket connect_packet;
         packet_manager->send_packet(connect_packet);
+    }
+
+    virtual void packet_received_callback(std::unique_ptr<Packet> packet) {
+
+        ASSERT_EQ(packet->type, PacketType::Connack);
+        ConnackPacket &connack_packet = dynamic_cast<ConnackPacket &>(*packet);
+        ASSERT_EQ(connack_packet.return_code, ConnackPacket::ReturnCode::Accepted);
 
         PublishPacket publish_packet;
         publish_packet.packet_id = this->packet_manager->next_packet_id();
@@ -282,12 +289,6 @@ class PublishQoS0 : public Protocol {
         packet_manager->send_packet(disconnect_packet);
 
         event_base_loopexit(evloop, NULL);
-    }
-
-    virtual void packet_received_callback(std::unique_ptr<Packet> packet) {
-
-        ADD_FAILURE();
-
     }
 };
 
@@ -303,6 +304,14 @@ class PublishQoS1 : public Protocol {
         ConnectPacket connect_packet;
         packet_manager->send_packet(connect_packet);
 
+    }
+
+    virtual void packet_received_callback(std::unique_ptr<Packet> packet) {
+
+        ASSERT_EQ(packet->type, PacketType::Connack);
+        ConnackPacket &connack_packet = dynamic_cast<ConnackPacket &>(*packet);
+        ASSERT_EQ(connack_packet.return_code, ConnackPacket::ReturnCode::Accepted);
+
         PublishPacket publish_packet;
         publish_packet.packet_id = this->packet_manager->next_packet_id();
         publish_packet_id = publish_packet.packet_id;
@@ -311,16 +320,6 @@ class PublishQoS1 : public Protocol {
         publish_packet.message_data = std::vector<uint8_t>(message_data.begin(), message_data.end());
         publish_packet.qos(qos);
         packet_manager->send_packet(publish_packet);
-
-        DisconnectPacket disconnect_packet;
-        packet_manager->send_packet(disconnect_packet);
-    }
-
-    virtual void packet_received_callback(std::unique_ptr<Packet> packet) {
-
-        ASSERT_EQ(packet->type, PacketType::Connack);
-        ConnackPacket &connack_packet = dynamic_cast<ConnackPacket &>(*packet);
-        ASSERT_EQ(connack_packet.return_code, ConnackPacket::ReturnCode::Accepted);
 
         this->packet_manager->set_packet_received_handler(
                 std::bind(&PublishQoS1::puback_received_callback, this, std::placeholders::_1));
@@ -353,6 +352,14 @@ class PublishQoS2 : public Protocol {
         ConnectPacket connect_packet;
         packet_manager->send_packet(connect_packet);
 
+    }
+
+    virtual void packet_received_callback(std::unique_ptr<Packet> packet) {
+
+        ASSERT_EQ(packet->type, PacketType::Connack);
+        ConnackPacket &connack_packet = dynamic_cast<ConnackPacket &>(*packet);
+        ASSERT_EQ(connack_packet.return_code, ConnackPacket::ReturnCode::Accepted);
+
         PublishPacket publish_packet;
         publish_packet.packet_id = this->packet_manager->next_packet_id();
         publish_packet_id = publish_packet.packet_id;
@@ -361,14 +368,6 @@ class PublishQoS2 : public Protocol {
         publish_packet.message_data = std::vector<uint8_t>(message_data.begin(), message_data.end());
         publish_packet.qos(qos);
         packet_manager->send_packet(publish_packet);
-
-    }
-
-    virtual void packet_received_callback(std::unique_ptr<Packet> packet) {
-
-        ASSERT_EQ(packet->type, PacketType::Connack);
-        ConnackPacket &connack_packet = dynamic_cast<ConnackPacket &>(*packet);
-        ASSERT_EQ(connack_packet.return_code, ConnackPacket::ReturnCode::Accepted);
 
         this->packet_manager->set_packet_received_handler(
                 std::bind(&PublishQoS2::pubrec_received_callback, this, std::placeholders::_1));
