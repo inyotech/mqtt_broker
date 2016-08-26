@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['usage',['usage',['../client__pub_8cc.html#ad96d407a911fbb914fa8e4cfbf2faf0f',1,'client_pub.cc']]]
+  ['signal_5fcb',['signal_cb',['../broker_8cc.html#a086821b55672b6110d0a58e9e1c0143a',1,'signal_cb(evutil_socket_t signal, short event, void *arg):&#160;broker.cc'],['../client__sub_8cc.html#ab04a64a7ebfd4c7b660640c9fd075eee',1,'signal_cb(evutil_socket_t, short event, void *):&#160;client_sub.cc']]]
 ];

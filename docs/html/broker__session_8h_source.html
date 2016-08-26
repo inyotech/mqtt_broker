@@ -90,7 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;base_session.h&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="base__session_8h.html">base_session.h</a>&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;packet_manager.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;packet.h&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
@@ -109,82 +109,94 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="class_broker_session.html">BrokerSession</a>(<span class="keyword">struct</span> bufferevent *bev, <a class="code" href="class_session_manager.html">SessionManager</a> &amp;session_manager) : <a class="code" href="class_base_session.html">BaseSession</a>(bev),</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="class_broker_session.html">BrokerSession</a>(<span class="keyword">struct</span> bufferevent *bev, <a class="code" href="class_session_manager.html">SessionManager</a> &amp;session_manager) : <a class="code" href="class_base_session.html#a08a81804545478ab29c3620a356c1e0d">BaseSession</a>(bev),</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                                                                        session_manager(session_manager) {</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    }</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordtype">bool</span> authorize_connection(<span class="keyword">const</span> <a class="code" href="class_connect_packet.html">ConnectPacket</a> &amp;);</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">void</span> resume_session(std::unique_ptr&lt;BrokerSession&gt; &amp;<a class="code" href="client__pub_8cc.html#a104286d2b2326e1455ee905326e02aba">session</a>,</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">void</span> resume_session(std::unique_ptr&lt;BrokerSession&gt; &amp;<a class="code" href="client__sub_8cc.html#a104286d2b2326e1455ee905326e02aba">session</a>,</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                        std::unique_ptr&lt;PacketManager&gt; packet_manager);</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordtype">void</span> send_pending_message(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">void</span> forward_packet(<span class="keyword">const</span> <a class="code" href="class_publish_packet.html">PublishPacket</a> &amp;packet);</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">bool</span> clean_session;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    std::vector&lt;Subscription&gt; subscriptions;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    std::vector&lt;Subscription&gt; subscriptions;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="comment">// qos1 messages waiting for puback, will be moved between</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="comment">// sessions as part of session state</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    std::vector&lt;PublishPacket&gt; qos1_pending_puback;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="comment">// qos2 messages waiting for pubrec, will be moved between</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="comment">// sessions as part of session state</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    std::vector&lt;PublishPacket&gt; qos2_pending_pubrec;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">// qos2 messages waiting for pubrel, will be moved between</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="comment">// sessions as part of session state</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    std::vector&lt;uint16_t&gt; qos2_pending_pubrel;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="comment">// qos2 pubrel packet ids waiting for pubcomp, will be moved</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">// between sessions as part of session state</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    std::vector&lt;uint16_t&gt; qos2_pending_pubcomp;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="comment">// qos1 messages waiting for puback, will be moved between</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// sessions as part of session state</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    std::vector&lt;PublishPacket&gt; qos1_pending_puback;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="comment">// qos2 messages waiting for pubrec, will be moved between</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="comment">// sessions as part of session state</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    std::vector&lt;PublishPacket&gt; qos2_pending_pubrec;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">// qos2 messages waiting for pubrel, will be moved between</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="comment">// sessions as part of session state</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    std::vector&lt;uint16_t&gt; qos2_pending_pubrel;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">// qos2 pubrel packet ids waiting for pubcomp, will be moved</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">// between sessions as part of session state</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    std::vector&lt;uint16_t&gt; qos2_pending_pubcomp;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_broker_session.html#a14d9cb106795db69f98bd4f63e1d5d17">packet_received</a>(std::unique_ptr&lt;Packet&gt;) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span> packet_received(std::unique_ptr&lt;Packet&gt;) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_broker_session.html#a5667bd9dac3e13bda57eaeacb8e606a3">packet_manager_event</a>(PacketManager::EventType event) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">void</span> packet_manager_event(PacketManager::EventType event) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_broker_session.html#a313d8b0e21fdec9794965e77ed5db931">handle_connect</a>(<span class="keyword">const</span> <a class="code" href="class_connect_packet.html">ConnectPacket</a> &amp;) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">void</span> handle_connect(<span class="keyword">const</span> <a class="code" href="class_connect_packet.html">ConnectPacket</a> &amp;) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_broker_session.html#a7f321d5f469ad416b90daa8b870633a2">handle_publish</a>(<span class="keyword">const</span> <a class="code" href="class_publish_packet.html">PublishPacket</a> &amp;) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">void</span> handle_publish(<span class="keyword">const</span> <a class="code" href="class_publish_packet.html">PublishPacket</a> &amp;) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_broker_session.html#a5f2eafca02c98d9675c34288d338e467">handle_puback</a>(<span class="keyword">const</span> <a class="code" href="class_puback_packet.html">PubackPacket</a> &amp;) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span> handle_puback(<span class="keyword">const</span> <a class="code" href="class_puback_packet.html">PubackPacket</a> &amp;) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_broker_session.html#a8084bbb91deca6304112af9b7af7b181">handle_pubrec</a>(<span class="keyword">const</span> <a class="code" href="class_pubrec_packet.html">PubrecPacket</a> &amp;) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">void</span> handle_pubrec(<span class="keyword">const</span> <a class="code" href="class_pubrec_packet.html">PubrecPacket</a> &amp;) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_broker_session.html#a77b7635f55ac0198813ab1fca6005ad7">handle_pubrel</a>(<span class="keyword">const</span> <a class="code" href="class_pubrel_packet.html">PubrelPacket</a> &amp;) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">void</span> handle_pubrel(<span class="keyword">const</span> <a class="code" href="class_pubrel_packet.html">PubrelPacket</a> &amp;) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_broker_session.html#a9c1fdc330198c9c716148d06a2822050">handle_pubcomp</a>(<span class="keyword">const</span> <a class="code" href="class_pubcomp_packet.html">PubcompPacket</a> &amp;) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span> handle_pubcomp(<span class="keyword">const</span> <a class="code" href="class_pubcomp_packet.html">PubcompPacket</a> &amp;) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_broker_session.html#aac79ecb7a56383480c2397123d8e3c43">handle_subscribe</a>(<span class="keyword">const</span> <a class="code" href="class_subscribe_packet.html">SubscribePacket</a> &amp;) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span> handle_subscribe(<span class="keyword">const</span> <a class="code" href="class_subscribe_packet.html">SubscribePacket</a> &amp;) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_broker_session.html#a9a47aa13b039978d24d037737068589c">handle_unsubscribe</a>(<span class="keyword">const</span> <a class="code" href="class_unsubscribe_packet.html">UnsubscribePacket</a> &amp;) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span> handle_unsubscribe(<span class="keyword">const</span> <a class="code" href="class_unsubscribe_packet.html">UnsubscribePacket</a> &amp;) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_broker_session.html#ad12fb8688372d2cad92d4aff8cdf19de">handle_pingreq</a>(<span class="keyword">const</span> <a class="code" href="class_pingreq_packet.html">PingreqPacket</a> &amp;) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span> handle_pingreq(<span class="keyword">const</span> <a class="code" href="class_pingreq_packet.html">PingreqPacket</a> &amp;) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_broker_session.html#aae81f395fb6a56e2682725f56c20e0d0">handle_disconnect</a>(<span class="keyword">const</span> <a class="code" href="class_disconnect_packet.html">DisconnectPacket</a> &amp;) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span> handle_disconnect(<span class="keyword">const</span> <a class="code" href="class_disconnect_packet.html">DisconnectPacket</a> &amp;) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="class_session_manager.html">SessionManager</a> &amp;session_manager;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <a class="code" href="class_session_manager.html">SessionManager</a> &amp;session_manager;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;};</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="ttc" id="class_broker_session_html_a8084bbb91deca6304112af9b7af7b181"><div class="ttname"><a href="class_broker_session.html#a8084bbb91deca6304112af9b7af7b181">BrokerSession::handle_pubrec</a></div><div class="ttdeci">void handle_pubrec(const PubrecPacket &amp;) override</div><div class="ttdef"><b>Definition:</b> broker_session.cc:155</div></div>
+<div class="ttc" id="class_broker_session_html_a5f2eafca02c98d9675c34288d338e467"><div class="ttname"><a href="class_broker_session.html#a5f2eafca02c98d9675c34288d338e467">BrokerSession::handle_puback</a></div><div class="ttdeci">void handle_puback(const PubackPacket &amp;) override</div><div class="ttdef"><b>Definition:</b> broker_session.cc:145</div></div>
 <div class="ttc" id="class_disconnect_packet_html"><div class="ttname"><a href="class_disconnect_packet.html">DisconnectPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:413</div></div>
-<div class="ttc" id="class_base_session_html"><div class="ttname"><a href="class_base_session.html">BaseSession</a></div><div class="ttdef"><b>Definition:</b> base_session.h:13</div></div>
+<div class="ttc" id="class_base_session_html"><div class="ttname"><a href="class_base_session.html">BaseSession</a></div><div class="ttdef"><b>Definition:</b> base_session.h:28</div></div>
 <div class="ttc" id="class_pubcomp_packet_html"><div class="ttname"><a href="class_pubcomp_packet.html">PubcompPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:289</div></div>
+<div class="ttc" id="class_broker_session_html_aae81f395fb6a56e2682725f56c20e0d0"><div class="ttname"><a href="class_broker_session.html#aae81f395fb6a56e2682725f56c20e0d0">BrokerSession::handle_disconnect</a></div><div class="ttdeci">void handle_disconnect(const DisconnectPacket &amp;) override</div><div class="ttdef"><b>Definition:</b> broker_session.cc:250</div></div>
+<div class="ttc" id="class_broker_session_html_ad12fb8688372d2cad92d4aff8cdf19de"><div class="ttname"><a href="class_broker_session.html#ad12fb8688372d2cad92d4aff8cdf19de">BrokerSession::handle_pingreq</a></div><div class="ttdeci">void handle_pingreq(const PingreqPacket &amp;) override</div><div class="ttdef"><b>Definition:</b> broker_session.cc:242</div></div>
+<div class="ttc" id="class_base_session_html_a08a81804545478ab29c3620a356c1e0d"><div class="ttname"><a href="class_base_session.html#a08a81804545478ab29c3620a356c1e0d">BaseSession::BaseSession</a></div><div class="ttdeci">BaseSession(struct bufferevent *bev)</div><div class="ttdef"><b>Definition:</b> base_session.h:45</div></div>
+<div class="ttc" id="base__session_8h_html"><div class="ttname"><a href="base__session_8h.html">base_session.h</a></div></div>
+<div class="ttc" id="class_broker_session_html_a313d8b0e21fdec9794965e77ed5db931"><div class="ttname"><a href="class_broker_session.html#a313d8b0e21fdec9794965e77ed5db931">BrokerSession::handle_connect</a></div><div class="ttdeci">void handle_connect(const ConnectPacket &amp;) override</div><div class="ttdef"><b>Definition:</b> broker_session.cc:87</div></div>
 <div class="ttc" id="class_pubrel_packet_html"><div class="ttname"><a href="class_pubrel_packet.html">PubrelPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:273</div></div>
+<div class="ttc" id="class_broker_session_html_a14d9cb106795db69f98bd4f63e1d5d17"><div class="ttname"><a href="class_broker_session.html#a14d9cb106795db69f98bd4f63e1d5d17">BrokerSession::packet_received</a></div><div class="ttdeci">void packet_received(std::unique_ptr&lt; Packet &gt;) override</div><div class="ttdef"><b>Definition:</b> broker_session.cc:35</div></div>
+<div class="ttc" id="class_broker_session_html_a77b7635f55ac0198813ab1fca6005ad7"><div class="ttname"><a href="class_broker_session.html#a77b7635f55ac0198813ab1fca6005ad7">BrokerSession::handle_pubrel</a></div><div class="ttdeci">void handle_pubrel(const PubrelPacket &amp;) override</div><div class="ttdef"><b>Definition:</b> broker_session.cc:172</div></div>
 <div class="ttc" id="class_pubrec_packet_html"><div class="ttname"><a href="class_pubrec_packet.html">PubrecPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:257</div></div>
 <div class="ttc" id="class_publish_packet_html"><div class="ttname"><a href="class_publish_packet.html">PublishPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:192</div></div>
-<div class="ttc" id="client__pub_8cc_html_a104286d2b2326e1455ee905326e02aba"><div class="ttname"><a href="client__pub_8cc.html#a104286d2b2326e1455ee905326e02aba">session</a></div><div class="ttdeci">static std::unique_ptr&lt; ClientSession &gt; session</div><div class="ttdef"><b>Definition:</b> client_pub.cc:235</div></div>
+<div class="ttc" id="class_broker_session_html_a9a47aa13b039978d24d037737068589c"><div class="ttname"><a href="class_broker_session.html#a9a47aa13b039978d24d037737068589c">BrokerSession::handle_unsubscribe</a></div><div class="ttdeci">void handle_unsubscribe(const UnsubscribePacket &amp;) override</div><div class="ttdef"><b>Definition:</b> broker_session.cc:232</div></div>
 <div class="ttc" id="class_subscribe_packet_html"><div class="ttname"><a href="class_subscribe_packet.html">SubscribePacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:305</div></div>
+<div class="ttc" id="class_broker_session_html_a9c1fdc330198c9c716148d06a2822050"><div class="ttname"><a href="class_broker_session.html#a9c1fdc330198c9c716148d06a2822050">BrokerSession::handle_pubcomp</a></div><div class="ttdeci">void handle_pubcomp(const PubcompPacket &amp;) override</div><div class="ttdef"><b>Definition:</b> broker_session.cc:185</div></div>
 <div class="ttc" id="class_puback_packet_html"><div class="ttname"><a href="class_puback_packet.html">PubackPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:241</div></div>
 <div class="ttc" id="class_unsubscribe_packet_html"><div class="ttname"><a href="class_unsubscribe_packet.html">UnsubscribePacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:349</div></div>
 <div class="ttc" id="class_pingreq_packet_html"><div class="ttname"><a href="class_pingreq_packet.html">PingreqPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:385</div></div>
 <div class="ttc" id="class_subscription_html"><div class="ttname"><a href="class_subscription.html">Subscription</a></div><div class="ttdef"><b>Definition:</b> packet.h:40</div></div>
 <div class="ttc" id="class_connect_packet_html"><div class="ttname"><a href="class_connect_packet.html">ConnectPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:60</div></div>
 <div class="ttc" id="class_session_manager_html"><div class="ttname"><a href="class_session_manager.html">SessionManager</a></div><div class="ttdef"><b>Definition:</b> session_manager.h:15</div></div>
+<div class="ttc" id="class_broker_session_html_a7f321d5f469ad416b90daa8b870633a2"><div class="ttname"><a href="class_broker_session.html#a7f321d5f469ad416b90daa8b870633a2">BrokerSession::handle_publish</a></div><div class="ttdeci">void handle_publish(const PublishPacket &amp;) override</div><div class="ttdef"><b>Definition:</b> broker_session.cc:118</div></div>
+<div class="ttc" id="client__sub_8cc_html_a104286d2b2326e1455ee905326e02aba"><div class="ttname"><a href="client__sub_8cc.html#a104286d2b2326e1455ee905326e02aba">session</a></div><div class="ttdeci">std::unique_ptr&lt; ClientSession &gt; session</div><div class="ttdef"><b>Definition:</b> client_sub.cc:229</div></div>
+<div class="ttc" id="class_broker_session_html_aac79ecb7a56383480c2397123d8e3c43"><div class="ttname"><a href="class_broker_session.html#aac79ecb7a56383480c2397123d8e3c43">BrokerSession::handle_subscribe</a></div><div class="ttdeci">void handle_subscribe(const SubscribePacket &amp;) override</div><div class="ttdef"><b>Definition:</b> broker_session.cc:195</div></div>
 <div class="ttc" id="class_broker_session_html"><div class="ttname"><a href="class_broker_session.html">BrokerSession</a></div><div class="ttdef"><b>Definition:</b> broker_session.h:18</div></div>
+<div class="ttc" id="class_broker_session_html_a5667bd9dac3e13bda57eaeacb8e606a3"><div class="ttname"><a href="class_broker_session.html#a5667bd9dac3e13bda57eaeacb8e606a3">BrokerSession::packet_manager_event</a></div><div class="ttdeci">void packet_manager_event(PacketManager::EventType event) override</div><div class="ttdef"><b>Definition:</b> broker_session.cc:40</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

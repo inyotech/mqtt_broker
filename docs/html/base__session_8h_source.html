@@ -88,83 +88,101 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">base_session.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Created by Scott Brumbaugh on 8/23/16.</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;packet.h&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;packet_manager.h&quot;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;event2/bufferevent.h&gt;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<a href="base__session_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="class_base_session.html">   13</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_base_session.html">BaseSession</a> {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="class_base_session.html">BaseSession</a>(<span class="keyword">struct</span> bufferevent *bev) : packet_manager(<span class="keyword">new</span> <a class="code" href="class_packet_manager.html">PacketManager</a>(bev)) {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        packet_manager-&gt;set_packet_received_handler(</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                std::bind(&amp;BaseSession::packet_received, <span class="keyword">this</span>, std::placeholders::_1));</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        packet_manager-&gt;set_event_handler(std::bind(&amp;BaseSession::packet_manager_event, <span class="keyword">this</span>, std::placeholders::_1));</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    }</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="class_base_session.html">BaseSession</a>() {}</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    std::string client_id;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> packet_received(std::unique_ptr&lt;Packet&gt;);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> packet_manager_event(PacketManager::EventType event);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handle_connect(<span class="keyword">const</span> <a class="code" href="class_connect_packet.html">ConnectPacket</a> &amp;);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handle_connack(<span class="keyword">const</span> <a class="code" href="class_connack_packet.html">ConnackPacket</a> &amp;);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handle_publish(<span class="keyword">const</span> <a class="code" href="class_publish_packet.html">PublishPacket</a> &amp;);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handle_puback(<span class="keyword">const</span> <a class="code" href="class_puback_packet.html">PubackPacket</a> &amp;);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handle_pubrec(<span class="keyword">const</span> <a class="code" href="class_pubrec_packet.html">PubrecPacket</a> &amp;);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handle_pubrel(<span class="keyword">const</span> <a class="code" href="class_pubrel_packet.html">PubrelPacket</a> &amp;);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handle_pubcomp(<span class="keyword">const</span> <a class="code" href="class_pubcomp_packet.html">PubcompPacket</a> &amp;);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handle_subscribe(<span class="keyword">const</span> <a class="code" href="class_subscribe_packet.html">SubscribePacket</a> &amp;);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handle_suback(<span class="keyword">const</span> <a class="code" href="class_suback_packet.html">SubackPacket</a> &amp;);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handle_unsubscribe(<span class="keyword">const</span> <a class="code" href="class_unsubscribe_packet.html">UnsubscribePacket</a> &amp;);</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;packet.h&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;packet_manager.h&quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;event2/bufferevent.h&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="class_base_session.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_base_session.html">BaseSession</a> {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="class_base_session.html#a08a81804545478ab29c3620a356c1e0d">   45</a></span>&#160;    <a class="code" href="class_base_session.html#a08a81804545478ab29c3620a356c1e0d">BaseSession</a>(<span class="keyword">struct</span> bufferevent *bev) : packet_manager(new <a class="code" href="class_packet_manager.html">PacketManager</a>(bev)) {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        packet_manager-&gt;set_packet_received_handler(</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                std::bind(&amp;<a class="code" href="class_base_session.html#a68d2e239cc03cb9a8b1c6de6d6f7117c">BaseSession::packet_received</a>, <span class="keyword">this</span>, std::placeholders::_1));</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        packet_manager-&gt;set_event_handler(std::bind(&amp;<a class="code" href="class_base_session.html#a55eb078750a419ee1a50f71f83e01531">BaseSession::packet_manager_event</a>, <span class="keyword">this</span>, std::placeholders::_1));</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    }</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handle_unsuback(<span class="keyword">const</span> <a class="code" href="class_unsuback_packet.html">UnsubackPacket</a> &amp;);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handle_pingreq(<span class="keyword">const</span> <a class="code" href="class_pingreq_packet.html">PingreqPacket</a> &amp;);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handle_pingresp(<span class="keyword">const</span> <a class="code" href="class_pingresp_packet.html">PingrespPacket</a> &amp;);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handle_disconnect(<span class="keyword">const</span> <a class="code" href="class_disconnect_packet.html">DisconnectPacket</a> &amp;);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    std::unique_ptr&lt;PacketManager&gt; packet_manager;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="class_base_session.html#ab8ec737a2ef5876edc8ccc220d90741b">   56</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_base_session.html#ab8ec737a2ef5876edc8ccc220d90741b">~BaseSession</a>() {}</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    std::string client_id;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">bool</span> clean_session;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#a68d2e239cc03cb9a8b1c6de6d6f7117c">packet_received</a>(std::unique_ptr&lt;Packet&gt; packet);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#a55eb078750a419ee1a50f71f83e01531">packet_manager_event</a>(PacketManager::EventType event);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#a6f74a874203ae8c8f60c00749cc3cbeb">handle_connect</a>(<span class="keyword">const</span> <a class="code" href="class_connect_packet.html">ConnectPacket</a> &amp; connect_packet);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#a7578ea637f335a2eaec3eab326b9a44f">handle_connack</a>(<span class="keyword">const</span> <a class="code" href="class_connack_packet.html">ConnackPacket</a> &amp; connack_packet);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#a62216493ed1644c32b72ef9b2e9ed65f">handle_publish</a>(<span class="keyword">const</span> <a class="code" href="class_publish_packet.html">PublishPacket</a> &amp; publish_packet);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#a3b7a6b85e64586bf372ca42a4291e2fa">handle_puback</a>(<span class="keyword">const</span> <a class="code" href="class_puback_packet.html">PubackPacket</a> &amp; puback_packet);</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#af1ab1a2d80ebebfffd2551e6cd5fc3a6">handle_pubrec</a>(<span class="keyword">const</span> <a class="code" href="class_pubrec_packet.html">PubrecPacket</a> &amp; pubrec_packet);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#a285fb19143ae93f754314d6ed0ffb68b">handle_pubrel</a>(<span class="keyword">const</span> <a class="code" href="class_pubrel_packet.html">PubrelPacket</a> &amp; pubrel_packet);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#aef678b5027e1db22861203d4cf0d75d0">handle_pubcomp</a>(<span class="keyword">const</span> <a class="code" href="class_pubcomp_packet.html">PubcompPacket</a> &amp; pubcomp_packet);</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#a9977435a580c230dae667110f1f082ef">handle_subscribe</a>(<span class="keyword">const</span> <a class="code" href="class_subscribe_packet.html">SubscribePacket</a> &amp; subscribe_packet);</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#ac641d8a505cba916fa0c9edb063fdaa4">handle_suback</a>(<span class="keyword">const</span> <a class="code" href="class_suback_packet.html">SubackPacket</a> &amp; suback_packet);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#a406f498aef3116d1b49a77f38f47eb76">handle_unsubscribe</a>(<span class="keyword">const</span> <a class="code" href="class_unsubscribe_packet.html">UnsubscribePacket</a> &amp; unsubscribe_packet);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#a9c5ffa81531366957be119ae2ba3cc0c">handle_unsuback</a>(<span class="keyword">const</span> <a class="code" href="class_unsuback_packet.html">UnsubackPacket</a> &amp; unsuback_packet);</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#a659185fc50759bb9ae04e4ce08adb26e">handle_pingreq</a>(<span class="keyword">const</span> <a class="code" href="class_pingreq_packet.html">PingreqPacket</a> &amp; pingreq_packet);</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#a2c74aa316b7d2a96a431ecf923e80625">handle_pingresp</a>(<span class="keyword">const</span> <a class="code" href="class_pingresp_packet.html">PingrespPacket</a> &amp; pingresp_packet);</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_base_session.html#a8632185e157c6f48b518fc18532ece41">handle_disconnect</a>(<span class="keyword">const</span> <a class="code" href="class_disconnect_packet.html">DisconnectPacket</a> &amp; disconnect_packet);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    std::unique_ptr&lt;PacketManager&gt; packet_manager;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;};</div>
 <div class="ttc" id="class_pingresp_packet_html"><div class="ttname"><a href="class_pingresp_packet.html">PingrespPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:399</div></div>
+<div class="ttc" id="class_base_session_html_a9977435a580c230dae667110f1f082ef"><div class="ttname"><a href="class_base_session.html#a9977435a580c230dae667110f1f082ef">BaseSession::handle_subscribe</a></div><div class="ttdeci">virtual void handle_subscribe(const SubscribePacket &amp;subscribe_packet)</div><div class="ttdef"><b>Definition:</b> base_session.cc:92</div></div>
+<div class="ttc" id="class_base_session_html_a7578ea637f335a2eaec3eab326b9a44f"><div class="ttname"><a href="class_base_session.html#a7578ea637f335a2eaec3eab326b9a44f">BaseSession::handle_connack</a></div><div class="ttdeci">virtual void handle_connack(const ConnackPacket &amp;connack_packet)</div><div class="ttdef"><b>Definition:</b> base_session.cc:68</div></div>
+<div class="ttc" id="class_base_session_html_a6f74a874203ae8c8f60c00749cc3cbeb"><div class="ttname"><a href="class_base_session.html#a6f74a874203ae8c8f60c00749cc3cbeb">BaseSession::handle_connect</a></div><div class="ttdeci">virtual void handle_connect(const ConnectPacket &amp;connect_packet)</div><div class="ttdef"><b>Definition:</b> base_session.cc:64</div></div>
+<div class="ttc" id="class_base_session_html_a285fb19143ae93f754314d6ed0ffb68b"><div class="ttname"><a href="class_base_session.html#a285fb19143ae93f754314d6ed0ffb68b">BaseSession::handle_pubrel</a></div><div class="ttdeci">virtual void handle_pubrel(const PubrelPacket &amp;pubrel_packet)</div><div class="ttdef"><b>Definition:</b> base_session.cc:84</div></div>
 <div class="ttc" id="class_unsuback_packet_html"><div class="ttname"><a href="class_unsuback_packet.html">UnsubackPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:368</div></div>
 <div class="ttc" id="class_disconnect_packet_html"><div class="ttname"><a href="class_disconnect_packet.html">DisconnectPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:413</div></div>
-<div class="ttc" id="class_base_session_html"><div class="ttname"><a href="class_base_session.html">BaseSession</a></div><div class="ttdef"><b>Definition:</b> base_session.h:13</div></div>
+<div class="ttc" id="class_base_session_html_a62216493ed1644c32b72ef9b2e9ed65f"><div class="ttname"><a href="class_base_session.html#a62216493ed1644c32b72ef9b2e9ed65f">BaseSession::handle_publish</a></div><div class="ttdeci">virtual void handle_publish(const PublishPacket &amp;publish_packet)</div><div class="ttdef"><b>Definition:</b> base_session.cc:72</div></div>
+<div class="ttc" id="class_base_session_html"><div class="ttname"><a href="class_base_session.html">BaseSession</a></div><div class="ttdef"><b>Definition:</b> base_session.h:28</div></div>
 <div class="ttc" id="class_pubcomp_packet_html"><div class="ttname"><a href="class_pubcomp_packet.html">PubcompPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:289</div></div>
+<div class="ttc" id="class_base_session_html_a08a81804545478ab29c3620a356c1e0d"><div class="ttname"><a href="class_base_session.html#a08a81804545478ab29c3620a356c1e0d">BaseSession::BaseSession</a></div><div class="ttdeci">BaseSession(struct bufferevent *bev)</div><div class="ttdef"><b>Definition:</b> base_session.h:45</div></div>
+<div class="ttc" id="class_base_session_html_a55eb078750a419ee1a50f71f83e01531"><div class="ttname"><a href="class_base_session.html#a55eb078750a419ee1a50f71f83e01531">BaseSession::packet_manager_event</a></div><div class="ttdeci">virtual void packet_manager_event(PacketManager::EventType event)</div><div class="ttdef"><b>Definition:</b> base_session.cc:60</div></div>
 <div class="ttc" id="class_pubrel_packet_html"><div class="ttname"><a href="class_pubrel_packet.html">PubrelPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:273</div></div>
+<div class="ttc" id="class_base_session_html_ac641d8a505cba916fa0c9edb063fdaa4"><div class="ttname"><a href="class_base_session.html#ac641d8a505cba916fa0c9edb063fdaa4">BaseSession::handle_suback</a></div><div class="ttdeci">virtual void handle_suback(const SubackPacket &amp;suback_packet)</div><div class="ttdef"><b>Definition:</b> base_session.cc:96</div></div>
 <div class="ttc" id="class_connack_packet_html"><div class="ttname"><a href="class_connack_packet.html">ConnackPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:154</div></div>
 <div class="ttc" id="class_pubrec_packet_html"><div class="ttname"><a href="class_pubrec_packet.html">PubrecPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:257</div></div>
 <div class="ttc" id="class_publish_packet_html"><div class="ttname"><a href="class_publish_packet.html">PublishPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:192</div></div>
+<div class="ttc" id="class_base_session_html_a2c74aa316b7d2a96a431ecf923e80625"><div class="ttname"><a href="class_base_session.html#a2c74aa316b7d2a96a431ecf923e80625">BaseSession::handle_pingresp</a></div><div class="ttdeci">virtual void handle_pingresp(const PingrespPacket &amp;pingresp_packet)</div><div class="ttdef"><b>Definition:</b> base_session.cc:113</div></div>
+<div class="ttc" id="class_base_session_html_a68d2e239cc03cb9a8b1c6de6d6f7117c"><div class="ttname"><a href="class_base_session.html#a68d2e239cc03cb9a8b1c6de6d6f7117c">BaseSession::packet_received</a></div><div class="ttdeci">virtual void packet_received(std::unique_ptr&lt; Packet &gt; packet)</div><div class="ttdef"><b>Definition:</b> base_session.cc:9</div></div>
 <div class="ttc" id="class_subscribe_packet_html"><div class="ttname"><a href="class_subscribe_packet.html">SubscribePacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:305</div></div>
+<div class="ttc" id="class_base_session_html_a3b7a6b85e64586bf372ca42a4291e2fa"><div class="ttname"><a href="class_base_session.html#a3b7a6b85e64586bf372ca42a4291e2fa">BaseSession::handle_puback</a></div><div class="ttdeci">virtual void handle_puback(const PubackPacket &amp;puback_packet)</div><div class="ttdef"><b>Definition:</b> base_session.cc:76</div></div>
+<div class="ttc" id="class_base_session_html_a406f498aef3116d1b49a77f38f47eb76"><div class="ttname"><a href="class_base_session.html#a406f498aef3116d1b49a77f38f47eb76">BaseSession::handle_unsubscribe</a></div><div class="ttdeci">virtual void handle_unsubscribe(const UnsubscribePacket &amp;unsubscribe_packet)</div><div class="ttdef"><b>Definition:</b> base_session.cc:100</div></div>
 <div class="ttc" id="class_puback_packet_html"><div class="ttname"><a href="class_puback_packet.html">PubackPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:241</div></div>
 <div class="ttc" id="class_unsubscribe_packet_html"><div class="ttname"><a href="class_unsubscribe_packet.html">UnsubscribePacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:349</div></div>
 <div class="ttc" id="class_pingreq_packet_html"><div class="ttname"><a href="class_pingreq_packet.html">PingreqPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:385</div></div>
 <div class="ttc" id="class_connect_packet_html"><div class="ttname"><a href="class_connect_packet.html">ConnectPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:60</div></div>
 <div class="ttc" id="class_packet_manager_html"><div class="ttname"><a href="class_packet_manager.html">PacketManager</a></div><div class="ttdef"><b>Definition:</b> packet_manager.h:17</div></div>
+<div class="ttc" id="class_base_session_html_a8632185e157c6f48b518fc18532ece41"><div class="ttname"><a href="class_base_session.html#a8632185e157c6f48b518fc18532ece41">BaseSession::handle_disconnect</a></div><div class="ttdeci">virtual void handle_disconnect(const DisconnectPacket &amp;disconnect_packet)</div><div class="ttdef"><b>Definition:</b> base_session.cc:115</div></div>
+<div class="ttc" id="class_base_session_html_a659185fc50759bb9ae04e4ce08adb26e"><div class="ttname"><a href="class_base_session.html#a659185fc50759bb9ae04e4ce08adb26e">BaseSession::handle_pingreq</a></div><div class="ttdeci">virtual void handle_pingreq(const PingreqPacket &amp;pingreq_packet)</div><div class="ttdef"><b>Definition:</b> base_session.cc:108</div></div>
+<div class="ttc" id="class_base_session_html_ab8ec737a2ef5876edc8ccc220d90741b"><div class="ttname"><a href="class_base_session.html#ab8ec737a2ef5876edc8ccc220d90741b">BaseSession::~BaseSession</a></div><div class="ttdeci">virtual ~BaseSession()</div><div class="ttdef"><b>Definition:</b> base_session.h:56</div></div>
 <div class="ttc" id="class_suback_packet_html"><div class="ttname"><a href="class_suback_packet.html">SubackPacket</a></div><div class="ttdef"><b>Definition:</b> packet.h:324</div></div>
+<div class="ttc" id="class_base_session_html_af1ab1a2d80ebebfffd2551e6cd5fc3a6"><div class="ttname"><a href="class_base_session.html#af1ab1a2d80ebebfffd2551e6cd5fc3a6">BaseSession::handle_pubrec</a></div><div class="ttdeci">virtual void handle_pubrec(const PubrecPacket &amp;pubrec_packet)</div><div class="ttdef"><b>Definition:</b> base_session.cc:80</div></div>
+<div class="ttc" id="class_base_session_html_a9c5ffa81531366957be119ae2ba3cc0c"><div class="ttname"><a href="class_base_session.html#a9c5ffa81531366957be119ae2ba3cc0c">BaseSession::handle_unsuback</a></div><div class="ttdeci">virtual void handle_unsuback(const UnsubackPacket &amp;unsuback_packet)</div><div class="ttdef"><b>Definition:</b> base_session.cc:104</div></div>
+<div class="ttc" id="class_base_session_html_aef678b5027e1db22861203d4cf0d75d0"><div class="ttname"><a href="class_base_session.html#aef678b5027e1db22861203d4cf0d75d0">BaseSession::handle_pubcomp</a></div><div class="ttdeci">virtual void handle_pubcomp(const PubcompPacket &amp;pubcomp_packet)</div><div class="ttdef"><b>Definition:</b> base_session.cc:88</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

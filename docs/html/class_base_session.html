@@ -90,6 +90,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">BaseSession Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="base__session_8h_source.html">base_session.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for BaseSession:</div>
 <div class="dyncontent">
@@ -104,70 +106,662 @@ Inheritance diagram for BaseSession:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a08a81804545478ab29c3620a356c1e0d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a08a81804545478ab29c3620a356c1e0d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BaseSession</b> (struct bufferevent *bev)</td></tr>
+<tr class="memitem:a08a81804545478ab29c3620a356c1e0d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a08a81804545478ab29c3620a356c1e0d">BaseSession</a> (struct bufferevent *bev)</td></tr>
 <tr class="separator:a08a81804545478ab29c3620a356c1e0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1304e6200ac9c5c546fdea93679b2f51"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1304e6200ac9c5c546fdea93679b2f51"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>packet_received</b> (std::unique_ptr&lt; <a class="el" href="class_packet.html">Packet</a> &gt;)</td></tr>
-<tr class="separator:a1304e6200ac9c5c546fdea93679b2f51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55eb078750a419ee1a50f71f83e01531"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55eb078750a419ee1a50f71f83e01531"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>packet_manager_event</b> (PacketManager::EventType event)</td></tr>
+<tr class="memitem:ab8ec737a2ef5876edc8ccc220d90741b"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#ab8ec737a2ef5876edc8ccc220d90741b">~BaseSession</a> ()</td></tr>
+<tr class="separator:ab8ec737a2ef5876edc8ccc220d90741b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68d2e239cc03cb9a8b1c6de6d6f7117c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a68d2e239cc03cb9a8b1c6de6d6f7117c">packet_received</a> (std::unique_ptr&lt; <a class="el" href="class_packet.html">Packet</a> &gt; packet)</td></tr>
+<tr class="separator:a68d2e239cc03cb9a8b1c6de6d6f7117c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55eb078750a419ee1a50f71f83e01531"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a55eb078750a419ee1a50f71f83e01531">packet_manager_event</a> (PacketManager::EventType event)</td></tr>
 <tr class="separator:a55eb078750a419ee1a50f71f83e01531"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a390456799ae0f454d6a0b50417ef6cbf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a390456799ae0f454d6a0b50417ef6cbf"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_connect</b> (const <a class="el" href="class_connect_packet.html">ConnectPacket</a> &amp;)</td></tr>
-<tr class="separator:a390456799ae0f454d6a0b50417ef6cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cbe48eafa78c205830d08fb8b151178"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4cbe48eafa78c205830d08fb8b151178"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_connack</b> (const <a class="el" href="class_connack_packet.html">ConnackPacket</a> &amp;)</td></tr>
-<tr class="separator:a4cbe48eafa78c205830d08fb8b151178"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22b29a26661c440a9cfa06863e4444f4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a22b29a26661c440a9cfa06863e4444f4"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_publish</b> (const <a class="el" href="class_publish_packet.html">PublishPacket</a> &amp;)</td></tr>
-<tr class="separator:a22b29a26661c440a9cfa06863e4444f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab679ba7fcd3f3ca6e46df53debe413e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab679ba7fcd3f3ca6e46df53debe413e4"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_puback</b> (const <a class="el" href="class_puback_packet.html">PubackPacket</a> &amp;)</td></tr>
-<tr class="separator:ab679ba7fcd3f3ca6e46df53debe413e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2ee97356bd9bdcd6b2e09374f75cd35"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2ee97356bd9bdcd6b2e09374f75cd35"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_pubrec</b> (const <a class="el" href="class_pubrec_packet.html">PubrecPacket</a> &amp;)</td></tr>
-<tr class="separator:ae2ee97356bd9bdcd6b2e09374f75cd35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1d8f3e0cf71c58c8343db51b72d9671"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae1d8f3e0cf71c58c8343db51b72d9671"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_pubrel</b> (const <a class="el" href="class_pubrel_packet.html">PubrelPacket</a> &amp;)</td></tr>
-<tr class="separator:ae1d8f3e0cf71c58c8343db51b72d9671"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae159cba41ef62a7602d17f8713a3be20"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae159cba41ef62a7602d17f8713a3be20"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_pubcomp</b> (const <a class="el" href="class_pubcomp_packet.html">PubcompPacket</a> &amp;)</td></tr>
-<tr class="separator:ae159cba41ef62a7602d17f8713a3be20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7d2964dd68245f239d9d62c073ff060"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7d2964dd68245f239d9d62c073ff060"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_subscribe</b> (const <a class="el" href="class_subscribe_packet.html">SubscribePacket</a> &amp;)</td></tr>
-<tr class="separator:ac7d2964dd68245f239d9d62c073ff060"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade4cce3268d203d54529cfc517066849"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade4cce3268d203d54529cfc517066849"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_suback</b> (const <a class="el" href="class_suback_packet.html">SubackPacket</a> &amp;)</td></tr>
-<tr class="separator:ade4cce3268d203d54529cfc517066849"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fc7cf0c2e9fcd45ff91297681380cf5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1fc7cf0c2e9fcd45ff91297681380cf5"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_unsubscribe</b> (const <a class="el" href="class_unsubscribe_packet.html">UnsubscribePacket</a> &amp;)</td></tr>
-<tr class="separator:a1fc7cf0c2e9fcd45ff91297681380cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3f031e9b3f497ff6945e90ce7a8e997"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3f031e9b3f497ff6945e90ce7a8e997"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_unsuback</b> (const <a class="el" href="class_unsuback_packet.html">UnsubackPacket</a> &amp;)</td></tr>
-<tr class="separator:ab3f031e9b3f497ff6945e90ce7a8e997"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1135af0bd05770411912bc71ad739f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac1135af0bd05770411912bc71ad739f2"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_pingreq</b> (const <a class="el" href="class_pingreq_packet.html">PingreqPacket</a> &amp;)</td></tr>
-<tr class="separator:ac1135af0bd05770411912bc71ad739f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27ea92beeef983bca1a71017a6bf7f61"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a27ea92beeef983bca1a71017a6bf7f61"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_pingresp</b> (const <a class="el" href="class_pingresp_packet.html">PingrespPacket</a> &amp;)</td></tr>
-<tr class="separator:a27ea92beeef983bca1a71017a6bf7f61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab024f2e1383d3bd1ab189f8d523746be"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab024f2e1383d3bd1ab189f8d523746be"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_disconnect</b> (const <a class="el" href="class_disconnect_packet.html">DisconnectPacket</a> &amp;)</td></tr>
-<tr class="separator:ab024f2e1383d3bd1ab189f8d523746be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f74a874203ae8c8f60c00749cc3cbeb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a6f74a874203ae8c8f60c00749cc3cbeb">handle_connect</a> (const <a class="el" href="class_connect_packet.html">ConnectPacket</a> &amp;connect_packet)</td></tr>
+<tr class="separator:a6f74a874203ae8c8f60c00749cc3cbeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7578ea637f335a2eaec3eab326b9a44f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a7578ea637f335a2eaec3eab326b9a44f">handle_connack</a> (const <a class="el" href="class_connack_packet.html">ConnackPacket</a> &amp;connack_packet)</td></tr>
+<tr class="separator:a7578ea637f335a2eaec3eab326b9a44f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62216493ed1644c32b72ef9b2e9ed65f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a62216493ed1644c32b72ef9b2e9ed65f">handle_publish</a> (const <a class="el" href="class_publish_packet.html">PublishPacket</a> &amp;publish_packet)</td></tr>
+<tr class="separator:a62216493ed1644c32b72ef9b2e9ed65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b7a6b85e64586bf372ca42a4291e2fa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a3b7a6b85e64586bf372ca42a4291e2fa">handle_puback</a> (const <a class="el" href="class_puback_packet.html">PubackPacket</a> &amp;puback_packet)</td></tr>
+<tr class="separator:a3b7a6b85e64586bf372ca42a4291e2fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1ab1a2d80ebebfffd2551e6cd5fc3a6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#af1ab1a2d80ebebfffd2551e6cd5fc3a6">handle_pubrec</a> (const <a class="el" href="class_pubrec_packet.html">PubrecPacket</a> &amp;pubrec_packet)</td></tr>
+<tr class="separator:af1ab1a2d80ebebfffd2551e6cd5fc3a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a285fb19143ae93f754314d6ed0ffb68b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a285fb19143ae93f754314d6ed0ffb68b">handle_pubrel</a> (const <a class="el" href="class_pubrel_packet.html">PubrelPacket</a> &amp;pubrel_packet)</td></tr>
+<tr class="separator:a285fb19143ae93f754314d6ed0ffb68b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef678b5027e1db22861203d4cf0d75d0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#aef678b5027e1db22861203d4cf0d75d0">handle_pubcomp</a> (const <a class="el" href="class_pubcomp_packet.html">PubcompPacket</a> &amp;pubcomp_packet)</td></tr>
+<tr class="separator:aef678b5027e1db22861203d4cf0d75d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9977435a580c230dae667110f1f082ef"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a9977435a580c230dae667110f1f082ef">handle_subscribe</a> (const <a class="el" href="class_subscribe_packet.html">SubscribePacket</a> &amp;subscribe_packet)</td></tr>
+<tr class="separator:a9977435a580c230dae667110f1f082ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac641d8a505cba916fa0c9edb063fdaa4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#ac641d8a505cba916fa0c9edb063fdaa4">handle_suback</a> (const <a class="el" href="class_suback_packet.html">SubackPacket</a> &amp;suback_packet)</td></tr>
+<tr class="separator:ac641d8a505cba916fa0c9edb063fdaa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a406f498aef3116d1b49a77f38f47eb76"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a406f498aef3116d1b49a77f38f47eb76">handle_unsubscribe</a> (const <a class="el" href="class_unsubscribe_packet.html">UnsubscribePacket</a> &amp;unsubscribe_packet)</td></tr>
+<tr class="separator:a406f498aef3116d1b49a77f38f47eb76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c5ffa81531366957be119ae2ba3cc0c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a9c5ffa81531366957be119ae2ba3cc0c">handle_unsuback</a> (const <a class="el" href="class_unsuback_packet.html">UnsubackPacket</a> &amp;unsuback_packet)</td></tr>
+<tr class="separator:a9c5ffa81531366957be119ae2ba3cc0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a659185fc50759bb9ae04e4ce08adb26e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a659185fc50759bb9ae04e4ce08adb26e">handle_pingreq</a> (const <a class="el" href="class_pingreq_packet.html">PingreqPacket</a> &amp;pingreq_packet)</td></tr>
+<tr class="separator:a659185fc50759bb9ae04e4ce08adb26e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c74aa316b7d2a96a431ecf923e80625"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a2c74aa316b7d2a96a431ecf923e80625">handle_pingresp</a> (const <a class="el" href="class_pingresp_packet.html">PingrespPacket</a> &amp;pingresp_packet)</td></tr>
+<tr class="separator:a2c74aa316b7d2a96a431ecf923e80625"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8632185e157c6f48b518fc18532ece41"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a8632185e157c6f48b518fc18532ece41">handle_disconnect</a> (const <a class="el" href="class_disconnect_packet.html">DisconnectPacket</a> &amp;disconnect_packet)</td></tr>
+<tr class="separator:a8632185e157c6f48b518fc18532ece41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a0c5e6c15f009622c218dc5d3a4127574"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0c5e6c15f009622c218dc5d3a4127574"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>client_id</b></td></tr>
 <tr class="separator:a0c5e6c15f009622c218dc5d3a4127574"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ef75578ed1dffa0127b17240058123b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ef75578ed1dffa0127b17240058123b"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>clean_session</b></td></tr>
+<tr class="separator:a3ef75578ed1dffa0127b17240058123b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03cdd6366ba72257d25bf7906d7aef2b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a03cdd6366ba72257d25bf7906d7aef2b"></a>
 std::unique_ptr&lt; <a class="el" href="class_packet_manager.html">PacketManager</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>packet_manager</b></td></tr>
 <tr class="separator:a03cdd6366ba72257d25bf7906d7aef2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Base session class</p>
+<p>Will maintain all session attributes and provide default handlers for received control packets. Specialized Session classes will override the required control packet handlers.</p>
+<p>Each <a class="el" href="class_base_session.html">BaseSession</a> composes a <a class="el" href="class_packet_manager.html">PacketManager</a> instance that in installable on session resumption. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a08a81804545478ab29c3620a356c1e0d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">BaseSession::BaseSession </td>
+          <td>(</td>
+          <td class="paramtype">struct bufferevent *&#160;</td>
+          <td class="paramname"><em>bev</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructor</p>
+<p>A pointer to a libevent bufferevent control structure is passed as an argument, this pointer is forwarded to a newly instantiated <a class="el" href="class_packet_manager.html">PacketManager</a> that will handle all network related functions. Install callbacks that the <a class="el" href="class_packet_manager.html">PacketManager</a> will use to communicate low level protocol and network errors, and received control packets.</p>
+<p>This session can persist in memory after a connection is closed. If a connection is received from the same client that session will be abandoned and the <a class="el" href="class_packet_manager.html">PacketManager</a> instance from that session will be installed into the saved session. This is how session persistence is implemented.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bev</td><td>A pointer to a bufferevent internal control structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ab8ec737a2ef5876edc8ccc220d90741b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual BaseSession::~BaseSession </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Desctructor</p>
+<p>Virtual so the desctructor for derived classes will be called. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a7578ea637f335a2eaec3eab326b9a44f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::handle_connack </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_connack_packet.html">ConnackPacket</a> &amp;&#160;</td>
+          <td class="paramname"><em>connack_packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Handle a received <a class="el" href="class_connack_packet.html">ConnackPacket</a>.</p>
+<p>The default action is to throw an exception. Subclasses should override this method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">connack_packet</td><td>A reference to the packet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_client_session.html#a3c6408d5f812da417ebe5523543547bc">ClientSession</a>, and <a class="el" href="class_client_session.html#a3c6408d5f812da417ebe5523543547bc">ClientSession</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6f74a874203ae8c8f60c00749cc3cbeb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::handle_connect </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_connect_packet.html">ConnectPacket</a> &amp;&#160;</td>
+          <td class="paramname"><em>connect_packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Handle a received <a class="el" href="class_connect_packet.html">ConnectPacket</a>.</p>
+<p>The default action is to throw an exception. Subclasses should override this method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">connect_packet</td><td>A reference to the packet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_broker_session.html#a313d8b0e21fdec9794965e77ed5db931">BrokerSession</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8632185e157c6f48b518fc18532ece41"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::handle_disconnect </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_disconnect_packet.html">DisconnectPacket</a> &amp;&#160;</td>
+          <td class="paramname"><em>disconnect_packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Handle a received <a class="el" href="class_disconnect_packet.html">DisconnectPacket</a>.</p>
+<p>The default action is to throw an exception. Subclasses should override this method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">disconnect_packet</td><td>A reference to the packet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_broker_session.html#aae81f395fb6a56e2682725f56c20e0d0">BrokerSession</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a659185fc50759bb9ae04e4ce08adb26e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::handle_pingreq </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_pingreq_packet.html">PingreqPacket</a> &amp;&#160;</td>
+          <td class="paramname"><em>pingreq_packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Handle a received <a class="el" href="class_pingreq_packet.html">PingreqPacket</a>.</p>
+<p>The default action is to send a Pingresp packet. Subclasses can override this method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pingreq_packet</td><td>A reference to the packet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_broker_session.html#ad12fb8688372d2cad92d4aff8cdf19de">BrokerSession</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2c74aa316b7d2a96a431ecf923e80625"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::handle_pingresp </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_pingresp_packet.html">PingrespPacket</a> &amp;&#160;</td>
+          <td class="paramname"><em>pingresp_packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Handle a received <a class="el" href="class_pingresp_packet.html">PingrespPacket</a>.</p>
+<p>The default action is to do nothing. Subclasses can override this method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pingresp_packet</td><td>A reference to the packet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a3b7a6b85e64586bf372ca42a4291e2fa"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::handle_puback </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_puback_packet.html">PubackPacket</a> &amp;&#160;</td>
+          <td class="paramname"><em>puback_packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Handle a received <a class="el" href="class_puback_packet.html">PubackPacket</a>.</p>
+<p>The default action is to throw an exception. Subclasses should override this method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">puback_packet</td><td>A reference to the packet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_client_session.html#ae81a9effe536a00f14c4c71541481688">ClientSession</a>, and <a class="el" href="class_broker_session.html#a5f2eafca02c98d9675c34288d338e467">BrokerSession</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aef678b5027e1db22861203d4cf0d75d0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::handle_pubcomp </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_pubcomp_packet.html">PubcompPacket</a> &amp;&#160;</td>
+          <td class="paramname"><em>pubcomp_packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Handle a received <a class="el" href="class_pubcomp_packet.html">PubcompPacket</a>.</p>
+<p>The default action is to throw an exception. Subclasses should override this method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pubcomp_packet</td><td>A reference to the packet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_client_session.html#a0edac9d5eab934684ec1eeddc587f5d0">ClientSession</a>, and <a class="el" href="class_broker_session.html#a9c1fdc330198c9c716148d06a2822050">BrokerSession</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a62216493ed1644c32b72ef9b2e9ed65f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::handle_publish </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_publish_packet.html">PublishPacket</a> &amp;&#160;</td>
+          <td class="paramname"><em>publish_packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Handle a received <a class="el" href="class_publish_packet.html">PublishPacket</a>.</p>
+<p>The default action is to throw an exception. Subclasses should override this method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">publish_packet</td><td>A reference to the packet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_client_session.html#a3171ca9e7c23c690e7eb4f71d80f6e5a">ClientSession</a>, and <a class="el" href="class_broker_session.html#a7f321d5f469ad416b90daa8b870633a2">BrokerSession</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af1ab1a2d80ebebfffd2551e6cd5fc3a6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::handle_pubrec </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_pubrec_packet.html">PubrecPacket</a> &amp;&#160;</td>
+          <td class="paramname"><em>pubrec_packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Handle a received <a class="el" href="class_pubrec_packet.html">PubrecPacket</a>.</p>
+<p>The default action is to throw an exception. Subclasses should override this method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pubrec_packet</td><td>A reference to the packet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_client_session.html#ac6887c8b2be5f9f5ea76dd697967a00c">ClientSession</a>, and <a class="el" href="class_broker_session.html#a8084bbb91deca6304112af9b7af7b181">BrokerSession</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a285fb19143ae93f754314d6ed0ffb68b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::handle_pubrel </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_pubrel_packet.html">PubrelPacket</a> &amp;&#160;</td>
+          <td class="paramname"><em>pubrel_packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Handle a received <a class="el" href="class_pubrel_packet.html">PubrelPacket</a>.</p>
+<p>The default action is to throw an exception. Subclasses should override this method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pubrel_packet</td><td>A reference to the packet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_client_session.html#ab31149ee98ac9bc1c96c360637c27fa4">ClientSession</a>, and <a class="el" href="class_broker_session.html#a77b7635f55ac0198813ab1fca6005ad7">BrokerSession</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac641d8a505cba916fa0c9edb063fdaa4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::handle_suback </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_suback_packet.html">SubackPacket</a> &amp;&#160;</td>
+          <td class="paramname"><em>suback_packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Handle a received <a class="el" href="class_suback_packet.html">SubackPacket</a>.</p>
+<p>The default action is to throw an exception. Subclasses should override this method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">suback_packet</td><td>A reference to the packet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_client_session.html#a35488492d27cfe1931660fab31cb5f72">ClientSession</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9977435a580c230dae667110f1f082ef"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::handle_subscribe </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_subscribe_packet.html">SubscribePacket</a> &amp;&#160;</td>
+          <td class="paramname"><em>subscribe_packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Handle a received <a class="el" href="class_subscribe_packet.html">SubscribePacket</a>.</p>
+<p>The default action is to throw an exception. Subclasses should override this method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">subscribe_packet</td><td>A reference to the packet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_broker_session.html#aac79ecb7a56383480c2397123d8e3c43">BrokerSession</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9c5ffa81531366957be119ae2ba3cc0c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::handle_unsuback </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_unsuback_packet.html">UnsubackPacket</a> &amp;&#160;</td>
+          <td class="paramname"><em>unsuback_packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Handle a received <a class="el" href="class_unsuback_packet.html">UnsubackPacket</a>.</p>
+<p>The default action is to throw an exception. Subclasses should override this method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unsuback_packet</td><td>A reference to the packet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a406f498aef3116d1b49a77f38f47eb76"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::handle_unsubscribe </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_unsubscribe_packet.html">UnsubscribePacket</a> &amp;&#160;</td>
+          <td class="paramname"><em>unsubscribe_packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Handle a received <a class="el" href="class_unsubscribe_packet.html">UnsubscribePacket</a>.</p>
+<p>The default action is to throw an exception. Subclasses should override this method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">unsubscribe_packet</td><td>A reference to the packet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_broker_session.html#a9a47aa13b039978d24d037737068589c">BrokerSession</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a55eb078750a419ee1a50f71f83e01531"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::packet_manager_event </td>
+          <td>(</td>
+          <td class="paramtype">PacketManager::EventType&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><a class="el" href="class_packet_manager.html">PacketManager</a> callback.</p>
+<p>Invoked by the composed <a class="el" href="class_packet_manager.html">PacketManager</a> when it detects a low level protocol or network error. The default action performed in this method is to close the network connection.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">event</td><td>The type of event detected. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_client_session.html#a2ef2fb5ecb8c77e43441a91bd4c73ae3">ClientSession</a>, and <a class="el" href="class_broker_session.html#a5667bd9dac3e13bda57eaeacb8e606a3">BrokerSession</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a68d2e239cc03cb9a8b1c6de6d6f7117c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BaseSession::packet_received </td>
+          <td>(</td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="class_packet.html">Packet</a> &gt;&#160;</td>
+          <td class="paramname"><em>packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><a class="el" href="class_packet_manager.html">PacketManager</a> callback.</p>
+<p>Invoked by the compsed <a class="el" href="class_packet_manager.html">PacketManager</a> when it receives a complete control packet. The default handler methods will be passes a reference to this packet. Memory occupied by the packet will be freed by standard C++ std::unique_ptr rules. It is the responsibility of subclasses to maintain the packet lifetime.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">packet</td><td>Reference counted pointer to a packet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_broker_session.html#a14d9cb106795db69f98bd4f63e1d5d17">BrokerSession</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/scottb/src/mqtt/src/<a class="el" href="base__session_8h_source.html">base_session.h</a></li>
-<li>/Users/scottb/src/mqtt/src/base_session.cc</li>
+<li>/Users/scottb/src/mqtt/src/<a class="el" href="base__session_8cc.html">base_session.cc</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
