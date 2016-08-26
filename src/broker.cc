@@ -5,7 +5,7 @@
  *
  * Listen for connections from clients.  Accept subscribe, unsubscribe and publish commands and forward according to
  * the [MQTT protocol](http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/mqtt-v3.1.1.html)
- * */
+ */
 
 #include "session_manager.h"
 #include "broker_session.h"
