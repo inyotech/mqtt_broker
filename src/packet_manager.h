@@ -3,11 +3,11 @@
  *
  * Manage low level network communications.
  *
- * The PacketManager is responsible for sending and receiving MQTT 3.1.1 standard control packets across the network
- * connection.  A PacketManager is installed into every BaseSession and can be moved between sessions to implement
+ * The PacketManager is responsible for sending and receiving MQTT control packets across the network connection.  A
+ * PacketManager instance is installed into every BaseSession and can be moved between sessions to implement
  * session persistance.
  *
- * MQTT control packets received by the PacketManager and events are forwared to a containing session through
+ * MQTT control packets received by the PacketManager and network events are forwared to containing sessions through
  * callbacks.  Session instances control the packet manager by invoking its methods directly.
  */
 

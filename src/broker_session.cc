@@ -84,25 +84,25 @@ void BrokerSession::packet_received(std::unique_ptr<Packet> packet) {
 void BrokerSession::packet_manager_event(PacketManager::EventType event) {
     BaseSession::packet_manager_event(event);
     if (clean_session) {
-        session_manager.remove_session(this);
+        session_manager.erase_session(this);
     }
 }
 
 void BrokerSession::handle_connect(const ConnectPacket &packet) {
 
     if (!authorize_connection(packet)) {
-        session_manager.remove_session(this);
+        session_manager.erase_session(this);
         return;
     }
 
     if (packet.clean_session()) {
-        session_manager.remove_session(packet.client_id);
+        session_manager.erase_session(packet.client_id);
     } else {
         auto previous_session_it = session_manager.find_session(packet.client_id);
         if (previous_session_it != session_manager.sessions.end()) {
             std::unique_ptr<BrokerSession> &previous_session_ptr = *previous_session_it;
             resume_session(previous_session_ptr, std::move(packet_manager));
-            session_manager.remove_session(this);
+            session_manager.erase_session(this);
             return;
         }
     }
@@ -244,6 +244,6 @@ void BrokerSession::handle_unsubscribe(const UnsubscribePacket &packet) {
 
 void BrokerSession::handle_disconnect(const DisconnectPacket &packet) {
     if (clean_session) {
-        session_manager.remove_session(this);
+        session_manager.erase_session(this);
     }
 }
