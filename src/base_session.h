@@ -1,11 +1,9 @@
 /**
  * @file base_session.h
  *
- * Base class for MQTT sessions.  The MQTT specification requires that the client and server both maintain session
- * state while connection.  The broker is also required to resume the state of a client re-connecting with the same
- * client id.
- *
- * This class add facilities for persistence and resumption of session state.
+ * Base class for MQTT sessions.  This class add facilities for persistence and resumption of session state. The MQTT
+ * standard requires that the client and server both maintain session state while connected.  The server is also
+ * required to resume the state when a client re-connects with the same client id.
  */
 
 #pragma once
@@ -20,10 +18,10 @@
 /**
  * Base session class
  *
- * Will maintain all session attributes and provide default handlers for received control packets.  Specialized
- * Session classes will override the required control packet handlers.
+ * Maintains session attributes and provides default handler methods for received control packets.  Classes derived
+ * from BaseSession will override control packet handlers as required.
  *
- * Each BaseSession composes a PacketManager instance that in installable on session resumption.
+ * Each BaseSession composes a PacketManager instance that can be moved between BaseSession instances.
  */
 class BaseSession {
 
@@ -32,15 +30,15 @@ public:
     /**
      * Constructor
      *
-     * A pointer to a libevent bufferevent control structure is passed as an argument, this pointer is forwarded to a
-     * newly instantiated PacketManager that will handle all network related functions.  Install callbacks that the
-     * PacketManager will use to communicate low level protocol and network errors, and received control packets.
+     * Accepts a pointer to a libevent bufferevent as the only argument.  The bufferevent is forwarded to a
+     * newly instantiated PacketManager that use it to handle all network related functions.
      *
-     * This session can persist in memory after a connection is closed.  If a connection is received from the same
-     * client that session will be abandoned and the PacketManager instance from that session will be installed into
-     * the saved session. This is how session persistence is implemented.
+     * This BaseSession instance can persist in memory after the network connection is closed.  If a connection is
+     * received and the Connect control packet contains the same client id as an existing session.  Any currently
+     * active connection in the original session is closed and this PacketManager will be moved to the original
+     * session.  This session will then be deleted.
      *
-     * @param bev Pointer to a bufferevent internal control structure.
+     * @param bev Pointer to a bufferevent.
      */
     BaseSession(struct bufferevent *bev) : packet_manager(new PacketManager(bev)) {
         packet_manager->set_packet_received_handler(
@@ -55,26 +53,29 @@ public:
      */
     virtual ~BaseSession() {}
 
+    /** Client id. */
     std::string client_id;
 
+    /** Clean session flag. */
     bool clean_session;
 
     /**
      * PacketManager callback.
      *
-     * Invoked by the compsed PacketManager when it receives a complete control packet.  The default handler methods
-     * will be passes a reference to this packet.  Memory occupied by the packet will be freed by standard C++
-     * std::unique_ptr rules.  It is the responsibility of subclasses to maintain the packet lifetime.
+     * Invoked by the installed PacketManager instance when it receives a complete control packet.  The default handler
+     * methods will be passed a reference to the received packet.  Packet memory is heap allocated on creation and
+     * will be freed according to standard C++ std::unique_ptr rules.  It is the responsibility of subclasses to
+     * manage the std::unique_ptr<Packet>.
      *
-     * @param packet Reference counted pointer to a packet.
+     * @param packet Pointer to a packet.
      */
     virtual void packet_received(std::unique_ptr<Packet> packet);
 
     /**
      * PacketManager callback.
      *
-     * Invoked by the composed PacketManager when it detects a low level protocol or network error.  The default action
-     * performed in this method is to close the network connection.
+     * Invoked by the installed PacketManager instance when it detects a low level protocol or network error.  The
+     * default action is to close the network connection.
      *
      * @param event The type of event detected.
      */
@@ -206,6 +207,7 @@ public:
      */
     virtual void handle_disconnect(const DisconnectPacket & disconnect_packet);
 
+    /** Pointer to the installed PacketManager instance. */
     std::unique_ptr<PacketManager> packet_manager;
 
 };
