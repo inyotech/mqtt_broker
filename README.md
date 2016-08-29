@@ -1,12 +1,14 @@
 # MQTT broker and clients
 
-The MQTT publish/subscribe protocol is a simple lightweight messaging
-protocol for distributed network connected devices.
-
 ## About
 
-Open source, asynchronous, C++ [MQ Telemetry
-Transport](http://mqtt.org) client/server implementing the 3.1.1
+The [MQTT (MQ Telemetry Transport) publish/subscribe
+protocol](htts://mqtt.org) is a simple lightweight messaging protocol
+for distributed network connected devices.  It provides low overhead,
+reliable connectivity for resource constrained devices.
+
+This is an open source, asynchronous, C++ implementation of the broker
+(server) and connecting clients.  The implementation follows the 3.1.1
 OASIS standard available
 [here](http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html).
 
@@ -14,13 +16,18 @@ OASIS standard available
 
 ### Requirements
 
-This MQTT implementation is completely asynchronous and requires the
+Asynchronous networking support requires the
 [Libevent](http://libevent.org) networking library.  Other than that
 there are no other external run-time dependencies.
 
 * A C++11 conformant compiler.
 * [Libevent](http://libevent.org)
 * [CMake](Cmhttps://cmake.org/)
+
+Verified platforms.
+
+* Ubuntu Linux 16.04 (gcc 5.4.0)
+* Mac OSX 10.11 (llvm 7.3.0)
 
 ### Building
 
