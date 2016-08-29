@@ -65,7 +65,7 @@ static void connect_event_cb(struct bufferevent *bev, short event, void *arg);
 static void close_cb(struct bufferevent *bev, void *arg);
 
 /**
- * Options settable on through command line arguments.
+ * Options settable through command line arguments.
  */
 static struct options_t {
 

@@ -12,6 +12,8 @@
 
 #include <event2/listener.h>
 
+#include <getopt.h>
+
 #include <csignal>
 #include <cstring>
 
@@ -42,6 +44,30 @@ static void signal_cb(evutil_socket_t signal, short event, void * arg);
 static void listener_cb(struct evconnlistener * listener, evutil_socket_t fd,
                         struct sockaddr * addr, int socklen, void * arg);
 
+/**
+ * Parse command line.
+ *
+ * Recognized command line arguments are parsed and added to the options instance.  This options instance will be
+ * used to configure the broker instance.
+ *
+ * @param argc Command line argument count.
+ * @param argv Command line argument values.
+ */
+static void parse_arguments(int argc, char *argv[]);
+
+/**
+ * Options settable through command line arguments.
+ */
+struct options_t {
+
+    /** Network interface address to bind to. */
+    std::string bind_address = "0";
+
+    /** Port number to bind to. */
+    uint16_t bind_port = 1883;
+
+} options;
+
 int main(int argc, char *argv[]) {
 
     struct event_base *evloop;
@@ -50,6 +76,8 @@ int main(int argc, char *argv[]) {
     struct sockaddr_in sin;
 
     unsigned short listen_port = 1883;
+
+    parse_arguments(argc, argv);
 
     evloop = event_base_new();
     if (!evloop) {
@@ -64,22 +92,66 @@ int main(int argc, char *argv[]) {
 
     std::memset(&sin, 0, sizeof(sin));
     sin.sin_family = AF_INET;
+    evutil_inet_pton(sin.sin_family, options.bind_address.c_str(), &sin.sin_addr);
     sin.sin_port = htons(listen_port);
 
     listener = evconnlistener_new_bind(evloop, listener_cb, (void *) evloop,
                                        LEV_OPT_REUSEABLE | LEV_OPT_CLOSE_ON_FREE, -1,
                                        (struct sockaddr *) &sin, sizeof(sin));
     if (!listener) {
-        std::cerr << "Could not create a listener!\n";
+        std::cerr << "Could not create listener!\n";
         return 1;
     }
 
     event_base_dispatch(evloop);
+
     event_free(signal_event);
     evconnlistener_free(listener);
     event_base_free(evloop);
 
     return 0;
+
+}
+
+void usage() {
+    std::cout <<
+              R"END(usage: mqtt_broker [OPTION]
+
+MQTT broker server.  Bind to address and listen for client connections.
+
+OPTIONS
+
+--broker-host | -b        Broker host name or ip address, default localhost
+--broker-port | -p        Broker port, default 1883
+--help | -h               Display this message and exit
+)END";
+
+}
+void parse_arguments(int argc, char *argv[]) {
+    static struct option longopts[] = {
+            {"bind-addr",   required_argument, NULL, 'b'},
+            {"bind-port",   required_argument, NULL, 'p'},
+            {"help",        no_argument,       NULL, 'h'}
+    };
+
+
+    int ch;
+    while ((ch = getopt_long(argc, argv, "b:p:h", longopts, NULL)) != -1) {
+        switch (ch) {
+            case 'b':
+                options.bind_address = optarg;
+                break;
+            case 'p':
+                options.bind_port = static_cast<uint16_t>(atoi(optarg));
+                break;
+            case 'h':
+                usage();
+                std::exit(0);
+            default:
+                usage();
+                std::exit(1);
+        }
+    }
 
 }
 

@@ -75,7 +75,7 @@ static void close_cb(struct bufferevent *bev, void *arg);
 static void signal_cb(evutil_socket_t, short event, void *);
 
 /**
- * Options settable on through command line arguments.
+ * Options settable through command line arguments.
  */
 struct options_t {
 
@@ -290,7 +290,7 @@ static void connect_event_cb(struct bufferevent *bev, short events, void *arg) {
 
 void usage() {
     std::cout <<
-R"END(usage: mqtt_client_sub [options]
+R"END(usage: mqtt_client_sub [OPTIONS]
 
 Connect to an MQTT broker and publish a single message to a single topic.
 
