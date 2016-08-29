@@ -1,9 +1,8 @@
-//
-// Created by Scott Brumbaugh on 8/8/16.
-//
+/**
+ * @file session_manager.cc
+ */
 
 #include "session_manager.h"
-
 #include "broker_session.h"
 #include "topic.h"
 
@@ -23,13 +22,13 @@ std::list<std::unique_ptr<BrokerSession>>::iterator SessionManager::find_session
     });
 }
 
-void SessionManager::remove_session(const std::string & client_id) {
+void SessionManager::erase_session(const std::string &client_id) {
     sessions.erase(std::remove_if(sessions.begin(), sessions.end(), [&client_id](std::unique_ptr<BrokerSession> &s) {
         return (!s->client_id.empty() and (s->client_id == client_id));
     }), sessions.end());
 }
 
-void SessionManager::remove_session(const BrokerSession * session)
+void SessionManager::erase_session(const BrokerSession *session)
 {
     sessions.erase(std::remove_if(sessions.begin(), sessions.end(), [session](std::unique_ptr<BrokerSession> & s) {
         return s.get() == session;

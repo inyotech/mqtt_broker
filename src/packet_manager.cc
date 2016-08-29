@@ -1,6 +1,6 @@
-//
-// Created by Scott Brumbaugh on 8/3/16.
-//
+/**
+ * @file packet_manager.cc
+ */
 
 #include "packet_manager.h"
 #include "packet.h"
@@ -10,7 +10,7 @@
 
 #include <cstring>
 
-void PacketManager::receive_packet_data(struct bufferevent *bev) {
+void PacketManager::receive_packet_data() {
 
     struct evbuffer *input = bufferevent_get_input(bev);
 
@@ -143,7 +143,7 @@ void PacketManager::close_connection() {
     }
 }
 
-void PacketManager::handle_other_events(short events) {
+void PacketManager::handle_events(short events) {
 
     if (events & BEV_EVENT_EOF) {
         if (event_handler) {
