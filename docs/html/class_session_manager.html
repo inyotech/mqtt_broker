@@ -90,34 +90,167 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">SessionManager Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="session__manager_8h_source.html">session_manager.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a29e9f34c73049bb857b645c3ae537d8b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a29e9f34c73049bb857b645c3ae537d8b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>accept_connection</b> (struct bufferevent *bev)</td></tr>
+<tr class="memitem:a29e9f34c73049bb857b645c3ae537d8b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_session_manager.html#a29e9f34c73049bb857b645c3ae537d8b">accept_connection</a> (struct bufferevent *bev)</td></tr>
 <tr class="separator:a29e9f34c73049bb857b645c3ae537d8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37e8e5d06f0c8df7db179a102ee4588c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a37e8e5d06f0c8df7db179a102ee4588c"></a>
-std::list&lt; std::unique_ptr&lt; <a class="el" href="class_broker_session.html">BrokerSession</a> &gt; &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><b>find_session</b> (const std::string &amp;client_id)</td></tr>
+<tr class="memitem:a37e8e5d06f0c8df7db179a102ee4588c"><td class="memItemLeft" align="right" valign="top">std::list&lt; std::unique_ptr&lt; <a class="el" href="class_broker_session.html">BrokerSession</a> &gt; &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_session_manager.html#a37e8e5d06f0c8df7db179a102ee4588c">find_session</a> (const std::string &amp;client_id)</td></tr>
 <tr class="separator:a37e8e5d06f0c8df7db179a102ee4588c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f49dc6aebd1b6af1f6fb22fc2f44707"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1f49dc6aebd1b6af1f6fb22fc2f44707"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>remove_session</b> (const <a class="el" href="class_broker_session.html">BrokerSession</a> *)</td></tr>
-<tr class="separator:a1f49dc6aebd1b6af1f6fb22fc2f44707"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19e5485d5ce4d18cb9603a7e1ebd34f0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a19e5485d5ce4d18cb9603a7e1ebd34f0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>remove_session</b> (const std::string &amp;client_id)</td></tr>
-<tr class="separator:a19e5485d5ce4d18cb9603a7e1ebd34f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8fadce9ef319f31bc95f7d1612a7460"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8fadce9ef319f31bc95f7d1612a7460"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_publish</b> (const <a class="el" href="class_publish_packet.html">PublishPacket</a> &amp;)</td></tr>
-<tr class="separator:aa8fadce9ef319f31bc95f7d1612a7460"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abce1d94009161a14c7a33db1089d3dad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_session_manager.html#abce1d94009161a14c7a33db1089d3dad">erase_session</a> (const <a class="el" href="class_broker_session.html">BrokerSession</a> *<a class="el" href="client__sub_8cc.html#a104286d2b2326e1455ee905326e02aba">session</a>)</td></tr>
+<tr class="separator:abce1d94009161a14c7a33db1089d3dad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89f55ddab5f3268f7793118201f8b877"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_session_manager.html#a89f55ddab5f3268f7793118201f8b877">erase_session</a> (const std::string &amp;client_id)</td></tr>
+<tr class="separator:a89f55ddab5f3268f7793118201f8b877"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf4a3eb434932e8c4b7b15a36d2c13d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_session_manager.html#adf4a3eb434932e8c4b7b15a36d2c13d2">handle_publish</a> (const <a class="el" href="class_publish_packet.html">PublishPacket</a> &amp;publish_packet)</td></tr>
+<tr class="separator:adf4a3eb434932e8c4b7b15a36d2c13d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a2c7291ab332b1c96868156ffda93e512"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2c7291ab332b1c96868156ffda93e512"></a>
-std::list&lt; std::unique_ptr&lt; <a class="el" href="class_broker_session.html">BrokerSession</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>sessions</b></td></tr>
+<tr class="memitem:a2c7291ab332b1c96868156ffda93e512"><td class="memItemLeft" align="right" valign="top">std::list&lt; std::unique_ptr&lt; <a class="el" href="class_broker_session.html">BrokerSession</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_session_manager.html#a2c7291ab332b1c96868156ffda93e512">sessions</a></td></tr>
 <tr class="separator:a2c7291ab332b1c96868156ffda93e512"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="class_session_manager.html">SessionManager</a> class</p>
+<p>Composes a container of broker sessions and methods to manage them. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a29e9f34c73049bb857b645c3ae537d8b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SessionManager::accept_connection </td>
+          <td>(</td>
+          <td class="paramtype">struct bufferevent *&#160;</td>
+          <td class="paramname"><em>bev</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Accept a new network connection.</p>
+<p>Creates a new <a class="el" href="class_broker_session.html">BrokerSession</a> instance and adds it to the container of sessions. The session instance will manage the MQTT protocol.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bev</td><td>Pointer to a bufferevent </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="abce1d94009161a14c7a33db1089d3dad"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SessionManager::erase_session </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_broker_session.html">BrokerSession</a> *&#160;</td>
+          <td class="paramname"><em>session</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Delete a session</p>
+<p>Given a pointer to a <a class="el" href="class_broker_session.html">BrokerSession</a>, finds that session in the session container and removes it from the container. The session instance will be deleted.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">session</td><td>Pointer to a <a class="el" href="class_broker_session.html">BrokerSession</a>; </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a89f55ddab5f3268f7793118201f8b877"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SessionManager::erase_session </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>client_id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Finds a session in the session container with the given client id. If found the session is removed from the container. The session instance will be deleted.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client_id</td><td>A Client id. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a37e8e5d06f0c8df7db179a102ee4588c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::list&lt; std::unique_ptr&lt; <a class="el" href="class_broker_session.html">BrokerSession</a> &gt; &gt;::iterator SessionManager::find_session </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>client_id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Find a session in the session container.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client_id</td><td>Unique client id to find. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Iterator to <a class="el" href="class_broker_session.html">BrokerSession</a>. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="adf4a3eb434932e8c4b7b15a36d2c13d2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SessionManager::handle_publish </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_publish_packet.html">PublishPacket</a> &amp;&#160;</td>
+          <td class="paramname"><em>publish_packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Forward a message to subsribed clients.</p>
+<p>Searches through each session and their subscriptions and invokes the forward_packet method on each session instance with a matching subscribed <a class="el" href="class_topic_filter.html">TopicFilter</a>. The session will be responsible for Managing the MQTT publish protocol and correctly delivering the message to its subscribed client</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">publish_packet</td><td>Reference to a <a class="el" href="class_publish_packet.html">PublishPacket</a>; </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a2c7291ab332b1c96868156ffda93e512"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::list&lt;std::unique_ptr&lt;<a class="el" href="class_broker_session.html">BrokerSession</a>&gt; &gt; SessionManager::sessions</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Container of BrokerSessions. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/scottb/src/mqtt/src/<a class="el" href="session__manager_8h_source.html">session_manager.h</a></li>
-<li>/Users/scottb/src/mqtt/src/session_manager.cc</li>
+<li>/Users/scottb/src/mqtt/src/<a class="el" href="session__manager_8cc.html">session_manager.cc</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

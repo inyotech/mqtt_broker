@@ -125,7 +125,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3171ca9e7c23c690e7eb4f71d80f6e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab31149ee98ac9bc1c96c360637c27fa4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_session.html#ab31149ee98ac9bc1c96c360637c27fa4">handle_pubrel</a> (const <a class="el" href="class_pubrel_packet.html">PubrelPacket</a> &amp;pubrel_packet) override</td></tr>
 <tr class="separator:ab31149ee98ac9bc1c96c360637c27fa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ef2fb5ecb8c77e43441a91bd4c73ae3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_session.html#a2ef2fb5ecb8c77e43441a91bd4c73ae3">packet_manager_event</a> (PacketManager::EventType event) override</td></tr>
+<tr class="memitem:a2ef2fb5ecb8c77e43441a91bd4c73ae3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_session.html#a2ef2fb5ecb8c77e43441a91bd4c73ae3">packet_manager_event</a> (<a class="el" href="class_packet_manager.html#ac3e07b1a5392ecfcb18b8bfc18decc56">PacketManager::EventType</a> event) override</td></tr>
 <tr class="separator:a2ef2fb5ecb8c77e43441a91bd4c73ae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_base_session"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_base_session')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_base_session.html">BaseSession</a></td></tr>
 <tr class="memitem:a08a81804545478ab29c3620a356c1e0d inherit pub_methods_class_base_session"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a08a81804545478ab29c3620a356c1e0d">BaseSession</a> (struct bufferevent *bev)</td></tr>
@@ -156,14 +156,11 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a18c9b24c7fa4582a8333eeb32463cfc4"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_session.html#a18c9b24c7fa4582a8333eeb32463cfc4">published_packet_id</a> = 0</td></tr>
 <tr class="separator:a18c9b24c7fa4582a8333eeb32463cfc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_class_base_session"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_base_session')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_base_session.html">BaseSession</a></td></tr>
-<tr class="memitem:a0c5e6c15f009622c218dc5d3a4127574 inherit pub_attribs_class_base_session"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0c5e6c15f009622c218dc5d3a4127574"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>client_id</b></td></tr>
+<tr class="memitem:a0c5e6c15f009622c218dc5d3a4127574 inherit pub_attribs_class_base_session"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a0c5e6c15f009622c218dc5d3a4127574">client_id</a></td></tr>
 <tr class="separator:a0c5e6c15f009622c218dc5d3a4127574 inherit pub_attribs_class_base_session"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ef75578ed1dffa0127b17240058123b inherit pub_attribs_class_base_session"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ef75578ed1dffa0127b17240058123b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>clean_session</b></td></tr>
+<tr class="memitem:a3ef75578ed1dffa0127b17240058123b inherit pub_attribs_class_base_session"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a3ef75578ed1dffa0127b17240058123b">clean_session</a></td></tr>
 <tr class="separator:a3ef75578ed1dffa0127b17240058123b inherit pub_attribs_class_base_session"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03cdd6366ba72257d25bf7906d7aef2b inherit pub_attribs_class_base_session"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a03cdd6366ba72257d25bf7906d7aef2b"></a>
-std::unique_ptr&lt; <a class="el" href="class_packet_manager.html">PacketManager</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>packet_manager</b></td></tr>
+<tr class="memitem:a03cdd6366ba72257d25bf7906d7aef2b inherit pub_attribs_class_base_session"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_packet_manager.html">PacketManager</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a03cdd6366ba72257d25bf7906d7aef2b">packet_manager</a></td></tr>
 <tr class="separator:a03cdd6366ba72257d25bf7906d7aef2b inherit pub_attribs_class_base_session"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -564,7 +561,7 @@ std::unique_ptr&lt; <a class="el" href="class_packet_manager.html">PacketManager
         <tr>
           <td class="memname">void ClientSession::packet_manager_event </td>
           <td>(</td>
-          <td class="paramtype">PacketManager::EventType&#160;</td>
+          <td class="paramtype"><a class="el" href="class_packet_manager.html#ac3e07b1a5392ecfcb18b8bfc18decc56">PacketManager::EventType</a>&#160;</td>
           <td class="paramname"><em>event</em></td><td>)</td>
           <td></td>
         </tr>

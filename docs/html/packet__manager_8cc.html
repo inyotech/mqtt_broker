@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>MQTT Broker and Clients: /Users/scottb/src/mqtt/src/base_session.h File Reference</title>
+<title>MQTT Broker and Clients: /Users/scottb/src/mqtt/src/packet_manager.cc File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -84,26 +84,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 </div><!-- top -->
 <div class="header">
-  <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle">
-<div class="title">base_session.h File Reference</div>  </div>
+<div class="title">packet_manager.cc File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="packet_8h_source.html">packet.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="packet__manager_8h_source.html">packet_manager.h</a>&quot;</code><br />
-<code>#include &lt;event2/bufferevent.h&gt;</code><br />
-<code>#include &lt;string&gt;</code><br />
-</div>
-<p><a href="base__session_8h_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html">BaseSession</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Base class for MQTT sessions. This class add facilities for persistence and resumption of session state. The MQTT standard requires that the client and server both maintain session state while connected. The server is also required to resume the state when a client re-connects with the same client id. </p>
+<div class="textblock"><code>#include &quot;<a class="el" href="packet__manager_8h_source.html">packet_manager.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="packet_8h_source.html">packet.h</a>&quot;</code><br />
+<code>#include &lt;event2/buffer.h&gt;</code><br />
+<code>#include &lt;evdns.h&gt;</code><br />
+<code>#include &lt;cstring&gt;</code><br />
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

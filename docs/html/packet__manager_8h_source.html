@@ -88,94 +88,104 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">packet_manager.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">// Created by Scott Brumbaugh on 8/3/16.</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#pragma once</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="packet_8h.html">packet.h</a>&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;cstddef&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;event2/event.h&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;event2/bufferevent.h&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="class_packet_manager.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_packet_manager.html">PacketManager</a> {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">enum class</span> EventType {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        NetworkError,</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        ProtocolError,</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        ConnectionClosed,</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        Timeout,</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    };</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="class_packet_manager.html">PacketManager</a>(<span class="keyword">struct</span> bufferevent * bev) : bev(bev) {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        bufferevent_setcb(bev, input_ready, NULL, other_event, <span class="keyword">this</span>);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        bufferevent_enable(bev, EV_READ);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    }</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="class_packet_manager.html">PacketManager</a>() {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordflow">if</span> (bev) {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            bufferevent_free(bev);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            bev = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    }</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> input_ready(<span class="keyword">struct</span> bufferevent * bev, <span class="keywordtype">void</span> * arg) {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <a class="code" href="class_packet_manager.html">PacketManager</a> * _this = <span class="keyword">static_cast&lt;</span><a class="code" href="class_packet_manager.html">PacketManager</a> *<span class="keyword">&gt;</span>(arg);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        _this-&gt;receive_packet_data(bev);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> other_event(<span class="keyword">struct</span> bufferevent * bev, <span class="keywordtype">short</span> events, <span class="keywordtype">void</span> * arg) {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <a class="code" href="class_packet_manager.html">PacketManager</a> * _this = <span class="keyword">static_cast&lt;</span><a class="code" href="class_packet_manager.html">PacketManager</a> *<span class="keyword">&gt;</span>(arg);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        _this-&gt;handle_other_events(events);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">void</span> receive_packet_data(<span class="keyword">struct</span> bufferevent * bev);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    std::unique_ptr&lt;Packet&gt; parse_packet_data(<span class="keyword">const</span> <a class="code" href="packet__data_8h.html#a6f5fa06638d1866d3bbabfb51b9d43b6">packet_data_t</a> &amp; packet_data);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">void</span> handle_other_events(<span class="keywordtype">short</span> events);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span> set_packet_received_handler(std::function&lt;<span class="keywordtype">void</span>(std::unique_ptr&lt;Packet&gt;)&gt; handler) {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        packet_received_handler = handler;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    }</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">void</span> set_event_handler(std::function&lt;<span class="keywordtype">void</span>(EventType)&gt; handler) {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        event_handler = handler;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span> close_connection();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    uint16_t next_packet_id() {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordflow">if</span> (++packet_id == 0) {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            ++packet_id;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">return</span> packet_id;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    uint16_t packet_id = 0;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span> send_packet(<span class="keyword">const</span> <a class="code" href="class_packet.html">Packet</a> &amp;);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">size_t</span> fixed_header_length = 0;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">size_t</span> remaining_length = 0;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">struct </span>bufferevent * bev;</div>
+<a href="packet__manager_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#pragma once</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="packet_8h.html">packet.h</a>&quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;event2/event.h&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;event2/bufferevent.h&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;cstddef&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="class_packet_manager.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_packet_manager.html">PacketManager</a> {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="class_packet_manager.html#ac3e07b1a5392ecfcb18b8bfc18decc56">   40</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="class_packet_manager.html#ac3e07b1a5392ecfcb18b8bfc18decc56">EventType</a> {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        NetworkError,</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        ProtocolError,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        ConnectionClosed,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        Timeout,</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    };</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="class_packet_manager.html#af13c3d341983905b14691c0f0639285c">   56</a></span>&#160;    <a class="code" href="class_packet_manager.html#af13c3d341983905b14691c0f0639285c">PacketManager</a>(<span class="keyword">struct</span> bufferevent *<a class="code" href="class_packet_manager.html#aaf7532d74d9ebe771ed78a2ee0548692">bev</a>) : bev(bev) {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        bufferevent_setcb(bev, input_ready, NULL, network_event, <span class="keyword">this</span>);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        bufferevent_enable(bev, EV_READ);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="class_packet_manager.html#a9d47311266ca292dbd2a6f7d9167463a">   67</a></span>&#160;    <a class="code" href="class_packet_manager.html#a9d47311266ca292dbd2a6f7d9167463a">~PacketManager</a>() {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="class_packet_manager.html#aaf7532d74d9ebe771ed78a2ee0548692">bev</a>) {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            bufferevent_free(<a class="code" href="class_packet_manager.html#aaf7532d74d9ebe771ed78a2ee0548692">bev</a>);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <a class="code" href="class_packet_manager.html#aaf7532d74d9ebe771ed78a2ee0548692">bev</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_packet_manager.html#ab02d5fcb5f3a4379f7aad7dc8e633a83">send_packet</a>(<span class="keyword">const</span> <a class="code" href="class_packet.html">Packet</a> &amp;);</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    std::function&lt;void(std::unique_ptr&lt;Packet&gt;)&gt; packet_received_handler;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    std::function&lt;void(EventType)&gt; event_handler;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
-<div class="ttc" id="class_packet_manager_html"><div class="ttname"><a href="class_packet_manager.html">PacketManager</a></div><div class="ttdef"><b>Definition:</b> packet_manager.h:17</div></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_packet_manager.html#ae319829a0a8ecc772fba30a3981d3614">close_connection</a>();</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="class_packet_manager.html#a70300df11c21ac4848d23cc168ad103b">  100</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_packet_manager.html#a70300df11c21ac4848d23cc168ad103b">set_packet_received_handler</a>(std::function&lt;<span class="keywordtype">void</span>(std::unique_ptr&lt;Packet&gt;)&gt; handler) {</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        packet_received_handler = handler;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    }</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="class_packet_manager.html#a15bdbf5c05834e7a625f25953163a42a">  112</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_packet_manager.html#a15bdbf5c05834e7a625f25953163a42a">set_event_handler</a>(std::function&lt;<span class="keywordtype">void</span>(<a class="code" href="class_packet_manager.html#ac3e07b1a5392ecfcb18b8bfc18decc56">EventType</a>)&gt; handler) {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        event_handler = handler;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    }</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="class_packet_manager.html#abec7453d65d468c945bc1b83cd413c18">  121</a></span>&#160;    uint16_t <a class="code" href="class_packet_manager.html#abec7453d65d468c945bc1b83cd413c18">next_packet_id</a>() {</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="keywordflow">if</span> (++packet_id == 0) {</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            ++packet_id;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        }</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keywordflow">return</span> packet_id;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    }</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+<div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="class_packet_manager.html#aaf7532d74d9ebe771ed78a2ee0548692">  132</a></span>&#160;    <span class="keyword">struct </span>bufferevent *<a class="code" href="class_packet_manager.html#aaf7532d74d9ebe771ed78a2ee0548692">bev</a>;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keywordtype">void</span> receive_packet_data();</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> input_ready(<span class="keyword">struct</span> bufferevent *bev, <span class="keywordtype">void</span> *arg) {</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <a class="code" href="class_packet_manager.html">PacketManager</a> *_this = <span class="keyword">static_cast&lt;</span><a class="code" href="class_packet_manager.html">PacketManager</a> *<span class="keyword">&gt;</span>(arg);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        _this-&gt;receive_packet_data();</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    }</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordtype">void</span> handle_events(<span class="keywordtype">short</span> events);</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> network_event(<span class="keyword">struct</span> bufferevent *bev, <span class="keywordtype">short</span> events, <span class="keywordtype">void</span> *arg) {</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        <a class="code" href="class_packet_manager.html">PacketManager</a> *_this = <span class="keyword">static_cast&lt;</span><a class="code" href="class_packet_manager.html">PacketManager</a> *<span class="keyword">&gt;</span>(arg);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        _this-&gt;handle_events(events);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    }</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    std::unique_ptr&lt;Packet&gt; parse_packet_data(<span class="keyword">const</span> <a class="code" href="packet__data_8h.html#a6f5fa06638d1866d3bbabfb51b9d43b6">packet_data_t</a> &amp;packet_data);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    std::function&lt;void(std::unique_ptr&lt;Packet&gt;)&gt; packet_received_handler;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    std::function&lt;void(EventType)&gt; event_handler;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    uint16_t packet_id = 0;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keywordtype">size_t</span> fixed_header_length = 0;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keywordtype">size_t</span> remaining_length = 0;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;};</div>
+<div class="ttc" id="class_packet_manager_html_ae319829a0a8ecc772fba30a3981d3614"><div class="ttname"><a href="class_packet_manager.html#ae319829a0a8ecc772fba30a3981d3614">PacketManager::close_connection</a></div><div class="ttdeci">void close_connection()</div><div class="ttdef"><b>Definition:</b> packet_manager.cc:137</div></div>
+<div class="ttc" id="class_packet_manager_html_af13c3d341983905b14691c0f0639285c"><div class="ttname"><a href="class_packet_manager.html#af13c3d341983905b14691c0f0639285c">PacketManager::PacketManager</a></div><div class="ttdeci">PacketManager(struct bufferevent *bev)</div><div class="ttdef"><b>Definition:</b> packet_manager.h:56</div></div>
+<div class="ttc" id="class_packet_manager_html_ac3e07b1a5392ecfcb18b8bfc18decc56"><div class="ttname"><a href="class_packet_manager.html#ac3e07b1a5392ecfcb18b8bfc18decc56">PacketManager::EventType</a></div><div class="ttdeci">EventType</div><div class="ttdef"><b>Definition:</b> packet_manager.h:40</div></div>
+<div class="ttc" id="class_packet_manager_html_ab02d5fcb5f3a4379f7aad7dc8e633a83"><div class="ttname"><a href="class_packet_manager.html#ab02d5fcb5f3a4379f7aad7dc8e633a83">PacketManager::send_packet</a></div><div class="ttdeci">void send_packet(const Packet &amp;)</div><div class="ttdef"><b>Definition:</b> packet_manager.cc:128</div></div>
+<div class="ttc" id="class_packet_manager_html_aaf7532d74d9ebe771ed78a2ee0548692"><div class="ttname"><a href="class_packet_manager.html#aaf7532d74d9ebe771ed78a2ee0548692">PacketManager::bev</a></div><div class="ttdeci">struct bufferevent * bev</div><div class="ttdef"><b>Definition:</b> packet_manager.h:132</div></div>
+<div class="ttc" id="class_packet_manager_html_abec7453d65d468c945bc1b83cd413c18"><div class="ttname"><a href="class_packet_manager.html#abec7453d65d468c945bc1b83cd413c18">PacketManager::next_packet_id</a></div><div class="ttdeci">uint16_t next_packet_id()</div><div class="ttdef"><b>Definition:</b> packet_manager.h:121</div></div>
+<div class="ttc" id="class_packet_manager_html_a15bdbf5c05834e7a625f25953163a42a"><div class="ttname"><a href="class_packet_manager.html#a15bdbf5c05834e7a625f25953163a42a">PacketManager::set_event_handler</a></div><div class="ttdeci">void set_event_handler(std::function&lt; void(EventType)&gt; handler)</div><div class="ttdef"><b>Definition:</b> packet_manager.h:112</div></div>
+<div class="ttc" id="class_packet_manager_html_a70300df11c21ac4848d23cc168ad103b"><div class="ttname"><a href="class_packet_manager.html#a70300df11c21ac4848d23cc168ad103b">PacketManager::set_packet_received_handler</a></div><div class="ttdeci">void set_packet_received_handler(std::function&lt; void(std::unique_ptr&lt; Packet &gt;)&gt; handler)</div><div class="ttdef"><b>Definition:</b> packet_manager.h:100</div></div>
+<div class="ttc" id="class_packet_manager_html"><div class="ttname"><a href="class_packet_manager.html">PacketManager</a></div><div class="ttdef"><b>Definition:</b> packet_manager.h:31</div></div>
 <div class="ttc" id="packet_8h_html"><div class="ttname"><a href="packet_8h.html">packet.h</a></div></div>
 <div class="ttc" id="packet__data_8h_html_a6f5fa06638d1866d3bbabfb51b9d43b6"><div class="ttname"><a href="packet__data_8h.html#a6f5fa06638d1866d3bbabfb51b9d43b6">packet_data_t</a></div><div class="ttdeci">std::vector&lt; uint8_t &gt; packet_data_t</div><div class="ttdef"><b>Definition:</b> packet_data.h:15</div></div>
+<div class="ttc" id="class_packet_manager_html_a9d47311266ca292dbd2a6f7d9167463a"><div class="ttname"><a href="class_packet_manager.html#a9d47311266ca292dbd2a6f7d9167463a">PacketManager::~PacketManager</a></div><div class="ttdeci">~PacketManager()</div><div class="ttdef"><b>Definition:</b> packet_manager.h:67</div></div>
 <div class="ttc" id="class_packet_html"><div class="ttname"><a href="class_packet.html">Packet</a></div><div class="ttdef"><b>Definition:</b> packet.h:80</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

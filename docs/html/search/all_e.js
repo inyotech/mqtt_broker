@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['read_5fbyte',['read_byte',['../class_packet_data_reader.html#afe5a92d7aa0b15aa7ef633ae9d053bee',1,'PacketDataReader']]],
-  ['read_5fbytes',['read_bytes',['../class_packet_data_reader.html#a01482f5ca65a079b797b63c67c6dea7f',1,'PacketDataReader::read_bytes()'],['../class_packet_data_reader.html#a5a8a8f65157671a4b00bd516598f2d1b',1,'PacketDataReader::read_bytes(size_t len)']]],
-  ['read_5fremaining_5flength',['read_remaining_length',['../class_packet_data_reader.html#af3e2f9820deb340b890f8487a2f5b6f9',1,'PacketDataReader']]],
-  ['read_5fstring',['read_string',['../class_packet_data_reader.html#ae9d53c4d7f956ef858ddd56b748f03b9',1,'PacketDataReader']]],
-  ['read_5fuint16',['read_uint16',['../class_packet_data_reader.html#a49a9f5b65ac3d7acf65bf88209d94a3d',1,'PacketDataReader']]],
-  ['resume_5fsession',['resume_session',['../class_broker_session.html#a2c85495931c0fa1769560c5ab21bbeff',1,'BrokerSession']]]
+  ['qos',['qos',['../structoptions__t.html#a0566fa48a86163210c13526700be0d14',1,'options_t']]],
+  ['qos1_5fpending_5fpuback',['qos1_pending_puback',['../class_broker_session.html#ac68a6929610ac5ece0a485407040d512',1,'BrokerSession']]],
+  ['qos2_5fpending_5fpubcomp',['qos2_pending_pubcomp',['../class_broker_session.html#a4faf632478a4386772676471ea0a8a66',1,'BrokerSession']]],
+  ['qos2_5fpending_5fpubrec',['qos2_pending_pubrec',['../class_broker_session.html#a3da147559acb247d7386801d597fe01a',1,'BrokerSession']]],
+  ['qos2_5fpending_5fpubrel',['qos2_pending_pubrel',['../class_broker_session.html#ab0de03307a9460b8237fa2eece20f647',1,'BrokerSession']]],
+  ['qostype',['QoSType',['../packet_8h.html#ac60dbb433fe6ed1c4efc42fa05697b51',1,'packet.h']]]
 ];

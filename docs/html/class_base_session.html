@@ -112,7 +112,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab8ec737a2ef5876edc8ccc220d90741b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68d2e239cc03cb9a8b1c6de6d6f7117c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a68d2e239cc03cb9a8b1c6de6d6f7117c">packet_received</a> (std::unique_ptr&lt; <a class="el" href="class_packet.html">Packet</a> &gt; packet)</td></tr>
 <tr class="separator:a68d2e239cc03cb9a8b1c6de6d6f7117c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55eb078750a419ee1a50f71f83e01531"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a55eb078750a419ee1a50f71f83e01531">packet_manager_event</a> (PacketManager::EventType event)</td></tr>
+<tr class="memitem:a55eb078750a419ee1a50f71f83e01531"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a55eb078750a419ee1a50f71f83e01531">packet_manager_event</a> (<a class="el" href="class_packet_manager.html#ac3e07b1a5392ecfcb18b8bfc18decc56">PacketManager::EventType</a> event)</td></tr>
 <tr class="separator:a55eb078750a419ee1a50f71f83e01531"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f74a874203ae8c8f60c00749cc3cbeb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a6f74a874203ae8c8f60c00749cc3cbeb">handle_connect</a> (const <a class="el" href="class_connect_packet.html">ConnectPacket</a> &amp;connect_packet)</td></tr>
 <tr class="separator:a6f74a874203ae8c8f60c00749cc3cbeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,20 +145,17 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a0c5e6c15f009622c218dc5d3a4127574"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0c5e6c15f009622c218dc5d3a4127574"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>client_id</b></td></tr>
+<tr class="memitem:a0c5e6c15f009622c218dc5d3a4127574"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a0c5e6c15f009622c218dc5d3a4127574">client_id</a></td></tr>
 <tr class="separator:a0c5e6c15f009622c218dc5d3a4127574"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ef75578ed1dffa0127b17240058123b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ef75578ed1dffa0127b17240058123b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>clean_session</b></td></tr>
+<tr class="memitem:a3ef75578ed1dffa0127b17240058123b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a3ef75578ed1dffa0127b17240058123b">clean_session</a></td></tr>
 <tr class="separator:a3ef75578ed1dffa0127b17240058123b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03cdd6366ba72257d25bf7906d7aef2b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a03cdd6366ba72257d25bf7906d7aef2b"></a>
-std::unique_ptr&lt; <a class="el" href="class_packet_manager.html">PacketManager</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>packet_manager</b></td></tr>
+<tr class="memitem:a03cdd6366ba72257d25bf7906d7aef2b"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="class_packet_manager.html">PacketManager</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_session.html#a03cdd6366ba72257d25bf7906d7aef2b">packet_manager</a></td></tr>
 <tr class="separator:a03cdd6366ba72257d25bf7906d7aef2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base session class</p>
-<p>Will maintain all session attributes and provide default handlers for received control packets. Specialized Session classes will override the required control packet handlers.</p>
-<p>Each <a class="el" href="class_base_session.html">BaseSession</a> composes a <a class="el" href="class_packet_manager.html">PacketManager</a> instance that in installable on session resumption. </p>
+<p>Maintains session attributes and provides default handler methods for received control packets. Classes derived from <a class="el" href="class_base_session.html">BaseSession</a> will override control packet handlers as required.</p>
+<p>Each <a class="el" href="class_base_session.html">BaseSession</a> composes a <a class="el" href="class_packet_manager.html">PacketManager</a> instance that can be moved between <a class="el" href="class_base_session.html">BaseSession</a> instances. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a08a81804545478ab29c3620a356c1e0d"></a>
 <div class="memitem">
@@ -182,11 +179,11 @@ std::unique_ptr&lt; <a class="el" href="class_packet_manager.html">PacketManager
 </table>
 </div><div class="memdoc">
 <p>Constructor</p>
-<p>A pointer to a libevent bufferevent control structure is passed as an argument, this pointer is forwarded to a newly instantiated <a class="el" href="class_packet_manager.html">PacketManager</a> that will handle all network related functions. Install callbacks that the <a class="el" href="class_packet_manager.html">PacketManager</a> will use to communicate low level protocol and network errors, and received control packets.</p>
-<p>This session can persist in memory after a connection is closed. If a connection is received from the same client that session will be abandoned and the <a class="el" href="class_packet_manager.html">PacketManager</a> instance from that session will be installed into the saved session. This is how session persistence is implemented.</p>
+<p>Accepts a pointer to a libevent bufferevent as the only argument. The bufferevent is forwarded to a newly instantiated <a class="el" href="class_packet_manager.html">PacketManager</a> that use it to handle all network related functions.</p>
+<p>This <a class="el" href="class_base_session.html">BaseSession</a> instance can persist in memory after the network connection is closed. If a connection is received and the Connect control packet contains the same client id as an existing session. Any currently active connection in the original session is closed and this <a class="el" href="class_packet_manager.html">PacketManager</a> will be moved to the original session. This session will then be deleted.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">bev</td><td>Pointer to a bufferevent internal control structure. </td></tr>
+    <tr><td class="paramname">bev</td><td>Pointer to a bufferevent. </td></tr>
   </table>
   </dd>
 </dl>
@@ -699,7 +696,7 @@ std::unique_ptr&lt; <a class="el" href="class_packet_manager.html">PacketManager
         <tr>
           <td class="memname">void BaseSession::packet_manager_event </td>
           <td>(</td>
-          <td class="paramtype">PacketManager::EventType&#160;</td>
+          <td class="paramtype"><a class="el" href="class_packet_manager.html#ac3e07b1a5392ecfcb18b8bfc18decc56">PacketManager::EventType</a>&#160;</td>
           <td class="paramname"><em>event</em></td><td>)</td>
           <td></td>
         </tr>
@@ -711,7 +708,7 @@ std::unique_ptr&lt; <a class="el" href="class_packet_manager.html">PacketManager
 </table>
 </div><div class="memdoc">
 <p><a class="el" href="class_packet_manager.html">PacketManager</a> callback.</p>
-<p>Invoked by the composed <a class="el" href="class_packet_manager.html">PacketManager</a> when it detects a low level protocol or network error. The default action performed in this method is to close the network connection.</p>
+<p>Invoked by the installed <a class="el" href="class_packet_manager.html">PacketManager</a> instance when it detects a low level protocol or network error. The default action is to close the network connection.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">event</td><td>The type of event detected. </td></tr>
@@ -745,15 +742,55 @@ std::unique_ptr&lt; <a class="el" href="class_packet_manager.html">PacketManager
 </table>
 </div><div class="memdoc">
 <p><a class="el" href="class_packet_manager.html">PacketManager</a> callback.</p>
-<p>Invoked by the compsed <a class="el" href="class_packet_manager.html">PacketManager</a> when it receives a complete control packet. The default handler methods will be passes a reference to this packet. Memory occupied by the packet will be freed by standard C++ std::unique_ptr rules. It is the responsibility of subclasses to maintain the packet lifetime.</p>
+<p>Invoked by the installed <a class="el" href="class_packet_manager.html">PacketManager</a> instance when it receives a complete control packet. The default handler methods will be passed a reference to the received packet. <a class="el" href="class_packet.html">Packet</a> memory is heap allocated on creation and will be freed according to standard C++ std::unique_ptr rules. It is the responsibility of subclasses to manage the std::unique_ptr&lt;Packet&gt;.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">packet</td><td>Reference counted pointer to a packet. </td></tr>
+    <tr><td class="paramname">packet</td><td>Pointer to a packet. </td></tr>
   </table>
   </dd>
 </dl>
 
 <p>Reimplemented in <a class="el" href="class_broker_session.html#ab56866bbb333347d1d3363f41250c23c">BrokerSession</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a3ef75578ed1dffa0127b17240058123b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool BaseSession::clean_session</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Clean session flag. </p>
+
+</div>
+</div>
+<a class="anchor" id="a0c5e6c15f009622c218dc5d3a4127574"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string BaseSession::client_id</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Client id. </p>
+
+</div>
+</div>
+<a class="anchor" id="a03cdd6366ba72257d25bf7906d7aef2b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt;<a class="el" href="class_packet_manager.html">PacketManager</a>&gt; BaseSession::packet_manager</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pointer to the installed <a class="el" href="class_packet_manager.html">PacketManager</a> instance. </p>
 
 </div>
 </div>

@@ -85,17 +85,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_packet_manager-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">PacketManager Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="packet__manager_8h_source.html">packet_manager.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ac3e07b1a5392ecfcb18b8bfc18decc56"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3e07b1a5392ecfcb18b8bfc18decc56"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>EventType</b> { <b>NetworkError</b>, 
+<tr class="memitem:ac3e07b1a5392ecfcb18b8bfc18decc56"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_manager.html#ac3e07b1a5392ecfcb18b8bfc18decc56">EventType</a> { <b>NetworkError</b>, 
 <b>ProtocolError</b>, 
 <b>ConnectionClosed</b>, 
 <b>Timeout</b>
@@ -104,67 +105,252 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af13c3d341983905b14691c0f0639285c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af13c3d341983905b14691c0f0639285c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PacketManager</b> (struct bufferevent *bev)</td></tr>
+<tr class="memitem:af13c3d341983905b14691c0f0639285c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_manager.html#af13c3d341983905b14691c0f0639285c">PacketManager</a> (struct bufferevent *<a class="el" href="class_packet_manager.html#aaf7532d74d9ebe771ed78a2ee0548692">bev</a>)</td></tr>
 <tr class="separator:af13c3d341983905b14691c0f0639285c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6043c7f7e30c61c232b2843f9d1042fe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6043c7f7e30c61c232b2843f9d1042fe"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>receive_packet_data</b> (struct bufferevent *bev)</td></tr>
-<tr class="separator:a6043c7f7e30c61c232b2843f9d1042fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47ccff19597c6555b918f69e878d4eaf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a47ccff19597c6555b918f69e878d4eaf"></a>
-std::unique_ptr&lt; <a class="el" href="class_packet.html">Packet</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>parse_packet_data</b> (const <a class="el" href="packet__data_8h.html#a6f5fa06638d1866d3bbabfb51b9d43b6">packet_data_t</a> &amp;packet_data)</td></tr>
-<tr class="separator:a47ccff19597c6555b918f69e878d4eaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2173d4f14a9019329424b97b2e29c0b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2173d4f14a9019329424b97b2e29c0b5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>handle_other_events</b> (short events)</td></tr>
-<tr class="separator:a2173d4f14a9019329424b97b2e29c0b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70300df11c21ac4848d23cc168ad103b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a70300df11c21ac4848d23cc168ad103b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_packet_received_handler</b> (std::function&lt; void(std::unique_ptr&lt; <a class="el" href="class_packet.html">Packet</a> &gt;)&gt; handler)</td></tr>
-<tr class="separator:a70300df11c21ac4848d23cc168ad103b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15bdbf5c05834e7a625f25953163a42a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a15bdbf5c05834e7a625f25953163a42a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_event_handler</b> (std::function&lt; void(EventType)&gt; handler)</td></tr>
-<tr class="separator:a15bdbf5c05834e7a625f25953163a42a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae319829a0a8ecc772fba30a3981d3614"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae319829a0a8ecc772fba30a3981d3614"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>close_connection</b> ()</td></tr>
-<tr class="separator:ae319829a0a8ecc772fba30a3981d3614"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abec7453d65d468c945bc1b83cd413c18"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abec7453d65d468c945bc1b83cd413c18"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>next_packet_id</b> ()</td></tr>
-<tr class="separator:abec7453d65d468c945bc1b83cd413c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab02d5fcb5f3a4379f7aad7dc8e633a83"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab02d5fcb5f3a4379f7aad7dc8e633a83"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>send_packet</b> (const <a class="el" href="class_packet.html">Packet</a> &amp;)</td></tr>
+<tr class="memitem:a9d47311266ca292dbd2a6f7d9167463a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_manager.html#a9d47311266ca292dbd2a6f7d9167463a">~PacketManager</a> ()</td></tr>
+<tr class="separator:a9d47311266ca292dbd2a6f7d9167463a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab02d5fcb5f3a4379f7aad7dc8e633a83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_manager.html#ab02d5fcb5f3a4379f7aad7dc8e633a83">send_packet</a> (const <a class="el" href="class_packet.html">Packet</a> &amp;)</td></tr>
 <tr class="separator:ab02d5fcb5f3a4379f7aad7dc8e633a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aa085fd6e24ebfabcc0e63f1c39583da2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa085fd6e24ebfabcc0e63f1c39583da2"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>input_ready</b> (struct bufferevent *bev, void *arg)</td></tr>
-<tr class="separator:aa085fd6e24ebfabcc0e63f1c39583da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa18fb52f9707c13e7c906f30436aaea1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa18fb52f9707c13e7c906f30436aaea1"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>other_event</b> (struct bufferevent *bev, short events, void *arg)</td></tr>
-<tr class="separator:aa18fb52f9707c13e7c906f30436aaea1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae319829a0a8ecc772fba30a3981d3614"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_manager.html#ae319829a0a8ecc772fba30a3981d3614">close_connection</a> ()</td></tr>
+<tr class="separator:ae319829a0a8ecc772fba30a3981d3614"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70300df11c21ac4848d23cc168ad103b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_manager.html#a70300df11c21ac4848d23cc168ad103b">set_packet_received_handler</a> (std::function&lt; void(std::unique_ptr&lt; <a class="el" href="class_packet.html">Packet</a> &gt;)&gt; handler)</td></tr>
+<tr class="separator:a70300df11c21ac4848d23cc168ad103b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15bdbf5c05834e7a625f25953163a42a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_manager.html#a15bdbf5c05834e7a625f25953163a42a">set_event_handler</a> (std::function&lt; void(<a class="el" href="class_packet_manager.html#ac3e07b1a5392ecfcb18b8bfc18decc56">EventType</a>)&gt; handler)</td></tr>
+<tr class="separator:a15bdbf5c05834e7a625f25953163a42a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abec7453d65d468c945bc1b83cd413c18"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_manager.html#abec7453d65d468c945bc1b83cd413c18">next_packet_id</a> ()</td></tr>
+<tr class="separator:abec7453d65d468c945bc1b83cd413c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a53d29c45c8f0e4a948e17912a8b832dd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53d29c45c8f0e4a948e17912a8b832dd"></a>
-uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>packet_id</b> = 0</td></tr>
-<tr class="separator:a53d29c45c8f0e4a948e17912a8b832dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeec049f067c09b241257916cbc455480"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeec049f067c09b241257916cbc455480"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>fixed_header_length</b> = 0</td></tr>
-<tr class="separator:aeec049f067c09b241257916cbc455480"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd99ee60c3730fe13b8a38f8810b5dc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd99ee60c3730fe13b8a38f8810b5dc4"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>remaining_length</b> = 0</td></tr>
-<tr class="separator:afd99ee60c3730fe13b8a38f8810b5dc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf7532d74d9ebe771ed78a2ee0548692"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaf7532d74d9ebe771ed78a2ee0548692"></a>
-struct bufferevent *&#160;</td><td class="memItemRight" valign="bottom"><b>bev</b></td></tr>
+<tr class="memitem:aaf7532d74d9ebe771ed78a2ee0548692"><td class="memItemLeft" align="right" valign="top">struct bufferevent *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_packet_manager.html#aaf7532d74d9ebe771ed78a2ee0548692">bev</a></td></tr>
 <tr class="separator:aaf7532d74d9ebe771ed78a2ee0548692"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48451c07bfde3141a339c78a8ccd25fb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a48451c07bfde3141a339c78a8ccd25fb"></a>
-std::function&lt; void(std::unique_ptr&lt; <a class="el" href="class_packet.html">Packet</a> &gt;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>packet_received_handler</b></td></tr>
-<tr class="separator:a48451c07bfde3141a339c78a8ccd25fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:accd734ee0fbad0245a72e2164b4c6540"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="accd734ee0fbad0245a72e2164b4c6540"></a>
-std::function&lt; void(EventType)&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>event_handler</b></td></tr>
-<tr class="separator:accd734ee0fbad0245a72e2164b4c6540"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="class_packet_manager.html">PacketManager</a> class.</p>
+<p>Manage low level network operations and invoke callbacks on MQTT control packet reception or network event. </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a class="anchor" id="ac3e07b1a5392ecfcb18b8bfc18decc56"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="class_packet_manager.html#ac3e07b1a5392ecfcb18b8bfc18decc56">PacketManager::EventType</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Enumeration constants for <a class="el" href="class_packet_manager.html">PacketManager</a> events.</p>
+<p>Events are low level network events or unrecoverable protocol errors. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="af13c3d341983905b14691c0f0639285c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PacketManager::PacketManager </td>
+          <td>(</td>
+          <td class="paramtype">struct bufferevent *&#160;</td>
+          <td class="paramname"><em>bev</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructor</p>
+<p>The <a class="el" href="class_packet_manager.html">PacketManager</a> constructor accepts a pointer to a libevent bufferevent internal structure. Callbacks are installed for network data received and network events. A pointer to this <a class="el" href="class_packet_manager.html">PacketManager</a> instance is passed as the user data argument. It will be used to invoke instance methods from the static callback wrapper.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bev</td><td>Pointer to a bufferevent control structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a9d47311266ca292dbd2a6f7d9167463a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PacketManager::~PacketManager </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Destructor</p>
+<p>Will free the bufferevent pointer. This call should also close any underlying socket connection provided the libevent flag LEV_OPT_CLOSE_ON_FREE was used to create the bufferevent. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ae319829a0a8ecc772fba30a3981d3614"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PacketManager::close_connection </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Close the network connection.</p>
+<p>Explicitly close the network connection maintained by the bufferevent. This connection should also be closed when the destructor for this instance is run provided the bufferevent was created with the LEV_OPT_CLOSE_ON_FREE flag. </p>
+
+</div>
+</div>
+<a class="anchor" id="abec7453d65d468c945bc1b83cd413c18"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t PacketManager::next_packet_id </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Return the next available packet id in sequence.</p>
+<dl class="section return"><dt>Returns</dt><dd>Next packet id. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab02d5fcb5f3a4379f7aad7dc8e633a83"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PacketManager::send_packet </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_packet.html">Packet</a> &amp;&#160;</td>
+          <td class="paramname"><em>packet</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Send a control packet through the network connection.</p>
+<p>This method is invoked by containing session instances when they want to send a control packet. The packet will be serialized and transmitted provided the underlying socket connection is not closed. </p>
+
+</div>
+</div>
+<a class="anchor" id="a15bdbf5c05834e7a625f25953163a42a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PacketManager::set_event_handler </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; void(<a class="el" href="class_packet_manager.html#ac3e07b1a5392ecfcb18b8bfc18decc56">EventType</a>)&gt;&#160;</td>
+          <td class="paramname"><em>handler</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the network event callback.</p>
+<p>This callback will be invoked when a low level network or protocol error is detected. The type of event is indicated by the an EventType enumeration constant passed as an argument to the callback.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handler</td><td>Callback function. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a70300df11c21ac4848d23cc168ad103b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PacketManager::set_packet_received_handler </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; void(std::unique_ptr&lt; <a class="el" href="class_packet.html">Packet</a> &gt;)&gt;&#160;</td>
+          <td class="paramname"><em>handler</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the packet received callback.</p>
+<p>This callback will be invoked when a packet is received from the network and deserialized. The callback will assume ownership of the packet memory. A pointer to the base packet type is passed and the actual packet can be recovered through a dynamic_cast&lt;&gt;().</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handler</td><td>Callback function. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="aaf7532d74d9ebe771ed78a2ee0548692"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct bufferevent* PacketManager::bev</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pointer to the contained libevent bufferevent internal control structure. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/scottb/src/mqtt/src/<a class="el" href="packet__manager_8h_source.html">packet_manager.h</a></li>
-<li>/Users/scottb/src/mqtt/src/packet_manager.cc</li>
+<li>/Users/scottb/src/mqtt/src/<a class="el" href="packet__manager_8cc.html">packet_manager.cc</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
