@@ -13,6 +13,8 @@
 #include <event2/buffer.h>
 #include <event2/dns.h>
 
+#include <cstring>
+
 class SessionProtocol : public testing::Test {
 public:
 
@@ -178,17 +180,17 @@ static TestParams qos2_params = {
         .qos = QoSType::QoS2,
 };
 
-template<typename ::TestParams &params>
+template<typename ::TestParams *params>
 class SubscriberSession;
 
-template<typename ::TestParams &params>
+template<typename ::TestParams *params>
 class PublisherSession;
 
 TEST_F(SessionProtocol, qos0_test) {
 
-    Client<PublisherSession<qos0_params>> publisher(evloop);
+    Client<PublisherSession<&qos0_params>> publisher(evloop);
 
-    Client<SubscriberSession<qos0_params>> subscriber(evloop);
+    Client<SubscriberSession<&qos0_params>> subscriber(evloop);
 
     subscriber.on_ready = [&publisher]() { publisher.connect_to_broker(); };
 
@@ -200,9 +202,9 @@ TEST_F(SessionProtocol, qos0_test) {
 
 TEST_F(SessionProtocol, qos1_test) {
 
-    Client<PublisherSession<qos1_params>> publisher(evloop);
+    Client<PublisherSession<&qos1_params>> publisher(evloop);
 
-    Client<SubscriberSession<qos1_params>> subscriber(evloop);
+    Client<SubscriberSession<&qos1_params>> subscriber(evloop);
 
     subscriber.on_ready = [&publisher]() { publisher.connect_to_broker(); };
 
@@ -214,9 +216,9 @@ TEST_F(SessionProtocol, qos1_test) {
 
 TEST_F(SessionProtocol, qos2_test) {
 
-    Client<PublisherSession<qos2_params>> publisher(evloop);
+    Client<PublisherSession<&qos2_params>> publisher(evloop);
 
-    Client<SubscriberSession<qos2_params>> subscriber(evloop);
+    Client<SubscriberSession<&qos2_params>> subscriber(evloop);
 
     subscriber.on_ready = [&publisher]() { publisher.connect_to_broker(); };
 
@@ -226,7 +228,7 @@ TEST_F(SessionProtocol, qos2_test) {
 
 }
 
-template<typename ::TestParams &params>
+template<typename ::TestParams *params>
 class SubscriberSession : public TestSession {
 
 public:
@@ -237,7 +239,7 @@ public:
 
         SubscribePacket subscribe_packet;
         subscribe_packet.packet_id = packet_manager->next_packet_id();
-        subscribe_packet.subscriptions.push_back(Subscription{params.test_topic, params.qos});
+        subscribe_packet.subscriptions.push_back(Subscription{params->test_topic, params->qos});
         packet_manager->send_packet(subscribe_packet);
     }
 
@@ -248,13 +250,13 @@ public:
     void handle_publish(const PublishPacket &publish_packet) override {
 
         ASSERT_EQ(publish_packet.message_data,
-                  std::vector<uint8_t>(params.test_message.begin(), params.test_message.end()));
+                  std::vector<uint8_t>(params->test_message.begin(), params->test_message.end()));
 
         disconnect_all();
     }
 };
 
-template<typename ::TestParams &params>
+template<typename ::TestParams *params>
 class PublisherSession : public TestSession {
 public:
 
@@ -263,28 +265,28 @@ public:
     void handle_connack(const ConnackPacket &connack_packet) override {
 
         PublishPacket publish_packet;
-        publish_packet.qos(params.qos);
-        publish_packet.topic_name = params.test_topic;
+        publish_packet.qos(params->qos);
+        publish_packet.topic_name = params->test_topic;
         publish_packet.packet_id = packet_manager->next_packet_id();
-        publish_packet.message_data = std::vector<uint8_t>(params.test_message.begin(),
-                                                           params.test_message.end());
+        publish_packet.message_data = std::vector<uint8_t>(params->test_message.begin(),
+                                                           params->test_message.end());
         packet_manager->send_packet(publish_packet);
 
-        if (params.qos == QoSType::QoS0) {
+        if (params->qos == QoSType::QoS0) {
             DisconnectPacket disconnect_packet;
             packet_manager->send_packet(disconnect_packet);
         }
     }
 
     void handle_puback(const PubackPacket &puback_packet) override {
-        ASSERT_EQ(params.qos, QoSType::QoS1);
+        ASSERT_EQ(params->qos, QoSType::QoS1);
 
         DisconnectPacket disconnect_packet;
         packet_manager->send_packet(disconnect_packet);
     }
 
     void handle_pubrec(const PubrecPacket &pubrec_packet) override {
-        ASSERT_EQ(params.qos, QoSType::QoS2);
+        ASSERT_EQ(params->qos, QoSType::QoS2);
 
         PubrelPacket pubrel_packet;
         pubrel_packet.packet_id = pubrec_packet.packet_id;
@@ -292,7 +294,7 @@ public:
     }
 
     void handle_pubcomp(const PubcompPacket &pubcomp_packet) override {
-        ASSERT_EQ(params.qos, QoSType::QoS2);
+        ASSERT_EQ(params->qos, QoSType::QoS2);
 
         DisconnectPacket disconnect_packet;
         packet_manager->send_packet(disconnect_packet);
