@@ -32,7 +32,7 @@ public:
         evloop = event_base_new();
         ASSERT_NE(evloop, nullptr);
 
-        event *timer = evtimer_new(evloop, timeout_cb, NULL);
+        event *timer = evtimer_new(evloop, timeout_cb, this);
         timeval timeout = {5, 0};
         evtimer_add(timer, &timeout);
 
@@ -53,7 +53,6 @@ public:
 
         evconnlistener_free(listener);
         event_base_free(evloop);
-
     }
 
     static void listener_cb(struct evconnlistener *listener, evutil_socket_t fd,
@@ -151,7 +150,7 @@ public:
     static void close_cb(struct bufferevent *bev, void *arg) {
         if (evbuffer_get_length(bufferevent_get_output(bev)) == 0) {
             event_base *base = static_cast<event_base *>(arg);
-            event_base_loopexit(base, NULL);;
+            event_base_loopexit(base, NULL);
         }
     }
 };
@@ -236,7 +235,6 @@ public:
     SubscriberSession(bufferevent *bev) : TestSession(bev) {}
 
     void handle_connack(const ConnackPacket &connack_packet) override {
-
         SubscribePacket subscribe_packet;
         subscribe_packet.packet_id = packet_manager->next_packet_id();
         subscribe_packet.subscriptions.push_back(Subscription{params->test_topic, params->qos});
@@ -252,8 +250,31 @@ public:
         ASSERT_EQ(publish_packet.message_data,
                   std::vector<uint8_t>(params->test_message.begin(), params->test_message.end()));
 
+        if (publish_packet.qos() == QoSType::QoS0) {
+            disconnect_all();
+        }
+        else if (publish_packet.qos() == QoSType::QoS1) {
+            PubackPacket puback_packet;
+            puback_packet.packet_id = publish_packet.packet_id;
+            packet_manager->send_packet(puback_packet);
+            disconnect_all();
+        } else if (publish_packet.qos() == QoSType::QoS2) {
+            PubrecPacket pubrec_packet;
+            pubrec_packet.packet_id = publish_packet.packet_id;
+            packet_manager->send_packet(pubrec_packet);
+        }
+
+    }
+
+    void handle_pubrel(const PubrelPacket &pubrel_packet) override {
+        ASSERT_EQ(params->qos, QoSType::QoS2);
+
+        PubcompPacket pubcomp_packet;
+        pubcomp_packet.packet_id = pubrel_packet.packet_id;
+        packet_manager->send_packet(pubcomp_packet);
         disconnect_all();
     }
+
 };
 
 template<typename ::TestParams *params>
