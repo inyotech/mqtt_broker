@@ -37,18 +37,25 @@ Verified platforms.
    $ cd mqtt_broker
 ````
 
-2. Create a build directory.
+2. Install the google tests framework
+```
+   $ pushd test/lib
+   $ git clone https://github.com/google/googletest.git
+   $ popd
+```
+
+3. Create a build directory.
 ````
    $ mkdir build
    $ cd build
 ````
 
-3. Generate build files.
+4. Generate build files.
 ````
    $ cmake ..
 ````
 
-4. Build/
+5. Build
 ````
    $ make
 ````
